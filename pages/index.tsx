@@ -2,7 +2,7 @@ import { FormEvent, useMemo, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+// import styles from '../styles/Home.module.css'
 
 const defaultInitialTodos = [
   {
@@ -68,7 +68,7 @@ export default function Home({ initialTodos = defaultInitialTodos } = {}) {
   } left`
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Todo App</title>
         <meta
