@@ -52,19 +52,34 @@ describe('Todo Page', () => {
 
     render(<TodoPage initialTodos={[activeTodo, completedTodo]} />)
 
-    userEvent.click(screen.getByRole('button', { name: /show active todos/i }))
+    const allButton = screen.getByRole('button', { name: /show all todos/i })
+    const activeButton = screen.getByRole('button', {
+      name: /show active todos/i,
+    })
+    const completedButton = screen.getByRole('button', {
+      name: /show completed todos/i,
+    })
+
+    userEvent.click(activeButton)
     expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
     expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
+    expect(activeButton).toHaveAttribute('aria-pressed', 'true')
+    expect(allButton).toHaveAttribute('aria-pressed', 'false')
+    expect(completedButton).toHaveAttribute('aria-pressed', 'false')
 
-    userEvent.click(
-      screen.getByRole('button', { name: /show completed todos/i })
-    )
+    userEvent.click(completedButton)
     expect(screen.queryByText(activeTodo.title)).not.toBeInTheDocument()
     expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
+    expect(completedButton).toHaveAttribute('aria-pressed', 'true')
+    expect(activeButton).toHaveAttribute('aria-pressed', 'false')
+    expect(allButton).toHaveAttribute('aria-pressed', 'false')
 
-    userEvent.click(screen.getByRole('button', { name: /show all todos/i }))
+    userEvent.click(allButton)
     expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
     expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
+    expect(allButton).toHaveAttribute('aria-pressed', 'true')
+    expect(completedButton).toHaveAttribute('aria-pressed', 'false')
+    expect(activeButton).toHaveAttribute('aria-pressed', 'false')
   })
 
   it('should show number of active todos', () => {
@@ -93,7 +108,7 @@ describe('Todo Page', () => {
     render(<TodoPage initialTodos={[]} />)
 
     const newTodoTitle = 'Some new todo'
-    const todoInput = screen.getByLabelText(/create a new todo/i)
+    const todoInput = screen.getByLabelText(/write a new todo item/i)
     userEvent.type(todoInput, newTodoTitle)
     userEvent.type(todoInput, specialChars.enter)
 
@@ -104,7 +119,7 @@ describe('Todo Page', () => {
   it('should not allow user to enter empty todo', () => {
     render(<TodoPage initialTodos={[]} />)
 
-    const todoInput = screen.getByLabelText(/create a new todo/i)
+    const todoInput = screen.getByLabelText(/write a new todo item/i)
     const addButton = screen.getByRole('button', { name: /add/i })
     const emptyText = '    '
     userEvent.type(todoInput, emptyText)

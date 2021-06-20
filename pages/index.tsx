@@ -1,9 +1,8 @@
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
-import Image from 'next/image'
 import { Todo } from 'types/todo'
-// import styles from '../styles/Home.module.css'
+import styles from '../styles/todo.module.css'
 
 const defaultInitialTodos: Array<Todo> = [
   {
@@ -44,17 +43,18 @@ export default function Home({
   const [todoInputText, setTodoInputText] = useState('')
   const isInputInvalid = todoInputText.trim().length === 0
 
+  const [feedback, setFeedback] = useState('')
+
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (isInputInvalid) return
-    setTodos((existingTodos) => {
-      const newTodo = {
-        id: nanoid(),
-        title: todoInputText.trim(),
-        completed: false,
-      }
-      return [newTodo, ...existingTodos]
-    })
+    const newTodo = {
+      id: nanoid(),
+      title: todoInputText.trim(),
+      completed: false,
+    }
+    setTodos((existingTodos) => [newTodo, ...existingTodos])
+    setFeedback(`${newTodo.title} added`)
     setTodoInputText('')
   }
 
@@ -74,14 +74,15 @@ export default function Home({
     )
   }
 
-  function deleteTodo(todoId: Todo['id']) {
-    setTodos((existingTodos) =>
-      existingTodos.filter((todo) => todo.id !== todoId)
-    )
+  function deleteTodo(todo: Todo) {
+    setTodos((existingTodos) => existingTodos.filter((t) => t !== todo))
+    setFeedback(`${todo.title} deleted`)
+    headingRef.current?.focus()
   }
 
   function clearCompletedTodos() {
     setTodos((existingTodos) => existingTodos.filter((todo) => !todo.completed))
+    setFeedback('Completed todos cleared')
   }
 
   const numberTodosActive = useMemo(
@@ -95,6 +96,8 @@ export default function Home({
 
   const isListEmpty = todos.length === 0
 
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
   return (
     <div>
       <Head>
@@ -107,16 +110,16 @@ export default function Home({
       </Head>
 
       <main>
-        <h1>Todo</h1>
+        <h1 tabIndex={-1} ref={headingRef}>
+          Todo
+        </h1>
         <form onSubmit={submitForm}>
-          <label htmlFor="new-todo">Create a new todo...</label>
           <input
             type="text"
-            name="new-todo"
-            id="new-todo"
             value={todoInputText}
             onChange={(e) => setTodoInputText(e.target.value)}
             aria-invalid={isInputInvalid}
+            aria-label="Write a new todo item"
           />
           <button type="submit" disabled={isInputInvalid}>
             add
@@ -127,7 +130,7 @@ export default function Home({
             <p>Well done, your tasks are complete</p>
           </div>
         ) : null}
-        <ol>
+        <ol role="list" className={styles['todo-list']}>
           {filteredTodos.map((todo) => (
             <li key={todo.id}>
               <input
@@ -140,7 +143,7 @@ export default function Home({
               <button
                 type="button"
                 aria-label={`delete ${todo.title}`}
-                onClick={() => deleteTodo(todo.id)}
+                onClick={() => deleteTodo(todo)}
               >
                 &times;
               </button>
@@ -151,6 +154,7 @@ export default function Home({
         <button
           type="button"
           aria-label="show all todos"
+          aria-pressed={currentFilter === 'all'}
           onClick={() => setCurrentFilter('all')}
         >
           All
@@ -158,6 +162,7 @@ export default function Home({
         <button
           type="button"
           aria-label="show active todos"
+          aria-pressed={currentFilter === 'active'}
           onClick={() => setCurrentFilter('active')}
         >
           Active
@@ -165,6 +170,7 @@ export default function Home({
         <button
           type="button"
           aria-label="show completed todos"
+          aria-pressed={currentFilter === 'completed'}
           onClick={() => setCurrentFilter('completed')}
         >
           Completed
@@ -172,6 +178,9 @@ export default function Home({
         <button type="button" onClick={() => clearCompletedTodos()}>
           Clear Completed
         </button>
+        <div role="status" aria-live="polite" className="visually-hidden">
+          {feedback}
+        </div>
       </main>
     </div>
   )
