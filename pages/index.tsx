@@ -2,9 +2,10 @@ import { FormEvent, useMemo, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import Image from 'next/image'
+import { Todo } from 'types/todo'
 // import styles from '../styles/Home.module.css'
 
-const defaultInitialTodos = [
+const defaultInitialTodos: Array<Todo> = [
   {
     id: nanoid(),
     title: 'Jog around the park 3x',
@@ -22,7 +23,6 @@ const defaultInitialTodos = [
   },
 ]
 
-type Todo = typeof defaultInitialTodos[number]
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
 
@@ -36,11 +36,29 @@ function getFilterFunction(filter: Filter): FilterFunction {
   return filterFunctions.get(filter) ?? (() => true)
 }
 
-export default function Home({ initialTodos = defaultInitialTodos } = {}) {
+export default function Home({
+  initialTodos = [],
+}: { initialTodos?: Todo[] } = {}) {
   const [todos, setTodos] = useState(initialTodos)
-  const [currentFilter, setCurrentFilter] = useState<Filter>('all')
-  const [todoInputText, setTodoInputText] = useState('')
 
+  const [todoInputText, setTodoInputText] = useState('')
+  const isInputInvalid = todoInputText.trim().length === 0
+
+  function submitForm(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (isInputInvalid) return
+    setTodos((existingTodos) => {
+      const newTodo = {
+        id: nanoid(),
+        title: todoInputText.trim(),
+        completed: false,
+      }
+      return [newTodo, ...existingTodos]
+    })
+    setTodoInputText('')
+  }
+
+  const [currentFilter, setCurrentFilter] = useState<Filter>('all')
   const currentFilterFunction = filterFunctions.get(currentFilter)
 
   const filteredTodos = useMemo(
@@ -48,20 +66,18 @@ export default function Home({ initialTodos = defaultInitialTodos } = {}) {
     [currentFilterFunction, todos]
   )
 
+  function toggleTodoCompleted(todoId: Todo['id']) {
+    setTodos((existingTodos) =>
+      existingTodos.map((todo) =>
+        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+      )
+    )
+  }
+
   const numberTodosActive = useMemo(
     () => todos.filter(getFilterFunction('active')).length,
     [todos]
   )
-
-  function submitForm(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    if (!todoInputText) return
-    setTodos((existingTodos) => {
-      const newTodo = { id: nanoid(), title: todoInputText, completed: false }
-      return [newTodo, ...existingTodos]
-    })
-    setTodoInputText('')
-  }
 
   const itemsLeftText = `${numberTodosActive} item${
     numberTodosActive !== 1 ? 's' : ''
@@ -88,15 +104,26 @@ export default function Home({ initialTodos = defaultInitialTodos } = {}) {
             id="new-todo"
             value={todoInputText}
             onChange={(e) => setTodoInputText(e.target.value)}
+            aria-invalid={isInputInvalid}
           />
-          <button type="submit">add</button>
+          <button type="submit" disabled={isInputInvalid}>
+            add
+          </button>
         </form>
         <div>
           <p>Well done, your tasks are complete</p>
         </div>
         <ol>
           {filteredTodos.map((todo) => (
-            <li key={todo.id}>{todo.title}</li>
+            <li key={todo.id}>
+              <input
+                type="checkbox"
+                id={`todo-${todo.id}`}
+                checked={todo.completed}
+                onChange={() => toggleTodoCompleted(todo.id)}
+              />
+              <label htmlFor={`todo-${todo.id}`}>{todo.title}</label>
+            </li>
           ))}
         </ol>
         <div>{itemsLeftText}</div>

@@ -1,5 +1,5 @@
 import { render, screen } from '../test-utils'
-import userEvent from '@testing-library/user-event'
+import userEvent, { specialChars } from '@testing-library/user-event'
 import faker from 'faker'
 import { Todo } from 'types/todo'
 import TodoPage from '@pages/index'
@@ -75,5 +75,50 @@ describe('Todo Page', () => {
     ]
     render(<TodoPage initialTodos={twoActiveTodos} />)
     expect(screen.getByText(/2 items left/i)).toBeInTheDocument()
+  })
+  it('should allow user to enter todo', () => {
+    render(<TodoPage initialTodos={[]} />)
+
+    const newTodoTitle = 'Some new todo'
+    const todoInput = screen.getByLabelText(/create a new todo/i)
+    userEvent.type(todoInput, newTodoTitle)
+    userEvent.type(todoInput, specialChars.enter)
+
+    expect(screen.getByText(newTodoTitle)).toBeInTheDocument()
+    expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
+    expect(todoInput).toHaveValue('')
+  })
+  it('should not allow user to enter empty todo', () => {
+    render(<TodoPage initialTodos={[]} />)
+
+    const todoInput = screen.getByLabelText(/create a new todo/i)
+    const addButton = screen.getByRole('button', { name: /add/i })
+    const emptyText = '    '
+    userEvent.type(todoInput, emptyText)
+    expect(todoInput).toBeInvalid()
+    expect(addButton).toBeDisabled()
+
+    const nonEmptyText = 'some text'
+    userEvent.type(todoInput, nonEmptyText)
+    expect(todoInput).toBeValid()
+    expect(addButton).toBeEnabled()
+  })
+  it('should be possible to complete and uncomplete a todo', () => {
+    const todo = buildTodo({ completed: false })
+    render(<TodoPage initialTodos={[todo]} />)
+
+    expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
+
+    const todoCompleteCheckbox = screen.getByRole('checkbox', {
+      name: todo.title,
+    })
+
+    userEvent.click(todoCompleteCheckbox)
+    expect(todoCompleteCheckbox).toBeChecked()
+    expect(screen.getByText(/0 items left/i)).toBeInTheDocument()
+
+    userEvent.click(todoCompleteCheckbox)
+    expect(todoCompleteCheckbox).not.toBeChecked()
+    expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
   })
 })
