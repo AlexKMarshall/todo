@@ -93,6 +93,8 @@ export default function Home({
     numberTodosActive !== 1 ? 's' : ''
   } left`
 
+  const isListEmpty = todos.length === 0
+
   return (
     <div>
       <Head>
@@ -120,9 +122,11 @@ export default function Home({
             add
           </button>
         </form>
-        <div>
-          <p>Well done, your tasks are complete</p>
-        </div>
+        {isListEmpty ? (
+          <div>
+            <p>Well done, your tasks are complete</p>
+          </div>
+        ) : null}
         <ol>
           {filteredTodos.map((todo) => (
             <li key={todo.id}>

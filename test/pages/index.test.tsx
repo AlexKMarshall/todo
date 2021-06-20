@@ -34,7 +34,18 @@ describe('Todo Page', () => {
       expect(listItem).toHaveTextContent(expectedTodo.title)
     })
   })
+  it('should show an empty list message when there are no todos', () => {
+    render(<TodoPage initialTodos={[]} />)
 
+    const emptyListRegex = new RegExp('well done, your tasks are complete', 'i')
+    expect(screen.getByText(emptyListRegex)).toBeInTheDocument()
+  })
+  it('should not show empty list message when there are some todos', () => {
+    render(<TodoPage initialTodos={[buildTodo()]} />)
+
+    const emptyListRegex = new RegExp('well done, your tasks are complete', 'i')
+    expect(screen.queryByText(emptyListRegex)).not.toBeInTheDocument()
+  })
   it('should render filtered todos', () => {
     const activeTodo = buildTodo({ completed: false })
     const completedTodo = buildTodo({ completed: true })
