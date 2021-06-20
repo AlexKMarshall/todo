@@ -74,6 +74,16 @@ export default function Home({
     )
   }
 
+  function deleteTodo(todoId: Todo['id']) {
+    setTodos((existingTodos) =>
+      existingTodos.filter((todo) => todo.id !== todoId)
+    )
+  }
+
+  function clearCompletedTodos() {
+    setTodos((existingTodos) => existingTodos.filter((todo) => !todo.completed))
+  }
+
   const numberTodosActive = useMemo(
     () => todos.filter(getFilterFunction('active')).length,
     [todos]
@@ -123,6 +133,13 @@ export default function Home({
                 onChange={() => toggleTodoCompleted(todo.id)}
               />
               <label htmlFor={`todo-${todo.id}`}>{todo.title}</label>
+              <button
+                type="button"
+                aria-label={`delete ${todo.title}`}
+                onClick={() => deleteTodo(todo.id)}
+              >
+                &times;
+              </button>
             </li>
           ))}
         </ol>
@@ -147,6 +164,9 @@ export default function Home({
           onClick={() => setCurrentFilter('completed')}
         >
           Completed
+        </button>
+        <button type="button" onClick={() => clearCompletedTodos()}>
+          Clear Completed
         </button>
       </main>
     </div>

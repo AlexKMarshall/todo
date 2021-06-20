@@ -41,15 +41,17 @@ describe('Todo Page', () => {
 
     render(<TodoPage initialTodos={[activeTodo, completedTodo]} />)
 
-    userEvent.click(screen.getByRole('button', { name: /active/i }))
+    userEvent.click(screen.getByRole('button', { name: /show active todos/i }))
     expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
     expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
 
-    userEvent.click(screen.getByRole('button', { name: /completed/i }))
+    userEvent.click(
+      screen.getByRole('button', { name: /show completed todos/i })
+    )
     expect(screen.queryByText(activeTodo.title)).not.toBeInTheDocument()
     expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
 
-    userEvent.click(screen.getByRole('button', { name: /all/i }))
+    userEvent.click(screen.getByRole('button', { name: /show all todos/i }))
     expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
     expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
   })
@@ -120,5 +122,27 @@ describe('Todo Page', () => {
     userEvent.click(todoCompleteCheckbox)
     expect(todoCompleteCheckbox).not.toBeChecked()
     expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
+  })
+  it('should be possible to delete a todo', () => {
+    const todo = buildTodo()
+    render(<TodoPage initialTodos={[todo]} />)
+
+    const deleteLabelRegex = new RegExp(`delete ${todo.title}`, 'i')
+    userEvent.click(screen.getByRole('button', { name: deleteLabelRegex }))
+    expect(screen.queryByText(todo.title)).not.toBeInTheDocument()
+  })
+  it('should be possible to clear completed todos', () => {
+    const completedTodo = buildTodo({ completed: true })
+    const activeTodo = buildTodo({ completed: false })
+
+    render(<TodoPage initialTodos={[completedTodo, activeTodo]} />)
+
+    expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
+    expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
+
+    userEvent.click(screen.getByRole('button', { name: /clear completed/i }))
+
+    expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
+    expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
   })
 })
