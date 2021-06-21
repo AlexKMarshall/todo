@@ -7,6 +7,16 @@
 
 :root {
   --measure: 60ch;
+  --scale-ratio: 1.33;
+  --s-2: calc(var(--s-1) / var(--scale-ratio));
+  --s-1: calc(var(--s0) / var(--scale-ratio));
+  --s0: 1rem;
+  --s1: calc(var(--s0) * var(--scale-ratio));
+  --s2: calc(var(--s1) * var(--scale-ratio));
+  --very-light-gray: hsl(0, 0%, 98%);
+  --white: hsl(0, 0%, 100%);
+  --body-color: var(--very-light-gray);
+  --main-background-color: var(--white);
 }
 
 * {
@@ -21,6 +31,10 @@ nav,
 main,
 footer {
   max-width: none;
+}
+
+body {
+  background-color: var(--body-color);
 }
 
 .visually-hidden {

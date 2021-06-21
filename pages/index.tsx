@@ -109,79 +109,91 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 tabIndex={-1} ref={headingRef}>
-          Todo
-        </h1>
-        <form onSubmit={submitForm}>
-          <input
-            type="text"
-            value={todoInputText}
-            onChange={(e) => setTodoInputText(e.target.value)}
-            aria-invalid={isInputInvalid}
-            aria-label="Write a new todo item"
-          />
-          <button type="submit" disabled={isInputInvalid}>
-            add
-          </button>
-        </form>
-        {isListEmpty ? (
-          <div>
-            <p>Well done, your tasks are complete</p>
-          </div>
-        ) : null}
-        <ol role="list" className={styles['todo-list']}>
-          {filteredTodos.map((todo) => (
-            <li key={todo.id}>
+      <div className={styles.center}>
+        <main className={styles.cover}>
+          <h1 tabIndex={-1} ref={headingRef}>
+            Todo
+          </h1>
+          <div className={styles['app-content']}>
+            <form onSubmit={submitForm} className={styles['todo-form']}>
               <input
-                type="checkbox"
-                id={`todo-${todo.id}`}
-                checked={todo.completed}
-                onChange={() => toggleTodoCompleted(todo.id)}
+                type="text"
+                value={todoInputText}
+                onChange={(e) => setTodoInputText(e.target.value)}
+                aria-invalid={isInputInvalid}
+                aria-label="Write a new todo item"
+                className={styles['todo-input']}
               />
-              <label htmlFor={`todo-${todo.id}`}>{todo.title}</label>
+              <button type="submit" disabled={isInputInvalid}>
+                add
+              </button>
+            </form>
+            <ol role="list" className={styles['todo-list']}>
+              {filteredTodos.map((todo) => (
+                <li key={todo.id} className={styles['todo-item']}>
+                  <input
+                    type="checkbox"
+                    id={`todo-${todo.id}`}
+                    checked={todo.completed}
+                    onChange={() => toggleTodoCompleted(todo.id)}
+                  />
+                  <label htmlFor={`todo-${todo.id}`}>{todo.title}</label>
+                  <button
+                    type="button"
+                    aria-label={`delete ${todo.title}`}
+                    onClick={() => deleteTodo(todo)}
+                    className={styles['delete-todo']}
+                  >
+                    &times;
+                  </button>
+                </li>
+              ))}
+            </ol>
+            {isListEmpty ? (
+              <div className={styles['empty-message']}>
+                <p>Well done, your tasks are complete</p>
+              </div>
+            ) : null}
+            <div className={styles['items-count']}>{itemsLeftText}</div>
+            <div className={styles['filter-buttons']}>
               <button
                 type="button"
-                aria-label={`delete ${todo.title}`}
-                onClick={() => deleteTodo(todo)}
+                aria-label="show all todos"
+                aria-pressed={currentFilter === 'all'}
+                onClick={() => setCurrentFilter('all')}
               >
-                &times;
+                All
               </button>
-            </li>
-          ))}
-        </ol>
-        <div>{itemsLeftText}</div>
-        <button
-          type="button"
-          aria-label="show all todos"
-          aria-pressed={currentFilter === 'all'}
-          onClick={() => setCurrentFilter('all')}
-        >
-          All
-        </button>
-        <button
-          type="button"
-          aria-label="show active todos"
-          aria-pressed={currentFilter === 'active'}
-          onClick={() => setCurrentFilter('active')}
-        >
-          Active
-        </button>
-        <button
-          type="button"
-          aria-label="show completed todos"
-          aria-pressed={currentFilter === 'completed'}
-          onClick={() => setCurrentFilter('completed')}
-        >
-          Completed
-        </button>
-        <button type="button" onClick={() => clearCompletedTodos()}>
-          Clear Completed
-        </button>
-        <div role="status" aria-live="polite" className="visually-hidden">
-          {feedback}
-        </div>
-      </main>
+              <button
+                type="button"
+                aria-label="show active todos"
+                aria-pressed={currentFilter === 'active'}
+                onClick={() => setCurrentFilter('active')}
+              >
+                Active
+              </button>
+              <button
+                type="button"
+                aria-label="show completed todos"
+                aria-pressed={currentFilter === 'completed'}
+                onClick={() => setCurrentFilter('completed')}
+              >
+                Completed
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => clearCompletedTodos()}
+              className={styles['clear-completed']}
+            >
+              Clear Completed
+            </button>
+            <div role="status" aria-live="polite" className="visually-hidden">
+              {feedback}
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   )
 }
