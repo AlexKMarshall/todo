@@ -114,23 +114,23 @@ export default function Home({
           <h1 tabIndex={-1} ref={headingRef}>
             Todo
           </h1>
-          <div className={styles['app-content']}>
-            <form onSubmit={submitForm} className={styles['todo-form']}>
+          <div className={styles.appContent}>
+            <form onSubmit={submitForm} className={styles.todoForm}>
               <input
                 type="text"
                 value={todoInputText}
                 onChange={(e) => setTodoInputText(e.target.value)}
                 aria-invalid={isInputInvalid}
                 aria-label="Write a new todo item"
-                className={styles['todo-input']}
+                className={styles.todoInput}
               />
               <button type="submit" disabled={isInputInvalid}>
                 add
               </button>
             </form>
-            <ol role="list" className={styles['todo-list']}>
+            <ol role="list" className={styles.todoList}>
               {filteredTodos.map((todo) => (
-                <li key={todo.id} className={styles['todo-item']}>
+                <li key={todo.id} className={styles.todoItem}>
                   <input
                     type="checkbox"
                     id={`todo-${todo.id}`}
@@ -142,7 +142,7 @@ export default function Home({
                     type="button"
                     aria-label={`delete ${todo.title}`}
                     onClick={() => deleteTodo(todo)}
-                    className={styles['delete-todo']}
+                    className={styles.deleteTodo}
                   >
                     &times;
                   </button>
@@ -150,17 +150,18 @@ export default function Home({
               ))}
             </ol>
             {isListEmpty ? (
-              <div className={styles['empty-message']}>
+              <div className={styles.emptyMessage}>
                 <p>Well done, your tasks are complete</p>
               </div>
             ) : null}
-            <div className={styles['items-count']}>{itemsLeftText}</div>
-            <div className={styles['filter-buttons']}>
+            <div className={styles.itemsCount}>{itemsLeftText}</div>
+            <div className={styles.filterButtons}>
               <button
                 type="button"
                 aria-label="show all todos"
                 aria-pressed={currentFilter === 'all'}
                 onClick={() => setCurrentFilter('all')}
+                className={styles.link}
               >
                 All
               </button>
@@ -169,6 +170,7 @@ export default function Home({
                 aria-label="show active todos"
                 aria-pressed={currentFilter === 'active'}
                 onClick={() => setCurrentFilter('active')}
+                className={styles.link}
               >
                 Active
               </button>
@@ -177,6 +179,7 @@ export default function Home({
                 aria-label="show completed todos"
                 aria-pressed={currentFilter === 'completed'}
                 onClick={() => setCurrentFilter('completed')}
+                className={styles.link}
               >
                 Completed
               </button>
@@ -184,7 +187,7 @@ export default function Home({
             <button
               type="button"
               onClick={() => clearCompletedTodos()}
-              className={styles['clear-completed']}
+              className={styles.clearCompleted}
             >
               Clear Completed
             </button>
@@ -192,6 +195,9 @@ export default function Home({
               {feedback}
             </div>
           </div>
+          <footer>
+            <small>Some footer text</small>
+          </footer>
         </main>
       </div>
     </div>

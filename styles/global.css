@@ -13,6 +13,7 @@
   --s0: 1rem;
   --s1: calc(var(--s0) * var(--scale-ratio));
   --s2: calc(var(--s1) * var(--scale-ratio));
+  --primary-blue: hsl(220, 98%, 61%);
   --very-light-gray: hsl(0, 0%, 98%);
   --white: hsl(0, 0%, 100%);
   --body-color: var(--very-light-gray);
