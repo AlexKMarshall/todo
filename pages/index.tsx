@@ -6,24 +6,6 @@ import { CrossIcon } from '@components/cross-icon'
 import { CheckIcon } from '@components/check-icon'
 import styles from '../styles/todo.module.scss'
 
-const defaultInitialTodos: Array<Todo> = [
-  {
-    id: nanoid(),
-    title: 'Jog around the park 3x',
-    completed: false,
-  },
-  {
-    id: nanoid(),
-    title: '10 minutes meditation',
-    completed: false,
-  },
-  {
-    id: nanoid(),
-    title: 'Read for 1 hour',
-    completed: true,
-  },
-]
-
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
 
@@ -118,6 +100,7 @@ export default function Home({
           </h1>
           <div className={styles.appContent}>
             <form onSubmit={submitForm} className={styles.todoForm}>
+              <span className={styles.decorativeCircle} />
               <input
                 type="text"
                 value={todoInputText}
