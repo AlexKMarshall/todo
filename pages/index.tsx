@@ -2,7 +2,8 @@ import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import { Todo } from 'types/todo'
-import styles from '../styles/todo.module.css'
+import { CrossIcon } from '@components/cross-icon'
+import styles from '../styles/todo.module.scss'
 
 const defaultInitialTodos: Array<Todo> = [
   {
@@ -111,7 +112,7 @@ export default function Home({
 
       <div className={styles.center}>
         <main className={styles.cover}>
-          <h1 tabIndex={-1} ref={headingRef}>
+          <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
             Todo
           </h1>
           <div className={styles.appContent}>
@@ -137,14 +138,19 @@ export default function Home({
                     checked={todo.completed}
                     onChange={() => toggleTodoCompleted(todo.id)}
                   />
-                  <label htmlFor={`todo-${todo.id}`}>{todo.title}</label>
+                  <label
+                    htmlFor={`todo-${todo.id}`}
+                    className={styles.todoItemText}
+                  >
+                    {todo.title}
+                  </label>
                   <button
                     type="button"
                     aria-label={`delete ${todo.title}`}
                     onClick={() => deleteTodo(todo)}
                     className={styles.deleteTodo}
                   >
-                    &times;
+                    <CrossIcon className={styles.deleteTodoIcon} />
                   </button>
                 </li>
               ))}
@@ -184,13 +190,15 @@ export default function Home({
                 Completed
               </button>
             </div>
-            <button
-              type="button"
-              onClick={() => clearCompletedTodos()}
-              className={styles.clearCompleted}
-            >
-              Clear Completed
-            </button>
+            <div className={styles.clearCompleted}>
+              <button
+                type="button"
+                onClick={() => clearCompletedTodos()}
+                className={styles.link}
+              >
+                Clear Completed
+              </button>
+            </div>
             <div role="status" aria-live="polite" className="visually-hidden">
               {feedback}
             </div>

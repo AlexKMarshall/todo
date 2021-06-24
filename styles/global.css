@@ -13,11 +13,16 @@
   --s0: 1rem;
   --s1: calc(var(--s0) * var(--scale-ratio));
   --s2: calc(var(--s1) * var(--scale-ratio));
+  --s3: calc(var(--s2) * var(--scale-ratio));
   --primary-blue: hsl(220, 98%, 61%);
   --very-light-gray: hsl(0, 0%, 98%);
+  --dark-grayish-blue: hsl(236, 9%, 61%);
+  --very-dark-grayish-blue: hsl(235, 19%, 35%);
   --white: hsl(0, 0%, 100%);
   --body-color: var(--very-light-gray);
   --main-background-color: var(--white);
+  --muted-text-color: var(--dark-grayish-blue);
+  --strong-text-color: var(--very-dark-grayish-blue);
 }
 
 * {

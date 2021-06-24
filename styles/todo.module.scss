@@ -31,6 +31,13 @@
   margin-bottom: auto;
 }
 
+.heading {
+  font-size: var(--s3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+}
+
 .appContent {
   --gutter: var(--s1);
   flex-grow: 1;
@@ -59,24 +66,98 @@
 .todoInput {
   flex-grow: 1;
   width: 0; /* override browser min-width on input */
+  padding-top: var(--s0);
+  padding-bottom: var(--s0);
+  border-radius: 4px;
 }
 
 .todoList {
   grid-area: list;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .todoItem {
-  width: 100%;
   padding: var(--s0) var(--s1);
   display: flex;
   align-items: center;
   letter-spacing: -0.01em;
 }
 
+.todoItemText {
+  flex-grow: 1;
+}
+
+$btnColor: hsl(236, 9%, 61%);
+
+// https://moderncss.dev/css-button-styling-guide/
+.button {
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 2px solid currentcolor;
+  }
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:not(.iconButton) {
+    min-height: 44px;
+    min-width: 10ch;
+    padding: 0.25em 0.75em;
+  }
+
+  text-align: center;
+
+  color: var(--muted-text-color);
+
+  transition: 220ms all ease-in-out;
+  outline-style: solid;
+  outline-color: transparent;
+
+  &:hover,
+  &:active {
+    color: var(--strong-text-color);
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-color: transparent;
+    box-shadow: 0 0 4px scale-color($btnColor, $lightness: -20%);
+  }
+}
+
+.iconButton {
+  composes: button;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  padding: 0.35em;
+
+  & svg {
+    // width: 100%;
+    // height: 100%;
+    fill: currentColor;
+    stroke: currentColor;
+  }
+}
+
 .deleteTodo {
-  margin-left: auto;
+  composes: iconButton;
+}
+
+.deleteTodoIcon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  stroke: currentColor;
 }
 
 .emptyMessage {
@@ -110,7 +191,7 @@
 }
 
 @media (min-width: 800px) {
-  .filter-buttons {
+  .filterButtons {
     grid-area: filters;
     margin-top: 0;
   }
@@ -118,4 +199,6 @@
 
 .clearCompleted {
   grid-area: clear;
+  display: flex;
+  justify-content: flex-end;
 }
