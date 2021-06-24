@@ -57,6 +57,24 @@ select {
   font: inherit;
 }
 
+// Better placeholder colors and styles
+::-webkit-input-placeholder {
+  color: #444;
+  font-style: italic;
+}
+::-moz-placeholder {
+  color: #444;
+  font-style: italic;
+}
+:-ms-input-placeholder {
+  color: #444;
+  font-style: italic;
+}
+:-moz-placeholder {
+  color: #444;
+  font-style: italic;
+}
+
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {

@@ -123,12 +123,13 @@ export default function Home({
                 onChange={(e) => setTodoInputText(e.target.value)}
                 aria-invalid={isInputInvalid}
                 aria-label="Write a new todo item"
+                placeholder="Visit the zoo"
                 className={styles.todoInput}
               />
               <button
                 type="submit"
                 disabled={isInputInvalid}
-                className="visually-hidden"
+                className={styles.visuallyHidden}
               >
                 add
               </button>
@@ -203,7 +204,11 @@ export default function Home({
                 Clear Completed
               </button>
             </div>
-            <div role="status" aria-live="polite" className="visually-hidden">
+            <div
+              role="status"
+              aria-live="polite"
+              className={styles.visuallyHidden}
+            >
               {feedback}
             </div>
           </div>

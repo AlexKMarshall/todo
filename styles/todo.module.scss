@@ -63,7 +63,18 @@
   margin-bottom: var(--gutter);
 }
 
+.inputBase {
+  border: none;
+  outline-color: transparent;
+  outline-style: solid;
+
+  &:focus {
+    box-shadow: 0 0 4px var(--muted-text-color);
+  }
+}
+
 .todoInput {
+  composes: inputBase;
   flex-grow: 1;
   width: 0; /* override browser min-width on input */
   padding-top: var(--s0);
@@ -130,7 +141,7 @@ $btnColor: hsl(236, 9%, 61%);
   &:focus {
     outline-style: solid;
     outline-color: transparent;
-    box-shadow: 0 0 4px scale-color($btnColor, $lightness: -20%);
+    box-shadow: 0 0 4px var(--muted-text-color);
   }
 }
 
@@ -200,4 +211,14 @@ $btnColor: hsl(236, 9%, 61%);
   grid-area: clear;
   display: flex;
   justify-content: flex-end;
+}
+
+.visuallyHidden {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
 }
