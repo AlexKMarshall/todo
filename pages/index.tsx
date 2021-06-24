@@ -142,6 +142,7 @@ export default function Home({
                     id={`todo-${todo.id}`}
                     checked={todo.completed}
                     onChange={() => toggleTodoCompleted(todo.id)}
+                    className={styles.todoCompletedCheckbox}
                   />
                   <label
                     htmlFor={`todo-${todo.id}`}

@@ -97,6 +97,13 @@
   letter-spacing: -0.01em;
 }
 
+.todoCompletedCheckbox {
+  &:checked + label {
+    text-decoration: line-through;
+    color: var(--very-muted-text-color);
+  }
+}
+
 .todoItemText {
   flex-grow: 1;
 }
