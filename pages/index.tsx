@@ -125,7 +125,11 @@ export default function Home({
                 aria-label="Write a new todo item"
                 className={styles.todoInput}
               />
-              <button type="submit" disabled={isInputInvalid}>
+              <button
+                type="submit"
+                disabled={isInputInvalid}
+                className="visually-hidden"
+              >
                 add
               </button>
             </form>
@@ -148,7 +152,7 @@ export default function Home({
                     type="button"
                     aria-label={`delete ${todo.title}`}
                     onClick={() => deleteTodo(todo)}
-                    className={styles.deleteTodo}
+                    className={styles.deleteTodoButton}
                   >
                     <CrossIcon className={styles.deleteTodoIcon} />
                   </button>

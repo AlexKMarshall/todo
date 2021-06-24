@@ -134,6 +134,7 @@ $btnColor: hsl(236, 9%, 61%);
   }
 }
 
+// https://moderncss.dev/icon-button-css-styling-guide/
 .iconButton {
   composes: button;
   border-radius: 50%;
@@ -145,7 +146,7 @@ $btnColor: hsl(236, 9%, 61%);
   }
 }
 
-.deleteTodo {
+.deleteTodoButton {
   composes: iconButton;
   // this pulls the non visibile button target outwards
   // keeping an accessible button size but not making the containing todo too large
