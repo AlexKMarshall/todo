@@ -118,6 +118,7 @@ export default function Home({
                 add
               </button>
             </form>
+            <div className={styles.backgroundShadow} />
             <ol role="list" className={styles.todoList}>
               {filteredTodos.map((todo) => (
                 <li key={todo.id} className={styles.todoItem}>
@@ -202,9 +203,9 @@ export default function Home({
               {feedback}
             </div>
           </div>
-          <footer>
+          {/* <footer>
             <small>Some footer text</small>
-          </footer>
+          </footer> */}
         </main>
       </div>
     </div>

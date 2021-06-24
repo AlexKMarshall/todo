@@ -54,13 +54,25 @@
   height: 0; /* otherwise 1fr grid row doesn't grow in chrome */
   display: grid;
   width: 100%;
-  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr auto auto;
   grid-template-areas:
-    'input input input'
-    'list list list'
-    'count filters clear'
-    'filters-mobile filters-mobile filters-mobile';
+    'input input'
+    'list list'
+    'count clear'
+    'filters filters';
+
+  @media (min-width: 800px) {
+    grid-template-columns: minmax(max-content, 1fr) auto minmax(
+        max-content,
+        1fr
+      );
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      'input input input'
+      'list list list'
+      'count filters clear';
+  }
 }
 
 .appContent > * {
@@ -297,7 +309,7 @@ $btnColor: hsl(236, 9%, 61%);
 
 .filterButtons {
   composes: smallText;
-  grid-area: filters-mobile;
+  grid-area: filters;
   margin-top: var(--gutter);
   padding: var(--s0) var(--s1);
   border-radius: var(--border-radius);
@@ -305,6 +317,10 @@ $btnColor: hsl(236, 9%, 61%);
   gap: var(--s0);
   justify-content: center;
   font-weight: 700;
+
+  @media (min-width: 800px) {
+    margin-top: 0;
+  }
 }
 
 .link {
@@ -325,13 +341,6 @@ $btnColor: hsl(236, 9%, 61%);
   }
 }
 
-@media (min-width: 800px) {
-  .filterButtons {
-    grid-area: filters;
-    margin-top: 0;
-  }
-}
-
 .clearCompleted {
   composes: smallText;
 
@@ -341,4 +350,8 @@ $btnColor: hsl(236, 9%, 61%);
   padding: var(--s0) var(--s1);
   border-bottom-right-radius: var(--border-radius);
   color: var(--muted-text-color);
+}
+
+.backgroundShadow {
+  grid-area: list;
 }
