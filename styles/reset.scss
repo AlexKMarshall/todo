@@ -57,6 +57,10 @@ select {
   font: inherit;
 }
 
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
 // Better placeholder colors and styles
 ::-webkit-input-placeholder {
   color: #444;

@@ -14,6 +14,11 @@
   --s1: calc(var(--s0) * var(--scale-ratio));
   --s2: calc(var(--s1) * var(--scale-ratio));
   --s3: calc(var(--s2) * var(--scale-ratio));
+  --color-gradiant: linear-gradient(
+    to bottom right,
+    hsl(192, 100%, 67%),
+    hsl(280, 87%, 65%)
+  );
   --primary-blue: hsl(220, 98%, 61%);
   --very-light-gray: hsl(0, 0%, 98%);
   --light-grayish-blue: hsl(233, 11%, 84%);

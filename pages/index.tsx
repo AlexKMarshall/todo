@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import { Todo } from 'types/todo'
 import { CrossIcon } from '@components/cross-icon'
+import { CheckIcon } from '@components/check-icon'
 import styles from '../styles/todo.module.scss'
 
 const defaultInitialTodos: Array<Todo> = [
@@ -142,13 +143,18 @@ export default function Home({
                     id={`todo-${todo.id}`}
                     checked={todo.completed}
                     onChange={() => toggleTodoCompleted(todo.id)}
-                    className={styles.todoCompletedCheckbox}
+                    className={styles.todoCompletedCheckboxInput}
                   />
                   <label
                     htmlFor={`todo-${todo.id}`}
-                    className={styles.todoItemText}
+                    className={styles.todoItemLabel}
                   >
-                    {todo.title}
+                    <span className={styles.todoItemCheckBorderWrap}>
+                      <span className={styles.todoItemCheck}>
+                        <CheckIcon aria-hidden className={styles.checkIcon} />
+                      </span>
+                    </span>
+                    <span className={styles.todoItemText}>{todo.title}</span>
                   </label>
                   <button
                     type="button"
