@@ -1,8 +1,14 @@
 import { render, screen } from '../test-utils'
 import userEvent, { specialChars } from '@testing-library/user-event'
+import Image from 'next/image'
 import faker from 'faker'
 import { Todo } from 'types/todo'
 import TodoPage from '@pages/index'
+
+jest.mock('next/image', () => {
+  const FakeImage = jest.fn(() => null)
+  return FakeImage
+})
 
 function buildTodo(overrides: Partial<Todo> = {}): Todo {
   return {
@@ -12,6 +18,8 @@ function buildTodo(overrides: Partial<Todo> = {}): Todo {
     ...overrides,
   }
 }
+
+beforeEach(() => {})
 
 describe('Todo Page', () => {
   it('should render the heading', () => {
