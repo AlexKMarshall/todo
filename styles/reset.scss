@@ -42,6 +42,11 @@ a:not([class]) {
   text-decoration-skip-ink: auto;
 }
 
+/* Don't show focus state on non-interactive elements */
+[tabindex='-1'] {
+  outline: none;
+}
+
 /* Make images easier to work with */
 img,
 picture {

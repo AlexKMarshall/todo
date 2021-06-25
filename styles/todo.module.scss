@@ -61,6 +61,7 @@
 .heading {
   font-size: var(--s3);
   font-weight: 700;
+  color: var(--heading-color);
   text-transform: uppercase;
   letter-spacing: 0.17em;
 }
@@ -324,6 +325,9 @@ $btnColor: hsl(236, 9%, 61%);
   grid-area: list;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  padding: var(--s0) var(--s1);
+  padding-left: calc(2 * var(--s1) + var(--s0));
+  color: var(--muted-text-color);
 }
 
 .smallText {
