@@ -20,6 +20,7 @@
     hsl(192, 100%, 67%),
     hsl(280, 87%, 65%)
   );
+  --muted-color-hsl: 236, 9%, 61%;
   --primary-blue: hsl(220, 98%, 61%);
   --very-light-gray: hsl(0, 0%, 98%);
   --light-grayish-blue: hsl(233, 11%, 84%);
