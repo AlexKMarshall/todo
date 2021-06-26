@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Todo } from 'types/todo'
 import { CrossIcon } from '@components/cross-icon'
 import { CheckIcon } from '@components/check-icon'
+import { ThemeToggle } from '@components/theme-toggle'
 import styles from '../styles/todo.module.scss'
 import backgroundLight from '../public/bg-light.jpg'
 
@@ -101,9 +102,12 @@ export default function Home({
         </div>
         <div className={styles.center}>
           <main className={styles.cover}>
-            <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
-              Todo
-            </h1>
+            <header>
+              <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
+                Todo
+              </h1>
+              <ThemeToggle />
+            </header>
             <div className={styles.appContent}>
               <form onSubmit={submitForm} className={styles.todoForm}>
                 <span className={styles.decorativeCircle} />
@@ -159,7 +163,7 @@ export default function Home({
               </ol>
               {isListEmpty ? (
                 <div className={styles.emptyMessage}>
-                  <p>Well done, your tasks are complete</p>
+                  <p>Well done, your tasks are complete. Add some more?</p>
                 </div>
               ) : null}
               <div className={styles.itemsCount}>{itemsLeftText}</div>
