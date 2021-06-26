@@ -47,9 +47,21 @@
   --very-muted-text-color: var(--light-grayish-blue);
   --muted-text-color: var(--dark-grayish-blue);
   --strong-text-color: var(--very-dark-grayish-blue);
+
+  --color-mode: 'light';
 }
 
-[data-theme='dark'] {
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-user-theme='light']) {
+    --body-color: var(--dt-very-dark-blue);
+  }
+}
+
+[data-user-theme='dark'] {
   --body-color: var(--dt-very-dark-blue);
 }
 
