@@ -46,12 +46,13 @@
   --dt-very-dark-grayish-blue-: hsl(237, 14%, 26%);
 
   --white: hsl(0, 0%, 100%);
-  --heading-color: white;
+  --heading-color: var(--white);
   --body-color: var(--very-light-gray);
   --main-background-color: var(--white);
   --very-muted-text-color: var(--light-grayish-blue);
   --muted-text-color: var(--dark-grayish-blue);
   --strong-text-color: var(--very-dark-grayish-blue);
+  --shadow-color: hsla(var(--muted-color-hsl), 30%);
 
   --color-mode: 'light';
 }
@@ -62,12 +63,24 @@
   }
 
   :root:not([data-user-theme='light']) {
+    --heading-color: var(--white);
     --body-color: var(--dt-very-dark-blue);
+    --main-background-color: var(--dt-very-dark-desaturated-blue);
+    --very-muted-text-color: var(--dt-dark-grayish-blue);
+    --muted-text-color: var(--dt-dark-grayish-blue);
+    --strong-text-color: var(--dt-light-grayish-blue);
+    --shadow-color: hsla(0, 0%, 0%, 40%);
   }
 }
 
 [data-user-theme='dark'] {
+  --heading-color: var(--white);
   --body-color: var(--dt-very-dark-blue);
+  --main-background-color: var(--dt-very-dark-desaturated-blue);
+  --very-muted-text-color: var(--dt-dark-grayish-blue);
+  --muted-text-color: var(--dt-dark-grayish-blue);
+  --strong-text-color: var(--dt-light-grayish-blue);
+  --shadow-color: hsla(0, 0%, 0%, 40%);
 }
 
 * {
@@ -86,4 +99,5 @@ footer {
 
 body {
   background-color: var(--body-color);
+  color: var(--strong-text-color);
 }

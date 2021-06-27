@@ -106,7 +106,7 @@
   padding: var(--s0) var(--s1);
   border-radius: var(--border-radius);
 
-  box-shadow: 0 0 30px 0px hsla(var(--muted-color-hsl), 30%);
+  box-shadow: 0 0 30px 0px var(--shadow-color);
 
   position: relative;
   &::before {
@@ -116,13 +116,13 @@
     right: 20%;
     bottom: 0;
     left: 20%;
-    box-shadow: 0 0 50px 10px hsla(var(--muted-color-hsl), 30%);
+    box-shadow: 0 0 50px 10px var(--shadow-color);
     z-index: -1;
   }
 
   &:focus-within {
-    box-shadow: 0 0 30px 0px hsla(var(--muted-color-hsl), 30%),
-      0 0 4px var(--muted-text-color);
+    box-shadow: 0 0 30px 0px var(--shadow-color),
+      0 0 4px 1px var(--strong-text-color);
   }
 }
 
@@ -138,6 +138,7 @@
   border: none;
   outline-color: transparent;
   outline-style: solid;
+  background: none;
 
   &:focus {
     box-shadow: 0 0 4px var(--muted-text-color);
@@ -355,7 +356,7 @@ $btnColor: hsl(236, 9%, 61%);
   justify-content: center;
   font-weight: 700;
 
-  box-shadow: 0 0 30px 0px hsla(var(--muted-color-hsl), 30%);
+  box-shadow: 0 0 30px 0px var(--shadow-color);
 
   position: relative;
   &::before {
@@ -365,7 +366,7 @@ $btnColor: hsl(236, 9%, 61%);
     right: 20%;
     bottom: 0;
     left: 20%;
-    box-shadow: 0 0 50px 10px hsla(var(--muted-color-hsl), 30%);
+    box-shadow: 0 0 50px 10px var(--shadow-color);
     z-index: -1;
   }
 
@@ -412,7 +413,7 @@ $btnColor: hsl(236, 9%, 61%);
   grid-column: 1 / -1;
   border-radius: var(--border-radius);
 
-  box-shadow: 0 0 30px 0px hsla(var(--muted-color-hsl), 30%);
+  box-shadow: 0 0 30px 0px var(--shadow-color);
   z-index: -1;
 
   position: relative;
@@ -424,7 +425,7 @@ $btnColor: hsl(236, 9%, 61%);
     right: 20%;
     bottom: 0;
     left: 20%;
-    box-shadow: 0 0 50px 10px hsla(var(--muted-color-hsl), 30%);
+    box-shadow: 0 0 50px 10px var(--shadow-color);
     z-index: -1;
   }
 }
