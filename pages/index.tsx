@@ -6,8 +6,8 @@ import { Todo } from 'types/todo'
 import { CrossIcon } from '@components/cross-icon'
 import { CheckIcon } from '@components/check-icon'
 import { ThemeToggle } from '@components/theme-toggle'
+import { BackgroundImage } from '@components/background-image'
 import styles from '../styles/todo.module.scss'
-import backgroundLight from '../public/bg-light.jpg'
 
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
@@ -98,7 +98,7 @@ export default function Home({
 
       <div className={styles.screen}>
         <div className={styles.background}>
-          <Image src={backgroundLight} alt="" layout="fill" objectFit="cover" />
+          <BackgroundImage />
         </div>
         <div className={styles.center}>
           <main className={styles.cover}>

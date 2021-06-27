@@ -23,6 +23,11 @@
     hsl(192, 100%, 67%),
     hsl(280, 87%, 65%)
   );
+  --background-gradiant: linear-gradient(
+    to right,
+    hsl(280, 87%, 65%),
+    hsl(192, 100%, 67%)
+  );
 
   /* Light theme */
   --very-light-gray: hsl(0, 0%, 98%);

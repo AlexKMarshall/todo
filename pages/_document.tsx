@@ -35,8 +35,7 @@ function setInitialColorMode() {
 
   const colorMode = getInitialColorMode()
   if (colorMode) {
-    const root = document.documentElement
-    root.setAttribute('data-theme', colorMode)
+    document.documentElement.dataset.userTheme = colorMode
   }
 }
 
