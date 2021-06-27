@@ -10,3 +10,7 @@ test next/image without mocking it?
 box shadows don't show above image background?
 background position fixed?
 refactor to sass mixins?
+focus state for input
+animation on mode icon
+filter button active state shouldn't win over pressed state
+fix the moon svg

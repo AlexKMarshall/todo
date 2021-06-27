@@ -102,7 +102,7 @@ export default function Home({
         </div>
         <div className={styles.center}>
           <main className={styles.cover}>
-            <header>
+            <header className={styles.header}>
               <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
                 Todo
               </h1>

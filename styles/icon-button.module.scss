@@ -1,0 +1,48 @@
+.button {
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 2px solid currentcolor;
+  }
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  color: var(--button-color, --muted-text-color);
+
+  transition: 220ms ease-in-out;
+  transition-property: color, box-shadow;
+  outline-style: solid;
+  outline-color: transparent;
+
+  &:hover,
+  &:active {
+    color: var(--button-hover-color, --strong-text-color);
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-color: transparent;
+    box-shadow: 0 0 4px var(--muted-text-color);
+  }
+}
+
+// https://moderncss.dev/icon-button-css-styling-guide/
+.iconButton {
+  composes: button;
+  border-radius: 50%;
+  padding: 0.35em;
+
+  & svg {
+    fill: currentColor;
+    stroke: currentColor;
+    width: 1em;
+    height: 1em;
+  }
+}

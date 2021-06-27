@@ -59,6 +59,15 @@
   margin-bottom: auto;
 }
 
+.header {
+  font-size: var(--s2);
+  --button-color: var(--very-light-grayish-blue);
+  --button-hover-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .heading {
   font-size: var(--s3);
   font-weight: 700;
