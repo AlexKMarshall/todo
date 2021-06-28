@@ -14,3 +14,4 @@ focus state for input
 animation on mode icon
 filter button active state shouldn't win over pressed state
 fix the moon svg
+replace relative imports of context with direct path

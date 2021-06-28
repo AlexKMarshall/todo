@@ -1,7 +1,24 @@
 import { render } from '@testing-library/react'
+import { ThemeProvider } from '../context/theme'
+import { NotificationProvider } from '../context/notification'
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+})
 
 const Providers = ({ children }) => {
-  return children
+  return (
+    <ThemeProvider>
+      <NotificationProvider>{children}</NotificationProvider>
+    </ThemeProvider>
+  )
 }
 
 const customRender = (ui, options = {}) =>

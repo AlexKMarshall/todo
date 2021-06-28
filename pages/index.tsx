@@ -1,13 +1,14 @@
 import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
-import Image from 'next/image'
 import { Todo } from 'types/todo'
 import { CrossIcon } from '@components/cross-icon'
 import { CheckIcon } from '@components/check-icon'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '../styles/todo.module.scss'
+import { ScreenReaderNotification } from '@components/screen-reader-notification'
+import { useNotification } from '../context/notification'
 
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
@@ -30,7 +31,7 @@ export default function Home({
   const [todoInputText, setTodoInputText] = useState('')
   const isInputInvalid = todoInputText.trim().length === 0
 
-  const [feedback, setFeedback] = useState('')
+  const { setNotificationMessage } = useNotification()
 
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -41,7 +42,7 @@ export default function Home({
       completed: false,
     }
     setTodos((existingTodos) => [newTodo, ...existingTodos])
-    setFeedback(`${newTodo.title} added`)
+    setNotificationMessage(`${newTodo.title} added`)
     setTodoInputText('')
   }
 
@@ -63,13 +64,13 @@ export default function Home({
 
   function deleteTodo(todo: Todo) {
     setTodos((existingTodos) => existingTodos.filter((t) => t !== todo))
-    setFeedback(`${todo.title} deleted`)
+    setNotificationMessage(`${todo.title} deleted`)
     headingRef.current?.focus()
   }
 
   function clearCompletedTodos() {
     setTodos((existingTodos) => existingTodos.filter((todo) => !todo.completed))
-    setFeedback('Completed todos cleared')
+    setNotificationMessage('Completed todos cleared')
   }
 
   const numberTodosActive = useMemo(
@@ -205,13 +206,7 @@ export default function Home({
                   Clear Completed
                 </button>
               </div>
-              <div
-                role="status"
-                aria-live="polite"
-                className={styles.visuallyHidden}
-              >
-                {feedback}
-              </div>
+              <ScreenReaderNotification />
             </div>
             {/* <footer>
             <small>Some footer text</small>
