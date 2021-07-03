@@ -52,6 +52,7 @@
   --very-muted-text-color: var(--light-grayish-blue);
   --muted-text-color: var(--dark-grayish-blue);
   --strong-text-color: var(--very-dark-grayish-blue);
+  --button-color: var(--dark-grayish-blue);
   --button-hover-color: var(--strong-text-color);
   --shadow-color: hsla(var(--muted-color-hsl), 30%);
 
@@ -70,6 +71,7 @@
     --very-muted-text-color: var(--dt-dark-grayish-blue);
     --muted-text-color: var(--dt-dark-grayish-blue);
     --strong-text-color: var(--dt-light-grayish-blue);
+    --button-color: var(--dt-dark-grayish-blue);
     --button-hover-color: var(--strong-text-color);
     --shadow-color: hsla(0, 0%, 0%, 40%);
   }
@@ -82,6 +84,7 @@
   --very-muted-text-color: var(--dt-dark-grayish-blue);
   --muted-text-color: var(--dt-dark-grayish-blue);
   --strong-text-color: var(--dt-light-grayish-blue);
+  --button-color: var(--dt-dark-grayish-blue);
   --button-hover-color: var(--button-hover-color);
   --shadow-color: hsla(0, 0%, 0%, 40%);
 }

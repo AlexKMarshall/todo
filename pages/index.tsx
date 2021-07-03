@@ -2,8 +2,8 @@ import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import { Todo } from 'types/todo'
-import { CrossIcon } from '@icons/cross-icon'
 import { CheckIcon } from '@icons/check-icon'
+import { DeleteButton } from '@components/delete-button'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
@@ -151,14 +151,10 @@ export default function Home({
                       </span>
                       <span className={styles.todoItemText}>{todo.title}</span>
                     </label>
-                    <button
-                      type="button"
+                    <DeleteButton
                       aria-label={`delete ${todo.title}`}
                       onClick={() => deleteTodo(todo)}
-                      className={styles.deleteTodoButton}
-                    >
-                      <CrossIcon className={styles.deleteTodoIcon} />
-                    </button>
+                    />
                   </li>
                 ))}
               </ol>
