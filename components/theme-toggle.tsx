@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { useTheme } from '../context/theme'
-import { useNotification } from '../context/notification'
+import { useTheme } from '@context/theme'
+import { useNotification } from '@context/notification'
 import { IconButton } from './icon-button'
-import { MoonIcon } from './moon-icon'
-import { SunIcon } from './sun-icon'
+import { MoonIcon } from '@icons/moon-icon'
+import { SunIcon } from '@icons/sun-icon'
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme()

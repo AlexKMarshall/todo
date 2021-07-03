@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useTheme, Theme } from '../context/theme'
+import { useTheme, Theme } from '@context/theme'
 import backgroundLight from '../public/bg-light.jpg'
 import backgroundDark from '../public/bg-dark.jpg'
 

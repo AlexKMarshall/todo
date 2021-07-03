@@ -52,7 +52,7 @@
   --very-muted-text-color: var(--light-grayish-blue);
   --muted-text-color: var(--dark-grayish-blue);
   --strong-text-color: var(--very-dark-grayish-blue);
-  --button-hover-color: var(var(--strong-text-color));
+  --button-hover-color: var(--strong-text-color);
   --shadow-color: hsla(var(--muted-color-hsl), 30%);
 
   --color-mode: 'light';
