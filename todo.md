@@ -1,6 +1,5 @@
 make the input span the whole width for clickable focus
 focus state for the check boxes
-transitions on the check boxes
 trainsitions on all hover/focus states
 on desktop only show delete button on hover
 What happens when you only have a couple of todos, should it shrink?
@@ -14,4 +13,5 @@ focus state for input
 animation on mode icon
 filter button active state shouldn't win over pressed state
 fix the moon svg
-replace relative imports of context with direct path
+dark mode placeholder text
+animate the strike through?

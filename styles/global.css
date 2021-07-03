@@ -55,6 +55,7 @@
   --button-color: var(--dark-grayish-blue);
   --button-hover-color: var(--strong-text-color);
   --shadow-color: hsla(var(--muted-color-hsl), 30%);
+  --divider-color: var(--light-grayish-blue);
 
   --color-mode: 'light';
 }
@@ -74,6 +75,7 @@
     --button-color: var(--dt-dark-grayish-blue);
     --button-hover-color: var(--strong-text-color);
     --shadow-color: hsla(0, 0%, 0%, 40%);
+    --divider-color: var(--dt-dark-grayish-blue);
   }
 }
 
@@ -87,6 +89,7 @@
   --button-color: var(--dt-dark-grayish-blue);
   --button-hover-color: var(--button-hover-color);
   --shadow-color: hsla(0, 0%, 0%, 40%);
+  --divider-color: var(--dt-dark-grayish-blue);
 }
 
 * {

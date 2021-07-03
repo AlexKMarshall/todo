@@ -8,6 +8,6 @@
   border-top-right-radius: var(--border-radius);
 
   & > * {
-    border-bottom: 1px solid var(--very-muted-text-color);
+    border-bottom: 1px solid var(--divider-color);
   }
 }
