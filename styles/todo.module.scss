@@ -175,15 +175,9 @@
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 
-  & .todoItem {
+  & > :not(.emptyMessage) {
     border-bottom: 1px solid var(--very-muted-text-color);
   }
-}
-
-.todoItem {
-  padding: var(--s0) var(--s1);
-  display: flex;
-  align-items: center;
 }
 
 .todoCompletedCheckboxInput {

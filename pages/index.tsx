@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { Todo } from 'types/todo'
 import { CheckIcon } from '@icons/check-icon'
 import { DeleteButton } from '@components/delete-button'
+import { TodoItem } from '@components/todo-item'
+import { TodoText } from '@components/todo-text'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
@@ -132,30 +134,16 @@ export default function Home({
               <div className={styles.backgroundShadow} />
               <ol role="list" className={styles.todoList}>
                 {filteredTodos.map((todo) => (
-                  <li key={todo.id} className={styles.todoItem}>
-                    <input
-                      type="checkbox"
-                      id={`todo-${todo.id}`}
-                      checked={todo.completed}
-                      onChange={() => toggleTodoCompleted(todo.id)}
-                      className={styles.todoCompletedCheckboxInput}
+                  <TodoItem key={todo.id}>
+                    <TodoText
+                      todo={todo}
+                      onToggleCompleted={toggleTodoCompleted}
                     />
-                    <label
-                      htmlFor={`todo-${todo.id}`}
-                      className={styles.todoItemLabel}
-                    >
-                      <span className={styles.todoItemCheckBorderWrap}>
-                        <span className={styles.todoItemCheck}>
-                          <CheckIcon aria-hidden className={styles.checkIcon} />
-                        </span>
-                      </span>
-                      <span className={styles.todoItemText}>{todo.title}</span>
-                    </label>
                     <DeleteButton
                       aria-label={`delete ${todo.title}`}
                       onClick={() => deleteTodo(todo)}
                     />
-                  </li>
+                  </TodoItem>
                 ))}
               </ol>
               {isListEmpty ? (

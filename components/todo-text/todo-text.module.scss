@@ -1,0 +1,76 @@
+.todoCompletedCheckboxInput {
+  composes: visuallyHidden from '@styles/utils.module.scss';
+
+  &:checked + label {
+    & .todoItemText {
+      text-decoration: line-through;
+      color: var(--very-muted-text-color);
+    }
+
+    & .todoItemCheckBorderWrap {
+      background: var(--color-gradiant);
+    }
+
+    & .todoItemCheck {
+      background-color: transparent;
+    }
+  }
+
+  &:focus + label .todoItemCheckBorderWrap {
+    background: var(--color-gradiant);
+  }
+}
+
+.todoItemLabel {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  & > :first-child {
+    margin-right: var(--s1);
+  }
+
+  &:hover .todoItemCheckBorderWrap {
+    background: var(--color-gradiant);
+  }
+}
+
+.todoItemCheckBorderWrap {
+  --border-width: calc(max(0.125rem, 2px));
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  padding: var(--border-width);
+  border-radius: 50%;
+  background: var(--very-muted-text-color);
+}
+
+.todoItemCheck {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  background-color: var(--main-background-color);
+  color: var(--very-muted-text-color);
+
+  // could probably change the viewbox of the svg to improve the center weighting
+  & .checkIcon {
+    transform: translateY(1px);
+  }
+}
+
+.checkIcon {
+  width: var(--s-2);
+  height: var(--s-2);
+  stroke: currentColor;
+  color: var(--main-background-color);
+}
+
+.todoItemText {
+  flex-grow: 1;
+  letter-spacing: -0.01em;
+}
