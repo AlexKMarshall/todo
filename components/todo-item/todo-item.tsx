@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import styles from './todo-item.module.scss'
 
 type Props = {
@@ -5,5 +6,14 @@ type Props = {
 }
 
 export function TodoItem({ children }: Props) {
-  return <li className={styles.todoItem}>{children}</li>
+  return (
+    <motion.li
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      layout
+      className={styles.todoItem}
+    >
+      {children}
+    </motion.li>
+  )
 }
