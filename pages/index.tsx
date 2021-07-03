@@ -2,8 +2,8 @@ import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import { Todo } from 'types/todo'
-import { CheckIcon } from '@icons/check-icon'
 import { DeleteButton } from '@components/delete-button'
+import { TodoList } from '@components/todo-list'
 import { TodoItem } from '@components/todo-item'
 import { TodoText } from '@components/todo-text'
 import { ThemeToggle } from '@components/theme-toggle'
@@ -132,7 +132,7 @@ export default function Home({
                 </button>
               </form>
               <div className={styles.backgroundShadow} />
-              <ol role="list" className={styles.todoList}>
+              <TodoList>
                 {filteredTodos.map((todo) => (
                   <TodoItem key={todo.id}>
                     <TodoText
@@ -145,7 +145,7 @@ export default function Home({
                     />
                   </TodoItem>
                 ))}
-              </ol>
+              </TodoList>
               {isListEmpty ? (
                 <div className={styles.emptyMessage}>
                   <p>Well done, your tasks are complete. Add some more?</p>
