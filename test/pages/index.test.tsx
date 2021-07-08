@@ -4,6 +4,7 @@ import Image from 'next/image'
 import faker from 'faker'
 import { Todo } from 'types/todo'
 import TodoPage from '@pages/index'
+import { waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 
 jest.mock('next/image', () => {
   const FakeImage = jest.fn(() => null)
@@ -54,7 +55,7 @@ describe('Todo Page', () => {
     const emptyListRegex = new RegExp('well done, your tasks are complete', 'i')
     expect(screen.queryByText(emptyListRegex)).not.toBeInTheDocument()
   })
-  it('should render filtered todos', () => {
+  it('should render filtered todos', async () => {
     const activeTodo = buildTodo({ completed: false })
     const completedTodo = buildTodo({ completed: true })
 
@@ -69,21 +70,27 @@ describe('Todo Page', () => {
     })
 
     userEvent.click(activeButton)
+    await waitFor(() => {
+      expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
+    })
     expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
-    expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
     expect(activeButton).toHaveAttribute('aria-pressed', 'true')
     expect(allButton).toHaveAttribute('aria-pressed', 'false')
     expect(completedButton).toHaveAttribute('aria-pressed', 'false')
 
     userEvent.click(completedButton)
-    expect(screen.queryByText(activeTodo.title)).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText(activeTodo.title)).not.toBeInTheDocument()
+    })
     expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
     expect(completedButton).toHaveAttribute('aria-pressed', 'true')
     expect(activeButton).toHaveAttribute('aria-pressed', 'false')
     expect(allButton).toHaveAttribute('aria-pressed', 'false')
 
     userEvent.click(allButton)
-    expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
+    })
     expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
     expect(allButton).toHaveAttribute('aria-pressed', 'true')
     expect(completedButton).toHaveAttribute('aria-pressed', 'false')
@@ -157,15 +164,17 @@ describe('Todo Page', () => {
     expect(todoCompleteCheckbox).not.toBeChecked()
     expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
   })
-  it('should be possible to delete a todo', () => {
+  it('should be possible to delete a todo', async () => {
     const todo = buildTodo()
     render(<TodoPage initialTodos={[todo]} />)
 
     const deleteLabelRegex = new RegExp(`delete ${todo.title}`, 'i')
     userEvent.click(screen.getByRole('button', { name: deleteLabelRegex }))
-    expect(screen.queryByText(todo.title)).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText(todo.title)).not.toBeInTheDocument()
+    })
   })
-  it('should be possible to clear completed todos', () => {
+  it('should be possible to clear completed todos', async () => {
     const completedTodo = buildTodo({ completed: true })
     const activeTodo = buildTodo({ completed: false })
 
@@ -176,7 +185,9 @@ describe('Todo Page', () => {
 
     userEvent.click(screen.getByRole('button', { name: /clear completed/i }))
 
-    expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
+    })
     expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
   })
 })

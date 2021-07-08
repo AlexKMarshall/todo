@@ -1,5 +1,6 @@
 import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
+import { motion } from 'framer-motion'
 import Head from 'next/head'
 import { Todo } from 'types/todo'
 import { DeleteButton } from '@components/delete-button'
@@ -147,9 +148,13 @@ export default function Home({
                 ))}
               </TodoList>
               {isListEmpty ? (
-                <div className={styles.emptyMessage}>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className={styles.emptyMessage}
+                >
                   <p>Well done, your tasks are complete. Add some more?</p>
-                </div>
+                </motion.div>
               ) : null}
               <div className={styles.itemsCount}>{itemsLeftText}</div>
               <div className={styles.filterButtons}>

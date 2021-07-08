@@ -15,3 +15,4 @@ filter button active state shouldn't win over pressed state
 fix the moon svg
 dark mode placeholder text
 animate the strike through?
+display empty placeholder when all items are complete, and viewing only active todos
