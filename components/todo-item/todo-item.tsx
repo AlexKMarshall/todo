@@ -8,7 +8,11 @@ type Props = {
 export function TodoItem({ children }: Props) {
   return (
     <motion.li className={styles.todoItem} layout>
-      <motion.span initial={{ y: '120%' }} animate={{ y: 0 }}>
+      <motion.span
+        initial={{ y: '120%' }}
+        animate={{ y: 0 }}
+        exit={{ opacity: 0 }}
+      >
         {children}
       </motion.span>
     </motion.li>
