@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import styles from './todo-item.module.scss'
 
 type Props = {
@@ -6,8 +7,10 @@ type Props = {
 
 export function TodoItem({ children }: Props) {
   return (
-    <li className={styles.todoItem}>
-      <span>{children}</span>
-    </li>
+    <motion.li className={styles.todoItem} layout>
+      <motion.span initial={{ y: '120%' }} animate={{ y: 0 }}>
+        {children}
+      </motion.span>
+    </motion.li>
   )
 }

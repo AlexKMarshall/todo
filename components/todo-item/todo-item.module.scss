@@ -1,21 +1,20 @@
 .todoItem {
   padding: var(--s0) var(--s1);
+  overflow: hidden;
+  background-color: var(--main-background-color);
 
   & > span {
     display: flex;
     align-items: center;
-    overflow: hidden;
 
-    & > * {
-      animation-name: clip-in;
-      animation-duration: 2s;
-      animation-delay: 0s;
+    // animation-name: clip-in;
+    // animation-duration: 2s;
+    // animation-delay: 0s;
 
-      @keyframes clip-in {
-        from {
-          transform: translateY(110%);
-        }
-      }
-    }
+    // @keyframes clip-in {
+    //   from {
+    //     transform: translateY(110%);
+    //   }
+    // }
   }
 }
