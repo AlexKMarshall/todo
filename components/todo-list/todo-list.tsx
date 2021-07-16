@@ -1,17 +1,20 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useQuery } from 'react-query'
-import { getTodos } from 'services/client'
+import { filtersSchema, getTodos } from 'services/client'
 import { TodoItem } from '@components/todo-item'
-
 import styles from './todo-list.module.scss'
 import { Todo } from 'types/todo'
+import { useRouter } from 'next/dist/client/router'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
 }
 
 export function TodoList({ onDeleteTodo }: Props) {
-  const todoQuery = useQuery(['todos'], getTodos)
+  const { query } = useRouter()
+  const filters = filtersSchema.parse(query)
+
+  const todoQuery = useQuery(['todos', filters], () => getTodos(filters))
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loadonig...</div>
 
@@ -35,8 +38,6 @@ export function TodoList({ onDeleteTodo }: Props) {
         <p>Well done, your tasks are complete. Add some more?</p>
       </motion.div>
     )
-
-  console.log(todoQuery.data)
 
   return (
     <ol role="list" className={styles.todoList}>

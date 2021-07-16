@@ -20,3 +20,4 @@ change filter buttons to links
 add some right padding to empty list
 show proper loading state
 show proper error state
+style filter links including active link state

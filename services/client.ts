@@ -1,7 +1,14 @@
+import { z } from 'zod'
 import { Todo } from 'types/todo'
 const STORAGE_KEY = 'todo-app-todos'
 
-function getTodos(): Promise<Array<Todo>> {
+export const filtersSchema = z.object({
+  status: z.enum(['active', 'completed']).optional(),
+})
+
+type Filters = z.infer<typeof filtersSchema>
+
+function getAllTodos(): Promise<Array<Todo>> {
   const serializedTodos = window.localStorage.getItem(STORAGE_KEY)
   if (!serializedTodos) return Promise.resolve([])
   try {
@@ -10,6 +17,21 @@ function getTodos(): Promise<Array<Todo>> {
   } catch (e) {
     return Promise.resolve([])
   }
+}
+
+async function getTodos(filters: Filters = {}): Promise<Array<Todo>> {
+  const allTodos = await getAllTodos()
+
+  return allTodos.filter((todo) => {
+    switch (filters.status) {
+      case 'active':
+        return todo.completed === false
+      case 'completed':
+        return todo.completed === true
+      default:
+        return true
+    }
+  })
 }
 
 async function createTodo(newTodo: Todo): Promise<Todo> {
@@ -38,4 +60,12 @@ async function deleteTodo(deletedTodoId: Todo['id']): Promise<Todo> {
   return Promise.resolve(deletedTodo)
 }
 
-export { getTodos, createTodo, updateTodo, deleteTodo }
+async function clearCompletedTodos(): Promise<Array<Todo>> {
+  const oldTodos = await getTodos()
+  const deletedTodos = oldTodos.filter((todo) => todo.completed)
+  const todos = oldTodos.filter((todo) => !todo.completed)
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  return Promise.resolve(deletedTodos)
+}
+
+export { getTodos, createTodo, updateTodo, deleteTodo, clearCompletedTodos }

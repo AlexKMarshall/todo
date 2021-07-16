@@ -26,19 +26,14 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
     }
   )
 
-  const deleteTodoMutation = useMutation(
-    () => {
-      return deleteTodo(todo.id)
+  const deleteTodoMutation = useMutation(() => deleteTodo(todo.id), {
+    onSuccess: () => {
+      onDeleteTodo(todo)
     },
-    {
-      onSuccess: () => {
-        onDeleteTodo(todo)
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['todos'])
-      },
-    }
-  )
+    onSettled: () => {
+      queryClient.invalidateQueries(['todos'])
+    },
+  })
 
   return (
     <motion.li className={styles.todoItem} layout>

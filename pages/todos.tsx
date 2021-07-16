@@ -1,6 +1,7 @@
 import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
+import Link from 'next/link'
 import { Todo } from 'types/todo'
 import { TodoList } from '@components/todo-list'
 import { ThemeToggle } from '@components/theme-toggle'
@@ -9,7 +10,7 @@ import styles from '@styles/todo.module.scss'
 import { ScreenReaderNotification } from '@components/screen-reader-notification'
 import { useNotification } from '@context/notification'
 import { useMutation, useQueryClient } from 'react-query'
-import { createTodo } from 'services/client'
+import { clearCompletedTodos, createTodo } from 'services/client'
 
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
@@ -62,17 +63,20 @@ export default function Home({
     createTodoMutation.mutate(newTodo)
   }
 
-  const [currentFilter, setCurrentFilter] = useState<Filter>('all')
+  const [oldFilter, setOldFilter] = useState<Filter>('all')
+  const [filters, setFilters] = useState<
+    { status: 'active' | 'completed' } | undefined
+  >()
 
   function handleDeleteTodo(todo: Todo) {
     setNotificationMessage(`${todo.title} deleted`)
     headingRef.current?.focus()
   }
 
-  function clearCompletedTodos() {
-    setTodos((existingTodos) => existingTodos.filter((todo) => !todo.completed))
-    setNotificationMessage('Completed todos cleared')
-  }
+  // function clearCompletedTodos() {
+  //   setTodos((existingTodos) => existingTodos.filter((todo) => !todo.completed))
+  //   setNotificationMessage('Completed todos cleared')
+  // }
 
   const numberTodosActive = useMemo(
     () => oldTodos.filter(getFilterFunction('active')).length,
@@ -86,6 +90,15 @@ export default function Home({
   const isListEmpty = oldTodos.length === 0
 
   const headingRef = useRef<HTMLHeadingElement>(null)
+
+  const clearCompletedTodosMutation = useMutation(clearCompletedTodos, {
+    onSuccess: () => {
+      setNotificationMessage('Completed todos cleared')
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['todos'])
+    },
+  })
 
   return (
     <>
@@ -134,38 +147,26 @@ export default function Home({
               <TodoList onDeleteTodo={handleDeleteTodo} />
               <div className={styles.itemsCount}>{itemsLeftText}</div>
               <div className={styles.filterButtons}>
-                <button
-                  type="button"
-                  aria-label="show all todos"
-                  aria-pressed={currentFilter === 'all'}
-                  onClick={() => setCurrentFilter('all')}
-                  className={styles.link}
-                >
-                  All
-                </button>
-                <button
-                  type="button"
-                  aria-label="show active todos"
-                  aria-pressed={currentFilter === 'active'}
-                  onClick={() => setCurrentFilter('active')}
-                  className={styles.link}
-                >
-                  Active
-                </button>
-                <button
-                  type="button"
-                  aria-label="show completed todos"
-                  aria-pressed={currentFilter === 'completed'}
-                  onClick={() => setCurrentFilter('completed')}
-                  className={styles.link}
-                >
-                  Completed
-                </button>
+                <Link href={`/todos`}>
+                  <a aria-label="show all todos" className={styles.link}>
+                    All
+                  </a>
+                </Link>
+                <Link href={`/todos?status=active`}>
+                  <a aria-label="show active todos" className={styles.link}>
+                    Active
+                  </a>
+                </Link>
+                <Link href={`/todos?status=completed`}>
+                  <a aria-label="show completed todos" className={styles.link}>
+                    Completed
+                  </a>
+                </Link>
               </div>
               <div className={styles.clearCompleted}>
                 <button
                   type="button"
-                  onClick={() => clearCompletedTodos()}
+                  onClick={() => clearCompletedTodosMutation.mutate()}
                   className={styles.link}
                 >
                   Clear Completed
