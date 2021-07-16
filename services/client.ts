@@ -22,7 +22,7 @@ async function createTodo(newTodo: Todo): Promise<Todo> {
 async function updateTodo(updatedTodo: Todo): Promise<Todo> {
   const oldTodos = await getTodos()
   const todos = oldTodos.map((todo) =>
-    todo.id === updatedTodo.id ? updateTodo : todo
+    todo.id === updatedTodo.id ? updatedTodo : todo
   )
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
   return Promise.resolve(updatedTodo)

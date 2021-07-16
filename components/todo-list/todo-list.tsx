@@ -36,6 +36,8 @@ export function TodoList({ onDeleteTodo }: Props) {
       </motion.div>
     )
 
+  console.log(todoQuery.data)
+
   return (
     <ol role="list" className={styles.todoList}>
       <AnimatePresence>

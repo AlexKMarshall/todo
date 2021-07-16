@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { TodoText } from '@components/todo-text'
 import { DeleteButton } from '@components/delete-button'
 import { deleteTodo, updateTodo } from 'services/client'
@@ -12,10 +12,19 @@ type Props = {
 }
 
 export function TodoItem({ todo, onDeleteTodo }: Props) {
-  const toggleTodoCompleteMutation = useMutation(() => {
-    const updatedTodo = { ...todo, completed: !todo.completed }
-    return updateTodo(updatedTodo)
-  })
+  const queryClient = useQueryClient()
+
+  const toggleTodoCompleteMutation = useMutation(
+    () => {
+      const updatedTodo = { ...todo, completed: !todo.completed }
+      return updateTodo(updatedTodo)
+    },
+    {
+      onSettled: () => {
+        queryClient.invalidateQueries(['todos'])
+      },
+    }
+  )
 
   const deleteTodoMutation = useMutation(
     () => {
@@ -24,6 +33,9 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
     {
       onSuccess: () => {
         onDeleteTodo(todo)
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['todos'])
       },
     }
   )
