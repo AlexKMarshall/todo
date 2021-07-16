@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useRef, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -13,24 +13,7 @@ import { useMutation, useQueryClient } from 'react-query'
 import { clearCompletedTodos, createTodo } from 'services/client'
 import { ActiveTodosCount } from '@components/active-todos-count'
 
-type Filter = 'all' | 'active' | 'completed'
-type FilterFunction = (todo: Todo) => boolean
-
-const filterFunctions = new Map<Filter, FilterFunction>([
-  ['all', () => true],
-  ['active', (todo) => !todo.completed],
-  ['completed', (todo) => todo.completed],
-])
-
-function getFilterFunction(filter: Filter): FilterFunction {
-  return filterFunctions.get(filter) ?? (() => true)
-}
-
-export default function Home({
-  initialTodos = [],
-}: { initialTodos?: Todo[] } = {}) {
-  const [oldTodos, setTodos] = useState(initialTodos)
-
+export default function Todos() {
   const [todoInputText, setTodoInputText] = useState('')
   const isInputInvalid = todoInputText.trim().length === 0
 
@@ -56,28 +39,20 @@ export default function Home({
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (isInputInvalid) return
-    const newTodo = {
+    const newTodo: Todo = {
       id: nanoid(),
       title: todoInputText.trim(),
-      completed: false,
+      status: 'active',
     }
     createTodoMutation.mutate(newTodo)
   }
 
   const headingRef = useRef<HTMLHeadingElement>(null)
+
   function handleDeleteTodo(todo: Todo) {
     setNotificationMessage(`${todo.title} deleted`)
     headingRef.current?.focus()
   }
-
-  const numberTodosActive = useMemo(
-    () => oldTodos.filter(getFilterFunction('active')).length,
-    [oldTodos]
-  )
-
-  const itemsLeftText = `${numberTodosActive} item${
-    numberTodosActive !== 1 ? 's' : ''
-  } left`
 
   const clearCompletedTodosMutation = useMutation(clearCompletedTodos, {
     onSuccess: () => {

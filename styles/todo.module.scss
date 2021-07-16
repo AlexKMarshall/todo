@@ -229,13 +229,15 @@
 
 .link {
   background-color: transparent;
+  text-decoration: none;
   border: none;
   outline: none;
   padding: 0;
   color: var(--muted-text-color);
   cursor: pointer;
 
-  &[aria-pressed='true'] {
+  &[aria-pressed='true'],
+  &[aria-current] {
     color: var(--primary-blue);
   }
 

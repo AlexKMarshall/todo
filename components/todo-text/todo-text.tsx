@@ -12,7 +12,7 @@ export function TodoText({ todo, onToggleCompleted }: Props) {
       <input
         type="checkbox"
         id={`todo-${todo.id}`}
-        checked={todo.completed}
+        checked={todo.status === 'completed'}
         onChange={onToggleCompleted}
         className={styles.todoCompletedCheckboxInput}
       />

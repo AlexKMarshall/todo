@@ -22,16 +22,19 @@ function getAllTodos(): Promise<Array<Todo>> {
 async function getTodos(filters: Filters = {}): Promise<Array<Todo>> {
   const allTodos = await getAllTodos()
 
-  return allTodos.filter((todo) => {
-    switch (filters.status) {
-      case 'active':
-        return todo.completed === false
-      case 'completed':
-        return todo.completed === true
-      default:
+  return Object.entries(filters).reduce(
+    (filteredTodos, [field, filterValue]) => {
+      return filteredTodos.filter((todo) => {
+        if (field in todo) {
+          // we've checked that field is in our object, so the type assertion is safe
+          return todo[field as keyof Todo] === filterValue
+        }
+        // ignore the field if it's not in the todo object
         return true
-    }
-  })
+      })
+    },
+    allTodos
+  )
 }
 
 async function createTodo(newTodo: Todo): Promise<Todo> {
@@ -62,8 +65,8 @@ async function deleteTodo(deletedTodoId: Todo['id']): Promise<Todo> {
 
 async function clearCompletedTodos(): Promise<Array<Todo>> {
   const oldTodos = await getTodos()
-  const deletedTodos = oldTodos.filter((todo) => todo.completed)
-  const todos = oldTodos.filter((todo) => !todo.completed)
+  const deletedTodos = oldTodos.filter((todo) => todo.status === 'completed')
+  const todos = oldTodos.filter((todo) => todo.status !== 'completed')
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
   return Promise.resolve(deletedTodos)
 }

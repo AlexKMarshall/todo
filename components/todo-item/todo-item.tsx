@@ -6,6 +6,8 @@ import { deleteTodo, updateTodo } from 'services/client'
 import styles from './todo-item.module.scss'
 import { Todo } from 'types/todo'
 
+type TodoAction = 'toggleCompleted'
+
 type Props = {
   todo: Todo
   onDeleteTodo: (todo: Todo) => void
@@ -16,7 +18,13 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
 
   const toggleTodoCompleteMutation = useMutation(
     () => {
-      const updatedTodo = { ...todo, completed: !todo.completed }
+      const updatedTodo = {
+        ...todo,
+        status:
+          todo.status === 'active'
+            ? ('completed' as const)
+            : ('active' as const),
+      }
       return updateTodo(updatedTodo)
     },
     {
