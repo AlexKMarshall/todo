@@ -12,8 +12,10 @@ import { useNotification } from '@context/notification'
 import { useMutation, useQueryClient } from 'react-query'
 import { clearCompletedTodos, createTodo } from 'services/client'
 import { ActiveTodosCount } from '@components/active-todos-count'
+import { useRouter } from 'next/router'
 
 export default function Todos() {
+  const router = useRouter()
   const [todoInputText, setTodoInputText] = useState('')
   const isInputInvalid = todoInputText.trim().length === 0
 
@@ -111,17 +113,29 @@ export default function Todos() {
               <ActiveTodosCount />
               <div className={styles.filterButtons}>
                 <Link href={`/todos`}>
-                  <a aria-label="show all todos" className={styles.link}>
+                  <a
+                    aria-label="show all todos"
+                    className={styles.link}
+                    aria-current={router.asPath === '/todos'}
+                  >
                     All
                   </a>
                 </Link>
                 <Link href={`/todos?status=active`}>
-                  <a aria-label="show active todos" className={styles.link}>
+                  <a
+                    aria-label="show active todos"
+                    className={styles.link}
+                    aria-current={router.asPath === '/todos?status=active'}
+                  >
                     Active
                   </a>
                 </Link>
                 <Link href={`/todos?status=completed`}>
-                  <a aria-label="show completed todos" className={styles.link}>
+                  <a
+                    aria-label="show completed todos"
+                    className={styles.link}
+                    aria-current={router.asPath === '/todos?status=completed'}
+                  >
                     Completed
                   </a>
                 </Link>

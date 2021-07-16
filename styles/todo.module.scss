@@ -237,7 +237,7 @@
   cursor: pointer;
 
   &[aria-pressed='true'],
-  &[aria-current] {
+  &[aria-current='true'] {
     color: var(--primary-blue);
   }
 

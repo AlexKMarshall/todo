@@ -1,10 +1,10 @@
+import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useQuery } from 'react-query'
-import { filtersSchema, getTodos } from 'services/client'
+import { getTodos } from 'services/client'
 import { TodoItem } from '@components/todo-item'
 import styles from './todo-list.module.scss'
-import { Todo } from 'types/todo'
-import { useRouter } from 'next/dist/client/router'
+import { Todo, todoFiltersSchema } from 'types/todo'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
@@ -12,7 +12,7 @@ type Props = {
 
 export function TodoList({ onDeleteTodo }: Props) {
   const { query } = useRouter()
-  const filters = filtersSchema.parse(query)
+  const filters = todoFiltersSchema.parse(query)
 
   const todoQuery = useQuery(['todos', filters], () => getTodos(filters))
 

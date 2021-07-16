@@ -1,12 +1,5 @@
-import { z } from 'zod'
-import { Todo } from 'types/todo'
+import { Todo, TodoFilters } from 'types/todo'
 const STORAGE_KEY = 'todo-app-todos'
-
-export const filtersSchema = z.object({
-  status: z.enum(['active', 'completed']).optional(),
-})
-
-type Filters = z.infer<typeof filtersSchema>
 
 function getAllTodos(): Promise<Array<Todo>> {
   const serializedTodos = window.localStorage.getItem(STORAGE_KEY)
@@ -19,7 +12,7 @@ function getAllTodos(): Promise<Array<Todo>> {
   }
 }
 
-async function getTodos(filters: Filters = {}): Promise<Array<Todo>> {
+async function getTodos(filters: TodoFilters = {}): Promise<Array<Todo>> {
   const allTodos = await getAllTodos()
 
   return Object.entries(filters).reduce(

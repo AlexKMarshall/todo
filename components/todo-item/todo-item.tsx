@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { TodoText } from '@components/todo-text'
 import { DeleteButton } from '@components/delete-button'
 import { deleteTodo, updateTodo } from 'services/client'
 import styles from './todo-item.module.scss'
 import { Todo } from 'types/todo'
-
-type TodoAction = 'toggleCompleted'
 
 type Props = {
   todo: Todo
