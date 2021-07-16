@@ -1,16 +1,21 @@
+import { QueryClient, QueryClientProvider } from 'react-query'
 import '../styles/reset.scss'
 import '../styles/global.css'
 import { ThemeProvider } from 'context/theme'
 import { NotificationProvider } from 'context/notification'
 import type { AppProps } from 'next/app'
 
+const queryClient = new QueryClient()
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider>
-      <NotificationProvider>
-        <Component {...pageProps} />
-      </NotificationProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <NotificationProvider>
+          <Component {...pageProps} />
+        </NotificationProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
 export default MyApp

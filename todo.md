@@ -16,3 +16,5 @@ fix the moon svg
 dark mode placeholder text
 animate the strike through?
 display empty placeholder when all items are complete, and viewing only active todos
+change filter buttons to links
+add some right padding to empty list

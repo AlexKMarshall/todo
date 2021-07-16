@@ -1,17 +1,15 @@
 import { FormEvent, useMemo, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
-import { motion } from 'framer-motion'
 import Head from 'next/head'
 import { Todo } from 'types/todo'
-import { DeleteButton } from '@components/delete-button'
 import { TodoList } from '@components/todo-list'
-import { TodoItem } from '@components/todo-item'
-import { TodoText } from '@components/todo-text'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
 import { ScreenReaderNotification } from '@components/screen-reader-notification'
 import { useNotification } from '@context/notification'
+import { useMutation, useQueryClient } from 'react-query'
+import { createTodo } from 'services/client'
 
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
@@ -29,12 +27,29 @@ function getFilterFunction(filter: Filter): FilterFunction {
 export default function Home({
   initialTodos = [],
 }: { initialTodos?: Todo[] } = {}) {
-  const [todos, setTodos] = useState(initialTodos)
+  const [oldTodos, setTodos] = useState(initialTodos)
 
   const [todoInputText, setTodoInputText] = useState('')
   const isInputInvalid = todoInputText.trim().length === 0
 
   const { setNotificationMessage } = useNotification()
+
+  const queryClient = useQueryClient()
+
+  const createTodoMutation = useMutation(
+    (todo: Todo) => {
+      return createTodo(todo)
+    },
+    {
+      onSuccess: (createdTodo) => {
+        setNotificationMessage(`${createdTodo.title} added`)
+        setTodoInputText('')
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['todos'])
+      },
+    }
+  )
 
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -44,29 +59,12 @@ export default function Home({
       title: todoInputText.trim(),
       completed: false,
     }
-    setTodos((existingTodos) => [newTodo, ...existingTodos])
-    setNotificationMessage(`${newTodo.title} added`)
-    setTodoInputText('')
+    createTodoMutation.mutate(newTodo)
   }
 
   const [currentFilter, setCurrentFilter] = useState<Filter>('all')
-  const currentFilterFunction = filterFunctions.get(currentFilter)
 
-  const filteredTodos = useMemo(
-    () => (currentFilterFunction ? todos.filter(currentFilterFunction) : todos),
-    [currentFilterFunction, todos]
-  )
-
-  function toggleTodoCompleted(todoId: Todo['id']) {
-    setTodos((existingTodos) =>
-      existingTodos.map((todo) =>
-        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
-      )
-    )
-  }
-
-  function deleteTodo(todo: Todo) {
-    setTodos((existingTodos) => existingTodos.filter((t) => t !== todo))
+  function handleDeleteTodo(todo: Todo) {
     setNotificationMessage(`${todo.title} deleted`)
     headingRef.current?.focus()
   }
@@ -77,15 +75,15 @@ export default function Home({
   }
 
   const numberTodosActive = useMemo(
-    () => todos.filter(getFilterFunction('active')).length,
-    [todos]
+    () => oldTodos.filter(getFilterFunction('active')).length,
+    [oldTodos]
   )
 
   const itemsLeftText = `${numberTodosActive} item${
     numberTodosActive !== 1 ? 's' : ''
   } left`
 
-  const isListEmpty = todos.length === 0
+  const isListEmpty = oldTodos.length === 0
 
   const headingRef = useRef<HTMLHeadingElement>(null)
 
@@ -133,29 +131,7 @@ export default function Home({
                 </button>
               </form>
               <div className={styles.backgroundShadow} />
-              <TodoList>
-                {filteredTodos.map((todo) => (
-                  <TodoItem key={todo.id}>
-                    <TodoText
-                      todo={todo}
-                      onToggleCompleted={toggleTodoCompleted}
-                    />
-                    <DeleteButton
-                      aria-label={`delete ${todo.title}`}
-                      onClick={() => deleteTodo(todo)}
-                    />
-                  </TodoItem>
-                ))}
-              </TodoList>
-              {isListEmpty ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className={styles.emptyMessage}
-                >
-                  <p>Well done, your tasks are complete. Add some more?</p>
-                </motion.div>
-              ) : null}
+              <TodoList onDeleteTodo={handleDeleteTodo} />
               <div className={styles.itemsCount}>{itemsLeftText}</div>
               <div className={styles.filterButtons}>
                 <button

@@ -4,7 +4,7 @@ import styles from './todo-text.module.scss'
 
 type Props = {
   todo: Todo
-  onToggleCompleted: (todoId: Todo['id']) => void
+  onToggleCompleted: () => void
 }
 export function TodoText({ todo, onToggleCompleted }: Props) {
   return (
@@ -13,7 +13,7 @@ export function TodoText({ todo, onToggleCompleted }: Props) {
         type="checkbox"
         id={`todo-${todo.id}`}
         checked={todo.completed}
-        onChange={() => onToggleCompleted(todo.id)}
+        onChange={onToggleCompleted}
         className={styles.todoCompletedCheckboxInput}
       />
       <label htmlFor={`todo-${todo.id}`} className={styles.todoItemLabel}>

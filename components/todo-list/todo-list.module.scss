@@ -11,3 +11,12 @@
     border-bottom: 1px solid var(--divider-color);
   }
 }
+
+.emptyMessage {
+  grid-area: list;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: var(--s0) var(--s1);
+  padding-left: calc(2 * var(--s1) + var(--s0));
+  color: var(--muted-text-color);
+}
