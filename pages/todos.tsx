@@ -11,6 +11,7 @@ import { ScreenReaderNotification } from '@components/screen-reader-notification
 import { useNotification } from '@context/notification'
 import { useMutation, useQueryClient } from 'react-query'
 import { clearCompletedTodos, createTodo } from 'services/client'
+import { ActiveTodosCount } from '@components/active-todos-count'
 
 type Filter = 'all' | 'active' | 'completed'
 type FilterFunction = (todo: Todo) => boolean
@@ -63,20 +64,11 @@ export default function Home({
     createTodoMutation.mutate(newTodo)
   }
 
-  const [oldFilter, setOldFilter] = useState<Filter>('all')
-  const [filters, setFilters] = useState<
-    { status: 'active' | 'completed' } | undefined
-  >()
-
+  const headingRef = useRef<HTMLHeadingElement>(null)
   function handleDeleteTodo(todo: Todo) {
     setNotificationMessage(`${todo.title} deleted`)
     headingRef.current?.focus()
   }
-
-  // function clearCompletedTodos() {
-  //   setTodos((existingTodos) => existingTodos.filter((todo) => !todo.completed))
-  //   setNotificationMessage('Completed todos cleared')
-  // }
 
   const numberTodosActive = useMemo(
     () => oldTodos.filter(getFilterFunction('active')).length,
@@ -86,10 +78,6 @@ export default function Home({
   const itemsLeftText = `${numberTodosActive} item${
     numberTodosActive !== 1 ? 's' : ''
   } left`
-
-  const isListEmpty = oldTodos.length === 0
-
-  const headingRef = useRef<HTMLHeadingElement>(null)
 
   const clearCompletedTodosMutation = useMutation(clearCompletedTodos, {
     onSuccess: () => {
@@ -145,7 +133,7 @@ export default function Home({
               </form>
               <div className={styles.backgroundShadow} />
               <TodoList onDeleteTodo={handleDeleteTodo} />
-              <div className={styles.itemsCount}>{itemsLeftText}</div>
+              <ActiveTodosCount />
               <div className={styles.filterButtons}>
                 <Link href={`/todos`}>
                   <a aria-label="show all todos" className={styles.link}>

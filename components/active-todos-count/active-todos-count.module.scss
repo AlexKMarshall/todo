@@ -1,0 +1,12 @@
+.smallText {
+  font-size: max(var(--s-1), 15px);
+}
+
+.itemsCount {
+  composes: smallText;
+
+  grid-area: count;
+  border-bottom-left-radius: 4px;
+  padding: var(--s0) var(--s1);
+  color: var(--muted-text-color);
+}
