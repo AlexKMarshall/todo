@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { getTodos } from 'services/client'
+import { getTodos } from '@services/client'
 import styles from './active-todos-count.module.scss'
 
 export function ActiveTodosCount() {

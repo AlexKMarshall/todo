@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useMutation, useQueryClient } from 'react-query'
 import { TodoText } from '@components/todo-text'
 import { DeleteButton } from '@components/delete-button'
-import { deleteTodo, updateTodo } from 'services/client'
+import { deleteTodo, updateTodo } from '@services/client'
 import styles from './todo-item.module.scss'
 import { Todo } from 'types/todo'
 
@@ -42,7 +42,12 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
   })
 
   return (
-    <motion.li className={styles.todoItem} layout>
+    <motion.li
+      className={styles.todoItem}
+      layout
+      onTap={(...args) => console.log('tapped', ...args)}
+      onDrag={(...args) => console.log('dragging', ...args)}
+    >
       <motion.span
         initial={{ y: '120%' }}
         animate={{ y: 0 }}

@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 import { ThemeProvider } from '../context/theme'
 import { NotificationProvider } from '../context/notification'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -14,10 +15,20 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 const Providers = ({ children }) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  })
+
   return (
-    <ThemeProvider>
-      <NotificationProvider>{children}</NotificationProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <NotificationProvider>{children}</NotificationProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
 

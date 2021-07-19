@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Todo } from 'types/todo'
+import { Todo } from '@types/todo'
 import { TodoList } from '@components/todo-list'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
@@ -10,7 +10,7 @@ import styles from '@styles/todo.module.scss'
 import { ScreenReaderNotification } from '@components/screen-reader-notification'
 import { useNotification } from '@context/notification'
 import { useMutation, useQueryClient } from 'react-query'
-import { clearCompletedTodos, createTodo } from 'services/client'
+import { clearCompletedTodos, createTodo } from '@services/client'
 import { ActiveTodosCount } from '@components/active-todos-count'
 import { useRouter } from 'next/router'
 
@@ -116,7 +116,7 @@ export default function Todos() {
                   <a
                     aria-label="show all todos"
                     className={styles.link}
-                    aria-current={router.asPath === '/todos'}
+                    aria-current={router?.asPath === '/todos'}
                   >
                     All
                   </a>
@@ -125,7 +125,7 @@ export default function Todos() {
                   <a
                     aria-label="show active todos"
                     className={styles.link}
-                    aria-current={router.asPath === '/todos?status=active'}
+                    aria-current={router?.asPath === '/todos?status=active'}
                   >
                     Active
                   </a>
@@ -134,7 +134,7 @@ export default function Todos() {
                   <a
                     aria-label="show completed todos"
                     className={styles.link}
-                    aria-current={router.asPath === '/todos?status=completed'}
+                    aria-current={router?.asPath === '/todos?status=completed'}
                   >
                     Completed
                   </a>
