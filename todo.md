@@ -24,3 +24,6 @@ style filter links including active link state
 border radius on todo list
 extract WIthChildren
 get width correct just under breakpoint
+how to test components that use router
+weird shadow on switching from list with stuff in to empty list, maybe list items don't stretch the whole width if there's no content
+SSR rendering applies aria-current = true to the All link when page is loaded with a query

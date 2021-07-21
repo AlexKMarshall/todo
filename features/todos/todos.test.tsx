@@ -1,10 +1,10 @@
-import { render, screen } from '../test-utils'
+import { render, screen } from '../../test/test-utils'
 import userEvent, { specialChars } from '@testing-library/user-event'
 import Image from 'next/image'
 import faker from 'faker'
 import * as client from '../../services/client'
 import { Todo } from 'types/todo'
-import TodoPage from '@pages/todos'
+import { Todos } from './todos'
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 
 jest.mock('../../services/client')
@@ -42,24 +42,13 @@ function buildTodo(overrides: Partial<Todo> = {}): Todo {
 beforeEach(() => {})
 
 describe('Todo Page', () => {
-  it('should render the heading', () => {
-    const mockGetTodos = client.getTodos as jest.Mock
-    mockGetTodos.mockResolvedValueOnce([])
-
-    render(<TodoPage />)
-    const heading = screen.getByRole('heading', {
-      name: /todo/i,
-    })
-    expect(heading).toBeInTheDocument()
-  })
-
   it('should render a list of todos in order', async () => {
     const todos = [buildTodo(), buildTodo(), buildTodo()]
 
     const mockGetTodos = client.getTodos as jest.Mock
     mockGetTodos.mockResolvedValueOnce(todos)
 
-    render(<TodoPage />)
+    render(<Todos />)
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading.../i))
 
@@ -74,7 +63,7 @@ describe('Todo Page', () => {
     const mockGetTodos = client.getTodos as jest.Mock
     mockGetTodos.mockResolvedValueOnce([])
 
-    render(<TodoPage />)
+    render(<Todos />)
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading.../i))
 
@@ -85,18 +74,44 @@ describe('Todo Page', () => {
     const mockGetTodos = client.getTodos as jest.Mock
     mockGetTodos.mockResolvedValueOnce([buildTodo()])
 
-    render(<TodoPage />)
+    render(<Todos />)
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading.../i))
 
     const emptyListRegex = new RegExp('well done, your tasks are complete', 'i')
     expect(screen.queryByText(emptyListRegex)).not.toBeInTheDocument()
   })
+  it('should show all todos when filter is empty', async () => {
+    const activeTodo = buildTodo({ status: 'active' })
+    const completedTodo = buildTodo({ status: 'completed' })
+
+    const mockGetTodos = client.getTodos as jest.Mock
+    mockGetTodos.mockReturnValueOnce([activeTodo, completedTodo])
+
+    render(<Todos filters={{}} />)
+
+    await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
+    expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
+    expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
+  })
+  // it('should only show active todos when filter is status: "active"', async () => {
+  //   const activeTodo = buildTodo({ status: 'active' })
+  //   const completedTodo = buildTodo({ status: 'completed' })
+
+  //   const mockGetTodos = client.getTodos as jest.Mock
+  //   mockGetTodos.mockReturnValueOnce([activeTodo, completedTodo])
+
+  //   render(<Todos filters={{ status: 'active' }} />)
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
+  //   expect(screen.getByText(activeTodo.title)).toBeInTheDocument()
+  //   expect(screen.queryByText(completedTodo.title)).not.toBeInTheDocument()
+  // })
   // it('should render filtered todos', async () => {
   //   const activeTodo = buildTodo({ completed: false })
   //   const completedTodo = buildTodo({ completed: true })
 
-  //   render(<TodoPage initialTodos={[activeTodo, completedTodo]} />)
+  //   render(<Todos initialTodos={[activeTodo, completedTodo]} />)
 
   //   const allButton = screen.getByRole('button', { name: /show all todos/i })
   //   const activeButton = screen.getByRole('button', {
@@ -139,25 +154,25 @@ describe('Todo Page', () => {
   //     buildTodo({ completed: true }),
   //     buildTodo({ completed: true }),
   //   ]
-  //   render(<TodoPage initialTodos={noActiveTodos} />)
+  //   render(<Todos initialTodos={noActiveTodos} />)
   //   expect(screen.getByText(/0 items left/i)).toBeInTheDocument()
 
   //   const oneActiveTodo = [
   //     buildTodo({ completed: false }),
   //     buildTodo({ completed: true }),
   //   ]
-  //   render(<TodoPage initialTodos={oneActiveTodo} />)
+  //   render(<Todos initialTodos={oneActiveTodo} />)
   //   expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
 
   //   const twoActiveTodos = [
   //     buildTodo({ completed: false }),
   //     buildTodo({ completed: false }),
   //   ]
-  //   render(<TodoPage initialTodos={twoActiveTodos} />)
+  //   render(<Todos initialTodos={twoActiveTodos} />)
   //   expect(screen.getByText(/2 items left/i)).toBeInTheDocument()
   // })
   // it('should allow user to enter todo', () => {
-  //   render(<TodoPage initialTodos={[]} />)
+  //   render(<Todos initialTodos={[]} />)
 
   //   const newTodoTitle = 'Some new todo'
   //   const todoInput = screen.getByLabelText(/write a new todo item/i)
@@ -169,7 +184,7 @@ describe('Todo Page', () => {
   //   expect(todoInput).toHaveValue('')
   // })
   // it('should not allow user to enter empty todo', () => {
-  //   render(<TodoPage initialTodos={[]} />)
+  //   render(<Todos initialTodos={[]} />)
 
   //   const todoInput = screen.getByLabelText(/write a new todo item/i)
   //   const addButton = screen.getByRole('button', { name: /add/i })
@@ -185,7 +200,7 @@ describe('Todo Page', () => {
   // })
   // it('should be possible to complete and uncomplete a todo', () => {
   //   const todo = buildTodo({ completed: false })
-  //   render(<TodoPage initialTodos={[todo]} />)
+  //   render(<Todos initialTodos={[todo]} />)
 
   //   expect(screen.getByText(/1 item left/i)).toBeInTheDocument()
 
@@ -203,7 +218,7 @@ describe('Todo Page', () => {
   // })
   // it('should be possible to delete a todo', async () => {
   //   const todo = buildTodo()
-  //   render(<TodoPage initialTodos={[todo]} />)
+  //   render(<Todos initialTodos={[todo]} />)
 
   //   const deleteLabelRegex = new RegExp(`delete ${todo.title}`, 'i')
   //   userEvent.click(screen.getByRole('button', { name: deleteLabelRegex }))
@@ -215,7 +230,7 @@ describe('Todo Page', () => {
   //   const completedTodo = buildTodo({ completed: true })
   //   const activeTodo = buildTodo({ completed: false })
 
-  //   render(<TodoPage initialTodos={[completedTodo, activeTodo]} />)
+  //   render(<Todos initialTodos={[completedTodo, activeTodo]} />)
 
   //   expect(screen.getByText(completedTodo.title)).toBeInTheDocument()
   //   expect(screen.getByText(activeTodo.title)).toBeInTheDocument()

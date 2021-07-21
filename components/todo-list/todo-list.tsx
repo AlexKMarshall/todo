@@ -4,16 +4,14 @@ import { useQuery } from 'react-query'
 import { getTodos } from '@services/client'
 import { TodoItem } from '@components/todo-item'
 import styles from './todo-list.module.scss'
-import { Todo, todoFiltersSchema } from '@types/todo'
+import { Todo, TodoFilters } from '@types/todo'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
+  filters: TodoFilters
 }
 
-export function TodoList({ onDeleteTodo }: Props) {
-  const { query } = useRouter()
-  const filters = todoFiltersSchema.parse(query)
-
+export function TodoList({ onDeleteTodo, filters }: Props) {
   const todoQuery = useQuery(['todos', filters], () => getTodos(filters))
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loading...</div>
