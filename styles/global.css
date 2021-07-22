@@ -114,3 +114,7 @@ body {
 * {
   transition: color, background-color 0.2s ease-in-out;
 }
+
+::placeholder {
+  color: var(--muted-text-color);
+}
