@@ -1,15 +1,15 @@
 import { FormEvent, useRef, useState } from 'react'
 import { nanoid } from 'nanoid'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { Todo } from '@types/todo'
 import { TodoList } from '@components/todo-list'
 import styles from '@styles/todo.module.scss'
 import { useNotification } from '@context/notification'
-import { useMutation, useQueryClient } from 'react-query'
-import { clearCompletedTodos, createTodo } from '@services/client'
 import { ActiveTodosCount } from '@components/active-todos-count'
 import { useRouter } from 'next/router'
 import { TodoFilters } from '@types/todo'
+import { Link } from '@components/link'
+import { useClearCompletedTodos, useCreateTodo } from './queries'
 
 type Props = {
   onDeleteTodo?: (todo: Todo) => void
@@ -23,22 +23,12 @@ export function Todos({ onDeleteTodo = () => {}, filters = {} }: Props) {
 
   const { setNotificationMessage } = useNotification()
 
-  const queryClient = useQueryClient()
-
-  const createTodoMutation = useMutation(
-    (todo: Todo) => {
-      return createTodo(todo)
+  const createTodoMutation = useCreateTodo({
+    onSuccess: (createdTodo) => {
+      setNotificationMessage(`${createdTodo.title} added`)
+      setTodoInputText('')
     },
-    {
-      onSuccess: (createdTodo) => {
-        setNotificationMessage(`${createdTodo.title} added`)
-        setTodoInputText('')
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['todos'])
-      },
-    }
-  )
+  })
 
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -59,12 +49,9 @@ export function Todos({ onDeleteTodo = () => {}, filters = {} }: Props) {
     headingRef.current?.focus()
   }
 
-  const clearCompletedTodosMutation = useMutation(clearCompletedTodos, {
+  const clearCompletedTodosMutation = useClearCompletedTodos({
     onSuccess: () => {
       setNotificationMessage('Completed todos cleared')
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(['todos'])
     },
   })
 
@@ -93,42 +80,14 @@ export function Todos({ onDeleteTodo = () => {}, filters = {} }: Props) {
       <TodoList onDeleteTodo={handleDeleteTodo} filters={filters} />
       <ActiveTodosCount />
       <div className={styles.filterButtons}>
-        <Link href={`/todos`}>
-          <a
-            aria-label="show all todos"
-            className={styles.link}
-            aria-current={router?.asPath === '/todos'}
-          >
-            All
-          </a>
-        </Link>
-        <Link href={`/todos?status=active`}>
-          <a
-            aria-label="show active todos"
-            className={styles.link}
-            aria-current={router?.asPath === '/todos?status=active'}
-          >
-            Active
-          </a>
-        </Link>
-        <Link href={`/todos?status=completed`}>
-          <a
-            aria-label="show completed todos"
-            className={styles.link}
-            aria-current={router?.asPath === '/todos?status=completed'}
-          >
-            Completed
-          </a>
-        </Link>
+        <Link href={`/todos`}>All</Link>
+        <Link href={`/todos?status=active`}>Active</Link>
+        <Link href="/todos?status=completed">Completed</Link>
       </div>
       <div className={styles.clearCompleted}>
-        <button
-          type="button"
-          onClick={() => clearCompletedTodosMutation.mutate()}
-          className={styles.link}
-        >
+        <Link onClick={() => clearCompletedTodosMutation.mutate()}>
           Clear Completed
-        </button>
+        </Link>
       </div>
     </div>
   )

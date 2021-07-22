@@ -5,6 +5,7 @@ import { getTodos } from '@services/client'
 import { TodoItem } from '@components/todo-item'
 import styles from './todo-list.module.scss'
 import { Todo, TodoFilters } from '@types/todo'
+import { useTodos } from '../../features/todos/queries'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
@@ -12,7 +13,7 @@ type Props = {
 }
 
 export function TodoList({ onDeleteTodo, filters }: Props) {
-  const todoQuery = useQuery(['todos', filters], () => getTodos(filters))
+  const todoQuery = useTodos({ filters })
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loading...</div>
 
