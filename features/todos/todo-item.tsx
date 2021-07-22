@@ -4,6 +4,7 @@ import { DeleteButton } from '@components/delete-button'
 import styles from './todos.module.scss'
 import { Todo } from 'types/todo'
 import { useDeleteTodo, useToggleTodoComplete } from './queries'
+import { Checkbox } from '@components/checkbox/checkbox'
 
 type Props = {
   todo: Todo
@@ -32,7 +33,13 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
         animate={{ y: 0 }}
         exit={{ opacity: 0 }}
       >
-        <input
+        <Checkbox
+          id={`todo-${todo.id}`}
+          checked={todo.status === 'completed'}
+          onChange={() => toggleTodoCompleteMutation.mutate()}
+          label={todo.title}
+        />
+        {/* <input
           type="checkbox"
           id={`todo-${todo.id}`}
           checked={todo.status === 'completed'}
@@ -46,7 +53,7 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
             </span>
           </span>
           <span className={styles.todoItemText}>{todo.title}</span>
-        </label>
+        </label> */}
         <DeleteButton
           aria-label={`delete ${todo.title}`}
           onClick={() => deleteTodoMutation.mutate()}
