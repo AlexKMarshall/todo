@@ -110,3 +110,7 @@ body {
   background-color: var(--body-color);
   color: var(--strong-text-color);
 }
+
+* {
+  transition: color, background-color 0.2s ease-in-out;
+}

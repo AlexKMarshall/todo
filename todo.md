@@ -30,3 +30,4 @@ make list item content take up whole height so tap target is larger, put the pad
 Maybe align-items stretch too
 SSR rendering applies aria-current = true to the All link when page is loaded with a query
 make the props for Link discriminate properly
+sort out timing of theme-switch animations on header image and app colours

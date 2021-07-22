@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useTheme } from '@context/theme'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
@@ -12,6 +14,7 @@ export default function TodosPage() {
 
   const { query } = useRouter()
   const filters = todoFiltersSchema.parse(query)
+  const { theme } = useTheme()
 
   return (
     <>
@@ -25,9 +28,15 @@ export default function TodosPage() {
       </Head>
 
       <div className={styles.screen}>
-        <div className={styles.background}>
-          <BackgroundImage />
-        </div>
+        <AnimatePresence>
+          <motion.div
+            key={theme}
+            className={styles.background}
+            exit={{ opacity: 0 }}
+          >
+            <BackgroundImage />
+          </motion.div>
+        </AnimatePresence>
         <div className={styles.center}>
           <main className={styles.cover}>
             <header className={styles.header}>
