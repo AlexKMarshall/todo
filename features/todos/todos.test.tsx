@@ -67,7 +67,7 @@ describe('Todo Page', () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading.../i))
 
-    const emptyListRegex = new RegExp('well done, your tasks are complete', 'i')
+    const emptyListRegex = new RegExp('you have no todos', 'i')
     expect(screen.getByText(emptyListRegex)).toBeInTheDocument()
   })
   it('should not show empty list message when there are some todos', async () => {
@@ -78,7 +78,7 @@ describe('Todo Page', () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading.../i))
 
-    const emptyListRegex = new RegExp('well done, your tasks are complete', 'i')
+    const emptyListRegex = new RegExp('You have no todos', 'i')
     expect(screen.queryByText(emptyListRegex)).not.toBeInTheDocument()
   })
   it('should show all todos when filter is empty', async () => {

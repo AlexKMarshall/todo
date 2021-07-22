@@ -9,6 +9,12 @@ type Props = {
   filters?: TodoFilters
 }
 
+function getEmptyListText(filters: TodoFilters) {
+  if (filters.status === 'active') return 'You have no active todos'
+  if (filters.status === 'completed') return 'You have no completed todos'
+  return 'You have no todos. Add some more?'
+}
+
 export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   const todoQuery = useTodos({ filters })
 
@@ -31,7 +37,7 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
         animate={{ opacity: 1 }}
         className={styles.emptyMessage}
       >
-        <p>Well done, your tasks are complete. Add some more?</p>
+        <p>{getEmptyListText(filters)}</p>
       </motion.div>
     )
 
