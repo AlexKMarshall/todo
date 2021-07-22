@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid'
 import { FormEvent, useState } from 'react'
 import { useCreateTodo } from './queries'
 import styles from './todos.module.scss'
+import utilStyles from '@styles/utils.module.scss'
 
 type Props = {
   onCreateTodo?: (todo: Todo) => void
@@ -46,7 +47,7 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
       <button
         type="submit"
         disabled={isInputInvalid}
-        className={styles.visuallyHidden}
+        className={utilStyles.visuallyHidden}
       >
         add
       </button>

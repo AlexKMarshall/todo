@@ -6,7 +6,7 @@ import {
   useContext,
   useState,
 } from 'react'
-import styles from 'styles/utils.module.scss'
+import styles from '@styles/utils.module.scss'
 
 type WithChildren<T extends {}> = T & {
   children: ReactNode

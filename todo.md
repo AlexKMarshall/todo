@@ -26,5 +26,7 @@ extract WIthChildren
 how to test components that use router
 get width correct just under breakpoint
 weird shadow on switching from list with stuff in to empty list, maybe list items don't stretch the whole width if there's no content
+make list item content take up whole height so tap target is larger, put the padding on the content not the list item I think
+Maybe align-items stretch too
 SSR rendering applies aria-current = true to the All link when page is loaded with a query
 make the props for Link discriminate properly
