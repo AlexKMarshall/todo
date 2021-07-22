@@ -21,7 +21,6 @@ add some right padding to empty list
 show proper loading state
 show proper error state
 style filter links including active link state
-border radius on todo list
 extract WIthChildren
 how to test components that use router
 get width correct just under breakpoint

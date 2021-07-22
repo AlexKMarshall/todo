@@ -178,6 +178,12 @@
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 
+  & > :first-child {
+    // TODO avoid this workaround?
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
   & > * {
     border-bottom: 1px solid var(--divider-color);
   }
@@ -194,6 +200,7 @@
 .todoItem {
   padding: var(--s0) var(--s1);
   overflow: hidden;
+  // we need this for animating in the todo so the item isn't see-through
   background-color: var(--main-background-color);
 
   & > span {
