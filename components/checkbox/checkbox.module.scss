@@ -17,6 +17,10 @@
     & .check {
       background-color: transparent;
     }
+
+    & .checkIcon {
+      opacity: 1;
+    }
   }
 
   &:focus + label .checkBorderWrap {
@@ -80,6 +84,7 @@
   // could probably change the viewbox of the svg to improve the center weighting
   & .checkIcon {
     transform: translateY(1px);
+    opacity: 0;
   }
 }
 
