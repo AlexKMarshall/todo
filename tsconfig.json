@@ -18,6 +18,7 @@
       "@components/*": ["components/*"],
       "@context/*": ["context/*"],
       "@icons/*": ["icons/*"],
+      "@features/*": ["features/*"],
       "@services/*": ["services/*"],
       "@styles/*": ["styles/*"],
       "@pages/*": ["pages/*"],

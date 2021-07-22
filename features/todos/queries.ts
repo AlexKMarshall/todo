@@ -5,7 +5,7 @@ import {
   updateTodo,
   deleteTodo,
 } from '@services/client'
-import { Todo, TodoFilters } from '@types/todo'
+import { Todo, TodoFilters } from './schemas'
 import {
   useMutation,
   UseMutationOptions,

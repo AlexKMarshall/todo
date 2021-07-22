@@ -1,18 +1,15 @@
-import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useQuery } from 'react-query'
-import { getTodos } from '@services/client'
-import { TodoItem } from '@components/todo-item'
-import styles from './todo-list.module.scss'
-import { Todo, TodoFilters } from '@types/todo'
-import { useTodos } from '../../features/todos/queries'
+import { TodoItem } from './todo-item'
+import { Todo, TodoFilters } from './schemas'
+import { useTodos } from './queries'
+import styles from './todos.module.scss'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
-  filters: TodoFilters
+  filters?: TodoFilters
 }
 
-export function TodoList({ onDeleteTodo, filters }: Props) {
+export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   const todoQuery = useTodos({ filters })
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loading...</div>

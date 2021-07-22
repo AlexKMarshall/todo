@@ -5,8 +5,7 @@ import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
 import { ScreenReaderNotification } from '@components/screen-reader-notification'
-import { todoFiltersSchema } from '@types/todo'
-import { Todos } from '../features/todos'
+import { Todos, todoFiltersSchema } from '@features/todos'
 
 export default function TodosPage() {
   const headingRef = useRef<HTMLHeadingElement>(null)

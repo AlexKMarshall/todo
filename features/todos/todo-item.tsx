@@ -1,12 +1,9 @@
 import { motion } from 'framer-motion'
-import { TodoText } from '@components/todo-text'
+import { CheckIcon } from '@icons/check-icon'
 import { DeleteButton } from '@components/delete-button'
-import styles from './todo-item.module.scss'
+import styles from './todos.module.scss'
 import { Todo } from 'types/todo'
-import {
-  useDeleteTodo,
-  useToggleTodoComplete,
-} from '../../features/todos/queries'
+import { useDeleteTodo, useToggleTodoComplete } from './queries'
 
 type Props = {
   todo: Todo
@@ -35,10 +32,21 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
         animate={{ y: 0 }}
         exit={{ opacity: 0 }}
       >
-        <TodoText
-          todo={todo}
-          onToggleCompleted={toggleTodoCompleteMutation.mutate}
+        <input
+          type="checkbox"
+          id={`todo-${todo.id}`}
+          checked={todo.status === 'completed'}
+          onChange={() => toggleTodoCompleteMutation.mutate()}
+          className={styles.todoCompletedCheckboxInput}
         />
+        <label htmlFor={`todo-${todo.id}`} className={styles.todoItemLabel}>
+          <span className={styles.todoItemCheckBorderWrap}>
+            <span className={styles.todoItemCheck}>
+              <CheckIcon aria-hidden className={styles.checkIcon} />
+            </span>
+          </span>
+          <span className={styles.todoItemText}>{todo.title}</span>
+        </label>
         <DeleteButton
           aria-label={`delete ${todo.title}`}
           onClick={() => deleteTodoMutation.mutate()}
