@@ -1,0 +1,33 @@
+.inputWrapper {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  align-items: center;
+}
+
+.input {
+  flex-grow: 1;
+  width: 0; /* override browser min-width on input */
+  padding-top: var(--s0);
+  padding-right: var(--s1);
+  padding-bottom: var(--s0);
+  padding-left: calc(2 * var(--s1) + var(--s0));
+  border: none;
+  outline-color: transparent;
+  outline-style: solid;
+  background: none;
+
+  &:focus {
+    box-shadow: 0 0 4px var(--muted-text-color);
+  }
+}
+
+.decorativeCircle {
+  position: absolute;
+  left: var(--s1);
+  --border-width: calc(max(0.125rem, 2px));
+  width: var(--s0);
+  height: var(--s0);
+  border: var(--border-width) solid var(--very-muted-text-color);
+  border-radius: 50%;
+}

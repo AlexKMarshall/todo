@@ -35,7 +35,6 @@
   display: flex;
   align-items: center;
   margin-bottom: var(--gutter);
-  padding: var(--s0) var(--s1);
   border-radius: var(--border-radius);
 
   box-shadow: 0 0 30px 0px var(--shadow-color);
@@ -55,37 +54,6 @@
   &:focus-within {
     box-shadow: 0 0 30px 0px var(--shadow-color),
       0 0 4px 1px var(--strong-text-color);
-  }
-}
-
-.decorativeCircle {
-  --border-width: calc(max(0.125rem, 2px));
-  width: 1rem;
-  height: 1rem;
-  border: var(--border-width) solid var(--very-muted-text-color);
-  border-radius: 50%;
-}
-
-.inputBase {
-  border: none;
-  outline-color: transparent;
-  outline-style: solid;
-  background: none;
-
-  &:focus {
-    box-shadow: 0 0 4px var(--muted-text-color);
-  }
-}
-
-.todoInput {
-  composes: inputBase;
-  flex-grow: 1;
-  width: 0; /* override browser min-width on input */
-  padding-left: var(--s1);
-  border-radius: var(--border-radius);
-
-  &:focus {
-    box-shadow: none;
   }
 }
 

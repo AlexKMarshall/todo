@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react'
 import { useCreateTodo } from './queries'
 import styles from './todos.module.scss'
 import { VisuallyHidden } from '@components/visually-hidden'
+import { TextInput } from '@components/text-input'
 
 type Props = {
   onCreateTodo?: (todo: Todo) => void
@@ -33,15 +34,12 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
 
   return (
     <form onSubmit={submitForm} className={styles.todoForm}>
-      <span className={styles.decorativeCircle} />
-      <input
-        type="text"
+      <TextInput
         value={todoInputText}
         onChange={(e) => setTodoInputText(e.target.value)}
         aria-invalid={isInputInvalid}
-        aria-label="Write a new todo item"
+        label="Write a new todo item"
         placeholder="Visit the zoo"
-        className={styles.todoInput}
       />
       <VisuallyHidden>
         <button type="submit" disabled={isInputInvalid}>
