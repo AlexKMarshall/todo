@@ -27,9 +27,7 @@
   }
 
   &:focus {
-    outline-style: solid;
-    outline-color: transparent;
-    box-shadow: 0 0 4px var(--muted-text-color);
+    outline: 5px auto;
   }
 }
 
