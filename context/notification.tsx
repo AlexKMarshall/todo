@@ -1,12 +1,5 @@
-import {
-  ComponentPropsWithoutRef,
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useState,
-} from 'react'
-import styles from '@styles/utils.module.scss'
+import { createContext, ReactNode, useContext, useState } from 'react'
+import { VisuallyHidden } from '@components/visually-hidden'
 
 type WithChildren<T extends {}> = T & {
   children: ReactNode
@@ -14,9 +7,6 @@ type WithChildren<T extends {}> = T & {
 
 type NotificationContextValue = {
   setNotificationMessage: (message: string) => void
-  getNotificationProps: (
-    overrides?: ComponentPropsWithoutRef<'div'>
-  ) => WithChildren<ComponentPropsWithoutRef<'div'>>
 }
 
 const NotificationContext = createContext<NotificationContextValue | null>(null)
@@ -27,24 +17,16 @@ export function NotificationProvider({
 }: WithChildren<{}>): JSX.Element {
   const [notificationMessage, setNotificationMessage] = useState('')
 
-  const getNotificationProps = useCallback(
-    (overrides?: ComponentPropsWithoutRef<'div'>) => {
-      return {
-        role: 'status' as const,
-        'aria-live': 'polite' as const,
-        className: styles.visuallyHidden,
-        children: notificationMessage,
-        ...overrides,
-      }
-    },
-    [notificationMessage]
-  )
-
-  const value = { getNotificationProps, setNotificationMessage }
+  const value = { setNotificationMessage }
 
   return (
     <NotificationContext.Provider value={value}>
       {children}
+      <VisuallyHidden>
+        <div role="status" aria-live="polite">
+          {notificationMessage}
+        </div>
+      </VisuallyHidden>
     </NotificationContext.Provider>
   )
 }

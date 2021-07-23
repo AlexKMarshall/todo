@@ -1,6 +1,7 @@
 import { InputHTMLAttributes } from 'react'
 import { CheckIcon } from '@icons/check-icon'
 import styles from './checkbox.module.scss'
+import { VisuallyHidden } from '@components/visually-hidden'
 
 type Props = {
   id: string

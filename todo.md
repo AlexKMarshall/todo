@@ -6,12 +6,11 @@ What happens when you only have a couple of todos, should it shrink?
 What about when you have loads? Should it grow?
 focus state for the bottom buttons
 test next/image without mocking it?
-box shadows don't show above image background?
 background position fixed?
 refactor to sass mixins?
 focus state for input
 animation on mode icon
-filter button active state shouldn't win over pressed state
+filter link active/focus state shouldn't obscure over current state - use focusVisible?
 fix the moon svg
 animate the strike through?
 display empty placeholder when all items are complete, and viewing only active todos

@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { FormEvent, useState } from 'react'
 import { useCreateTodo } from './queries'
 import styles from './todos.module.scss'
-import utilStyles from '@styles/utils.module.scss'
+import { VisuallyHidden } from '@components/visually-hidden'
 
 type Props = {
   onCreateTodo?: (todo: Todo) => void
@@ -15,7 +15,6 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
 
   const createTodoMutation = useCreateTodo({
     onSuccess: (createdTodo) => {
-      // setNotificationMessage(`${createdTodo.title} added`)
       setTodoInputText('')
       onCreateTodo?.(createdTodo)
     },
@@ -44,13 +43,11 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
         placeholder="Visit the zoo"
         className={styles.todoInput}
       />
-      <button
-        type="submit"
-        disabled={isInputInvalid}
-        className={utilStyles.visuallyHidden}
-      >
-        add
-      </button>
+      <VisuallyHidden>
+        <button type="submit" disabled={isInputInvalid}>
+          add
+        </button>
+      </VisuallyHidden>
     </form>
   )
 }

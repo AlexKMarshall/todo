@@ -6,7 +6,6 @@ import { useTheme } from '@context/theme'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
-import { ScreenReaderNotification } from '@components/screen-reader-notification'
 import { Todos, todoFiltersSchema } from '@features/todos'
 
 export default function TodosPage() {
@@ -51,7 +50,6 @@ export default function TodosPage() {
               }}
               filters={filters}
             />
-            <ScreenReaderNotification />
             {/* <footer>
             <small>Some footer text</small>
           </footer> */}
