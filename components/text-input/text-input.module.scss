@@ -17,7 +17,7 @@
   outline-style: solid;
   background: none;
 
-  &:focus {
+  &:focus-visible {
     outline: 5px auto;
   }
 }

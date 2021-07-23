@@ -4,6 +4,10 @@
   transition: 220ms ease-in-out;
   transition-property: background;
 
+  &:focus-visible + label {
+    outline: 5px auto;
+  }
+
   &:checked + label {
     & .labelText {
       text-decoration: line-through;

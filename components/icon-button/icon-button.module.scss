@@ -26,7 +26,7 @@
     color: var(--button-hover-color, --strong-text-color);
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 5px auto;
   }
 }

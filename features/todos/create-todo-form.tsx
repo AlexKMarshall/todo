@@ -42,7 +42,7 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
         placeholder="Visit the zoo"
       />
       <VisuallyHidden>
-        <button type="submit" disabled={isInputInvalid}>
+        <button type="submit" disabled={isInputInvalid} tabIndex={-1}>
           add
         </button>
       </VisuallyHidden>
