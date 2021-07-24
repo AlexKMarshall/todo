@@ -27,6 +27,13 @@ export function useTodos({ filters = {} }: UseTodosProps = {}) {
   return useQuery(todoKeys.list(filters), () => getTodos(filters))
 }
 
+export function useActiveTodosCount() {
+  const filters = { status: 'active' } as const
+  return useQuery(todoKeys.list(filters), () => getTodos(filters), {
+    select: (todos) => todos.length,
+  })
+}
+
 type UseCreateTodoProps = {
   onSuccess?: UseMutationOptions<Todo, unknown, Todo>['onSuccess']
 }

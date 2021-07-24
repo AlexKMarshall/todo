@@ -6,7 +6,6 @@ test next/image without mocking it?
 background position fixed?
 refactor to sass mixins?
 animation on mode icon
-filter link active/focus state shouldn't obscure over current state - use focusVisible?
 fix the moon svg
 animate the strike through?
 display empty placeholder when all items are complete, and viewing only active todos

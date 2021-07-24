@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { TodoItem } from './todo-item'
-import { Todo, TodoFilters } from './schemas'
-import { useTodos } from './queries'
-import styles from './todos.module.scss'
+import { Todo, TodoFilters } from '../schemas'
+import { useTodos } from '../queries'
+import styles from '../todos.module.scss'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void

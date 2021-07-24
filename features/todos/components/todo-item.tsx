@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { DeleteButton } from '@components/delete-button'
-import styles from './todos.module.scss'
+import styles from '../todos.module.scss'
 import { Todo } from 'types/todo'
-import { useDeleteTodo, useToggleTodoComplete } from './queries'
+import { useDeleteTodo, useToggleTodoComplete } from '../queries'
 import { Checkbox } from '@components/checkbox/checkbox'
 
 type Props = {
