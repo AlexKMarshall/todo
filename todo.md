@@ -18,4 +18,3 @@ weird shadow on switching from list with stuff in to empty list, maybe list item
 SSR rendering applies aria-current = true to the All link when page is loaded with a query
 make the props for Link discriminate properly
 sort out timing of theme-switch animations on header image and app colours
-stretched checkbox on wrapped todo title
