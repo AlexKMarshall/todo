@@ -38,6 +38,7 @@
   align-items: center;
   cursor: pointer;
   padding: var(--s0) var(--s1);
+  outline-offset: calc(-1 * var(--s-2));
 
   & > :first-child {
     margin-right: var(--s1);
