@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
+import { useSortable } from '@dnd-kit/sortable'
 import { DeleteButton } from '@components/delete-button'
+import { CSS } from '@dnd-kit/utilities'
 import styles from '../todos.module.scss'
 import { Todo } from 'types/todo'
 import { useDeleteTodo, useToggleTodoComplete } from '../queries'
@@ -20,29 +22,39 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
     },
   })
 
+  const { setNodeRef, attributes, listeners, transform, isDragging } =
+    useSortable({
+      id: todo.id,
+    })
+
   return (
     <motion.li
       className={styles.todoItem}
       layout
-      onTap={(...args) => console.log('tapped', ...args)}
-      onDrag={(...args) => console.log('dragging', ...args)}
+      animate={{ y: transform?.y }}
+      style={{
+        zIndex: isDragging ? 1 : undefined,
+      }}
     >
-      <motion.span
-        initial={{ y: '120%' }}
-        animate={{ y: 0 }}
-        exit={{ opacity: 0 }}
-      >
-        <Checkbox
-          id={`todo-${todo.id}`}
-          checked={todo.status === 'completed'}
-          onChange={() => toggleTodoCompleteMutation.mutate()}
-          label={todo.title}
-        />
-        <DeleteButton
-          aria-label={`delete ${todo.title}`}
-          onClick={() => deleteTodoMutation.mutate()}
-        />
-      </motion.span>
+      <div ref={setNodeRef} {...attributes} {...listeners}>
+        <motion.span
+          className={styles.todoClipInWrapper}
+          initial={{ y: '120%' }}
+          animate={{ y: 0 }}
+          exit={{ opacity: 0 }}
+        >
+          <Checkbox
+            id={`todo-${todo.id}`}
+            checked={todo.status === 'completed'}
+            onChange={() => toggleTodoCompleteMutation.mutate()}
+            label={todo.title}
+          />
+          <DeleteButton
+            aria-label={`delete ${todo.title}`}
+            onClick={() => deleteTodoMutation.mutate()}
+          />
+        </motion.span>
+      </div>
     </motion.li>
   )
 }

@@ -1,6 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { DndContext } from '@dnd-kit/core'
-import { SortableContext } from '@dnd-kit/sortable'
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import { SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { TodoItem } from './todo-item'
 import { Todo, TodoFilters } from '../schemas'
 import { useTodos } from '../queries'
@@ -19,6 +25,10 @@ function getEmptyListText(filters: TodoFilters) {
 
 export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   const todoQuery = useTodos({ filters })
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loading...</div>
 
@@ -46,7 +56,10 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   return (
     <ol role="list" className={styles.todoList}>
       <AnimatePresence>
-        <DndContext>
+        <DndContext
+          onDragEnd={(...args) => console.log('drag end', ...args)}
+          sensors={sensors}
+        >
           <SortableContext items={todoQuery.data}>
             {todoQuery.data.map((todo) => (
               <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} />

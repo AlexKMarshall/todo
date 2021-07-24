@@ -141,6 +141,7 @@
   flex-direction: column;
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
+  isolation: isolate;
 
   & > :first-child {
     // TODO avoid this workaround?
@@ -149,6 +150,7 @@
   }
 
   & > * {
+    border-top: 1px hidden pink;
     border-bottom: 1px solid var(--divider-color);
   }
 }
@@ -165,13 +167,13 @@
   overflow: hidden;
   // we need this for animating in the todo so the item isn't see-through
   background-color: var(--main-background-color);
+}
 
-  & > span {
-    display: flex;
-    align-items: center;
-    gap: var(--s1);
-    padding-right: var(--s1);
-  }
+.todoClipInWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  padding-right: var(--s1);
 }
 
 .itemsCount {
