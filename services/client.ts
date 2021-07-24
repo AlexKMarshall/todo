@@ -1,3 +1,4 @@
+import { arrayMove } from '@dnd-kit/sortable'
 import { Todo, TodoFilters } from 'types/todo'
 const STORAGE_KEY = 'todo-app-todos'
 
@@ -64,4 +65,26 @@ async function clearCompletedTodos(): Promise<Array<Todo>> {
   return Promise.resolve(deletedTodos)
 }
 
-export { getTodos, createTodo, updateTodo, deleteTodo, clearCompletedTodos }
+type MoveTodoProps = {
+  fromId: Todo['id']
+  toId: Todo['id']
+}
+
+async function moveTodo({ fromId, toId }: MoveTodoProps): Promise<Array<Todo>> {
+  const oldTodos = await getTodos()
+  const fromIndex = oldTodos.findIndex((todo) => todo.id === fromId)
+  const toIndex = oldTodos.findIndex((todo) => todo.id === toId)
+
+  const todos = arrayMove(oldTodos, fromIndex, toIndex)
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  return Promise.resolve(todos)
+}
+
+export {
+  getTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+  clearCompletedTodos,
+  moveTodo,
+}

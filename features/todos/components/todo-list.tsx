@@ -1,15 +1,21 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   DndContext,
+  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from '@dnd-kit/core'
-import { SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 import { TodoItem } from './todo-item'
 import { Todo, TodoFilters } from '../schemas'
-import { useTodos } from '../queries'
+import { useMoveTodoMutation, useTodos } from '../queries'
 import styles from '../todos.module.scss'
 
 type Props = {
@@ -29,6 +35,7 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
+  const moveTodoMutation = useMoveTodoMutation()
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loading...</div>
 
@@ -53,14 +60,26 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
       </motion.div>
     )
 
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    if (!over || active.id === over.id) return
+
+    moveTodoMutation.mutate({ fromId: active.id, toId: over.id })
+  }
+
   return (
     <ol role="list" className={styles.todoList}>
       <AnimatePresence>
         <DndContext
-          onDragEnd={(...args) => console.log('drag end', ...args)}
+          onDragEnd={handleDragEnd}
           sensors={sensors}
+          collisionDetection={closestCenter}
         >
-          <SortableContext items={todoQuery.data}>
+          <SortableContext
+            items={todoQuery.data}
+            strategy={verticalListSortingStrategy}
+          >
             {todoQuery.data.map((todo) => (
               <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} />
             ))}

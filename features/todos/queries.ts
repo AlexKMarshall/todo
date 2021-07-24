@@ -4,6 +4,7 @@ import {
   getTodos,
   updateTodo,
   deleteTodo,
+  moveTodo,
 } from '@services/client'
 import { Todo, TodoFilters } from './schemas'
 import {
@@ -93,6 +94,24 @@ export function useToggleTodoComplete({ todo }: UseToggleTodoCompleteProps) {
       }
       return updateTodo(updatedTodo)
     },
+    {
+      onSettled: () => {
+        queryClient.invalidateQueries(todoKeys.lists())
+      },
+    }
+  )
+}
+
+export function useMoveTodoMutation() {
+  const queryClient = useQueryClient()
+
+  type MoveTodoVariables = {
+    fromId: Todo['id']
+    toId: Todo['id']
+  }
+
+  return useMutation(
+    ({ fromId, toId }: MoveTodoVariables) => moveTodo({ fromId, toId }),
     {
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())
