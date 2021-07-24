@@ -10,6 +10,8 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@dnd-kit/core": "^3.1.1",
+    "@dnd-kit/sortable": "^4.0.0",
     "framer-motion": "^4.1.17",
     "nanoid": "^3.1.23",
     "next": "11.0.0",

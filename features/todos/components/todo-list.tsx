@@ -1,4 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { DndContext } from '@dnd-kit/core'
+import { SortableContext } from '@dnd-kit/sortable'
 import { TodoItem } from './todo-item'
 import { Todo, TodoFilters } from '../schemas'
 import { useTodos } from '../queries'
@@ -44,9 +46,13 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   return (
     <ol role="list" className={styles.todoList}>
       <AnimatePresence>
-        {todoQuery.data.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} />
-        ))}
+        <DndContext>
+          <SortableContext items={todoQuery.data}>
+            {todoQuery.data.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} />
+            ))}
+          </SortableContext>
+        </DndContext>
       </AnimatePresence>
     </ol>
   )

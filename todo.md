@@ -7,12 +7,9 @@ background position fixed?
 refactor to sass mixins?
 animation on mode icon
 fix the moon svg
-animate the strike through?
-display empty placeholder when all items are complete, and viewing only active todos
 show proper loading state
 show proper error state
 how to test components that use router
-weird shadow on switching from list with stuff in to empty list, maybe list items don't stretch the whole width if there's no content
 SSR rendering applies aria-current = true to the All link when page is loaded with a query
 make the props for Link discriminate properly
 sort out timing of theme-switch animations on header image and app colours
