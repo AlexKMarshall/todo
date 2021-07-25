@@ -20,17 +20,21 @@ const todoKeys = {
   list: (filters: TodoFilters = {}) => [...todoKeys.lists(), filters] as const,
 }
 
-type UseTodosProps = {
+type UseTodosProps<TData> = {
   filters?: TodoFilters
+  select?: (todos: Array<Todo>) => TData
 }
 
-export function useTodos({ filters = {} }: UseTodosProps = {}) {
-  return useQuery(todoKeys.list(filters), () => getTodos(filters))
+export function useTodos<TData = Array<Todo>>({
+  filters = {},
+  select,
+}: UseTodosProps<TData> = {}) {
+  return useQuery(todoKeys.list(filters), () => getTodos(filters), { select })
 }
 
 export function useActiveTodosCount() {
-  const filters = { status: 'active' } as const
-  return useQuery(todoKeys.list(filters), () => getTodos(filters), {
+  return useTodos({
+    filters: { status: 'active' },
     select: (todos) => todos.length,
   })
 }
