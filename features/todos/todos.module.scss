@@ -169,6 +169,12 @@
   background-color: var(--main-background-color);
 }
 
+.dragHandle {
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--s-2));
+  }
+}
+
 .todoClipInWrapper {
   display: flex;
   align-items: center;

@@ -69,7 +69,12 @@ export function TodoItem({ todo, onDeleteTodo }: Props) {
         },
       }}
     >
-      <div ref={setNodeRef} {...attributes} {...listeners}>
+      <div
+        className={styles.dragHandle}
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+      >
         <motion.span
           className={styles.todoClipInWrapper}
           // initial={{ y: '120%' }}
