@@ -13,7 +13,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { TodoItem } from './todo-item'
+import { SortableTodoItem, TodoItem } from './todo-item'
 import { Todo, TodoFilters } from '../schemas'
 import { useMoveTodoMutation, useTodos } from '../queries'
 import styles from '../todos.module.scss'
@@ -81,7 +81,12 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
             strategy={verticalListSortingStrategy}
           >
             {todoQuery.data.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} />
+              <SortableTodoItem
+                id={todo.id}
+                key={todo.id}
+                todo={todo}
+                onDeleteTodo={onDeleteTodo}
+              />
             ))}
           </SortableContext>
         </DndContext>
