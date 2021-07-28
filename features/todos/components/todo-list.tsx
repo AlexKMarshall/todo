@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   DndContext,
@@ -7,6 +8,8 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
 } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -17,6 +20,7 @@ import { SortableTodoItem, TodoItem } from './todo-item'
 import { Todo, TodoFilters } from '../schemas'
 import { useMoveTodoMutation, useTodos } from '../queries'
 import styles from '../todos.module.scss'
+import { Todos } from '../todos'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
@@ -36,6 +40,7 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
   const moveTodoMutation = useMoveTodoMutation()
+  const [draggingId, setDraggingId] = useState<string | null>(null)
 
   if (todoQuery.isLoading || todoQuery.isIdle) return <div>Loading...</div>
 
@@ -60,7 +65,12 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
       </motion.div>
     )
 
+  function handleDragStart(event: DragStartEvent) {
+    setDraggingId(event.active.id)
+  }
+
   function handleDragEnd(event: DragEndEvent) {
+    setDraggingId(null)
     const { active, over } = event
 
     if (!over || active.id === over.id) return
@@ -68,10 +78,13 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
     moveTodoMutation.mutate({ fromId: active.id, toId: over.id })
   }
 
+  const draggingTodo = todoQuery.data.find((t) => t.id === draggingId)
+
   return (
     <ol role="list" className={styles.todoList}>
       <AnimatePresence>
         <DndContext
+          onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -89,6 +102,9 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
               />
             ))}
           </SortableContext>
+          <DragOverlay>
+            {draggingTodo ? <TodoItem todo={draggingTodo} /> : null}
+          </DragOverlay>
         </DndContext>
       </AnimatePresence>
     </ol>

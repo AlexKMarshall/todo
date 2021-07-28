@@ -12,7 +12,7 @@ import { DraggableSyntheticListeners } from '@dnd-kit/core'
 
 type Props = {
   todo: Todo
-  onDeleteTodo: (todo: Todo) => void
+  onDeleteTodo?: (todo: Todo) => void
   // Todo, extract from useSortable
   dragAttributes?: {
     role: string
@@ -42,7 +42,7 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
   const deleteTodoMutation = useDeleteTodo({
     todo,
     onSuccess: () => {
-      onDeleteTodo(todo)
+      onDeleteTodo?.(todo)
     },
   })
 
