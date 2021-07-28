@@ -103,7 +103,9 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
             ))}
           </SortableContext>
           <DragOverlay>
-            {draggingTodo ? <TodoItem todo={draggingTodo} /> : null}
+            {draggingTodo ? (
+              <TodoItem todo={draggingTodo} isDragging={true} dragOverlay />
+            ) : null}
           </DragOverlay>
         </DndContext>
       </AnimatePresence>

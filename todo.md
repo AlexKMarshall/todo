@@ -14,5 +14,7 @@ SSR rendering applies aria-current = true to the All link when page is loaded wi
 make the props for Link discriminate properly
 sort out timing of theme-switch animations on header image and app colours
 make drag overlay
+grabbing cursor
 use msw
 only show clear completed if there are any complete
+stagger the list animations - fade in after layout animation? fade out before layout animation?

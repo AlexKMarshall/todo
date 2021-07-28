@@ -24,6 +24,7 @@ type Props = {
   dragListeners?: DraggableSyntheticListeners
   dragTransform?: Transform | null
   isDragging?: boolean
+  dragOverlay?: boolean
 }
 
 export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
@@ -34,6 +35,7 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
     dragListeners,
     dragTransform,
     isDragging,
+    dragOverlay,
   },
   ref
 ) {
@@ -68,13 +70,16 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
           ? {
               x: dragTransform.x,
               y: dragTransform.y,
-              scale: isDragging ? 1.05 : 1,
-              zIndex: isDragging ? 1 : 0,
-              boxShadow: isDragging
+              opacity: isDragging ? 0 : 1,
+            }
+          : {
+              ...initialStyles,
+              scale: dragOverlay ? 1.05 : 1,
+              zIndex: dragOverlay ? 1 : 0,
+              boxShadow: dragOverlay
                 ? `0 0 0 1px ${outlineColor}, 0px 15px 15px 0 ${shadowColor}`
                 : `0 0 0 0 ${outlineColor}, 0 0 0 0 ${shadowColor}`,
             }
-          : initialStyles
       }
       transition={{
         duration: !isDragging ? 0.25 : 0,
