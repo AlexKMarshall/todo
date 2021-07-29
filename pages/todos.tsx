@@ -50,9 +50,9 @@ export default function TodosPage() {
               }}
               filters={filters}
             />
-            {/* <footer>
-            <small>Some footer text</small>
-          </footer> */}
+            <footer className={styles.footer}>
+              <small>Drag and drop to reorder list</small>
+            </footer>
           </main>
         </div>
       </div>
