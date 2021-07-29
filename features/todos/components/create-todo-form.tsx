@@ -1,8 +1,8 @@
-import { Todo } from './schemas'
+import { Todo } from '../schemas'
 import { nanoid } from 'nanoid'
 import { FormEvent, useState } from 'react'
-import { useCreateTodo } from './queries'
-import styles from './todos.module.scss'
+import { useCreateTodo } from '../queries'
+import styles from '../todos.module.scss'
 import { VisuallyHidden } from '@components/visually-hidden'
 import { TextInput } from '@components/text-input'
 

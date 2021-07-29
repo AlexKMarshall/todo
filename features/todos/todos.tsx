@@ -1,11 +1,11 @@
 import styles from './todos.module.scss'
 import { useNotification } from '@context/notification'
-import { ActiveTodosCount } from '@components/active-todos-count'
+import { ActiveTodosCount } from './components/active-todos-count'
 import { Todo, TodoFilters } from './schemas'
 import { Link } from '@components/link'
 import { useClearCompletedTodos } from './queries'
-import { CreateTodoForm } from './create-todo-form'
-import { TodoList } from './todo-list'
+import { CreateTodoForm } from './components/create-todo-form'
+import { TodoList } from './components/todo-list'
 
 type Props = {
   onDeleteTodo?: (todo: Todo) => void

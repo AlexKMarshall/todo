@@ -61,17 +61,18 @@
   z-index: -1;
 
   position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    border-radius: var(--border-radius);
-    top: 0;
-    right: 20%;
-    bottom: 0;
-    left: 20%;
-    box-shadow: 0 0 50px 10px var(--shadow-color);
-    z-index: -1;
-  }
+  // TODO not sure how to make this sit behind the .backgroundShadow element
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   border-radius: var(--border-radius);
+  //   top: 0;
+  //   right: 20%;
+  //   bottom: 0;
+  //   left: 20%;
+  //   box-shadow: 0 0 50px 10px var(--shadow-color);
+  //   z-index: -1;
+  // }
 }
 
 .smallText {
@@ -140,6 +141,7 @@
   flex-direction: column;
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
+  isolation: isolate;
 
   & > :first-child {
     // TODO avoid this workaround?
@@ -148,6 +150,7 @@
   }
 
   & > * {
+    border-top: 1px hidden pink;
     border-bottom: 1px solid var(--divider-color);
   }
 }
@@ -164,11 +167,26 @@
   overflow: hidden;
   // we need this for animating in the todo so the item isn't see-through
   background-color: var(--main-background-color);
+}
 
-  & > span {
-    display: flex;
-    align-items: center;
-    gap: var(--s1);
-    padding-right: var(--s1);
+.dragHandle {
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--s-2));
   }
+}
+
+.todoClipInWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  padding-right: var(--s1);
+}
+
+.itemsCount {
+  composes: smallText;
+
+  grid-area: count;
+  border-bottom-left-radius: 4px;
+  padding: var(--s0) var(--s1);
+  color: var(--muted-text-color);
 }

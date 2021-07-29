@@ -4,6 +4,7 @@ import {
   getTodos,
   updateTodo,
   deleteTodo,
+  moveTodo,
 } from '@services/client'
 import { Todo, TodoFilters } from './schemas'
 import {
@@ -19,12 +20,23 @@ const todoKeys = {
   list: (filters: TodoFilters = {}) => [...todoKeys.lists(), filters] as const,
 }
 
-type UseTodosProps = {
+type UseTodosProps<TData> = {
   filters?: TodoFilters
+  select?: (todos: Array<Todo>) => TData
 }
 
-export function useTodos({ filters = {} }: UseTodosProps = {}) {
-  return useQuery(todoKeys.list(filters), () => getTodos(filters))
+export function useTodos<TData = Array<Todo>>({
+  filters = {},
+  select,
+}: UseTodosProps<TData> = {}) {
+  return useQuery(todoKeys.list(filters), () => getTodos(filters), { select })
+}
+
+export function useActiveTodosCount() {
+  return useTodos({
+    filters: { status: 'active' },
+    select: (todos) => todos.length,
+  })
 }
 
 type UseCreateTodoProps = {
@@ -86,6 +98,24 @@ export function useToggleTodoComplete({ todo }: UseToggleTodoCompleteProps) {
       }
       return updateTodo(updatedTodo)
     },
+    {
+      onSettled: () => {
+        queryClient.invalidateQueries(todoKeys.lists())
+      },
+    }
+  )
+}
+
+export function useMoveTodoMutation() {
+  const queryClient = useQueryClient()
+
+  type MoveTodoVariables = {
+    fromId: Todo['id']
+    toId: Todo['id']
+  }
+
+  return useMutation(
+    ({ fromId, toId }: MoveTodoVariables) => moveTodo({ fromId, toId }),
     {
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())

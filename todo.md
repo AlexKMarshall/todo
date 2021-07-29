@@ -6,14 +6,15 @@ test next/image without mocking it?
 background position fixed?
 refactor to sass mixins?
 animation on mode icon
-filter link active/focus state shouldn't obscure over current state - use focusVisible?
 fix the moon svg
-animate the strike through?
-display empty placeholder when all items are complete, and viewing only active todos
 show proper loading state
 show proper error state
 how to test components that use router
-weird shadow on switching from list with stuff in to empty list, maybe list items don't stretch the whole width if there's no content
 SSR rendering applies aria-current = true to the All link when page is loaded with a query
 make the props for Link discriminate properly
 sort out timing of theme-switch animations on header image and app colours
+make drag overlay
+grabbing cursor
+use msw
+only show clear completed if there are any complete
+stagger the list animations - fade in after layout animation? fade out before layout animation?
