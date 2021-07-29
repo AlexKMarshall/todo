@@ -36,7 +36,12 @@ function getEmptyListText(filters: TodoFilters) {
 export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   const todoQuery = useTodos({ filters })
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
   const moveTodoMutation = useMoveTodoMutation()
