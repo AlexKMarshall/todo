@@ -10,6 +10,8 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  MouseSensor,
+  TouchSensor,
 } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -36,9 +38,20 @@ function getEmptyListText(filters: TodoFilters) {
 export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   const todoQuery = useTodos({ filters })
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    // useSensor(PointerSensor, {
+    //   activationConstraint: {
+    //     delay: 100,
+    //     tolerance: 5,
+    //   },
+    // }),
+    useSensor(MouseSensor, {
       activationConstraint: {
-        delay: 100,
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
         tolerance: 5,
       },
     }),

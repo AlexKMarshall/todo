@@ -27,7 +27,7 @@ ol[role='list'] {
 
 /* Set core root defaults */
 html:focus-within {
-  // scroll-behavior: smooth;
+  // scroll-behavior: smooth;  Breaks Drag and drop
 }
 
 /* Set core body defaults */
@@ -35,6 +35,7 @@ body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
+  overscroll-behavior-y: none; // trying this to prevent weird refresh on mobile
 }
 
 /* A elements that don't have a class get default styles */
