@@ -10,6 +10,7 @@ show proper error state
 how to test components that use router
 SSR rendering applies aria-current = true to the All link when page is loaded with a query
 make the props for Link discriminate properly
+Do the same for Button
 sort out timing of theme-switch animations on header image and app colours
 grabbing cursor
 use msw

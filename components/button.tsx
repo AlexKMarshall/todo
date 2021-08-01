@@ -1,4 +1,12 @@
-.button {
+import styled from 'styled-components'
+
+type Props = React.ComponentPropsWithoutRef<'button'>
+
+export function Button(props: Props) {
+  return <ButtonEl type="button" {...props} />
+}
+
+export const ButtonEl = styled.button`
   border: none;
   background-color: transparent;
   font-family: inherit;
@@ -29,18 +37,4 @@
   &:focus-visible {
     outline: 5px auto;
   }
-}
-
-// https://moderncss.dev/icon-button-css-styling-guide/
-.iconButton {
-  composes: button;
-  border-radius: 50%;
-  padding: 0.35em;
-
-  & svg {
-    fill: currentColor;
-    stroke: currentColor;
-    width: 1em;
-    height: 1em;
-  }
-}
+`
