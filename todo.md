@@ -16,3 +16,4 @@ grabbing cursor
 use msw
 stagger the list animations - fade in after layout animation? fade out before layout animation?
 better descriptions for drag and drop - don't use id if possible
+replace flex-grow with flex?
