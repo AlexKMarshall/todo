@@ -3,9 +3,10 @@ import { useNotification } from '@context/notification'
 import { ActiveTodosCount } from './components/active-todos-count'
 import { Todo, TodoFilters } from './schemas'
 import { Link } from '@components/link'
-import { useClearCompletedTodos } from './queries'
+import { useClearCompletedTodos, useTodos } from './queries'
 import { CreateTodoForm } from './components/create-todo-form'
 import { TodoList } from './components/todo-list'
+import { AnimatePresence } from 'framer-motion'
 
 type Props = {
   onDeleteTodo?: (todo: Todo) => void
@@ -26,6 +27,11 @@ export function Todos({ onDeleteTodo = () => {}, filters = {} }: Props) {
     },
   })
 
+  const countCompletedTodosQuery = useTodos({
+    filters: { status: 'completed' },
+    select: (todos) => todos.length,
+  })
+
   return (
     <div className={styles.appContent}>
       <CreateTodoForm
@@ -40,9 +46,14 @@ export function Todos({ onDeleteTodo = () => {}, filters = {} }: Props) {
         <Link href="/todos?status=completed">Completed</Link>
       </div>
       <div className={styles.clearCompleted}>
-        <Link onClick={() => clearCompletedTodosMutation.mutate()}>
-          Clear Completed
-        </Link>
+        <AnimatePresence>
+          {countCompletedTodosQuery.isSuccess &&
+          countCompletedTodosQuery.data > 0 ? (
+            <Link onClick={() => clearCompletedTodosMutation.mutate()}>
+              Clear Completed
+            </Link>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
   )

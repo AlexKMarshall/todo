@@ -1,8 +1,5 @@
-drag and drop not working on mobile
-trainsitions on all hover/focus states
 on desktop only show delete button on hover
-What happens when you only have a couple of todos, should it shrink?
-What about when you have loads? Should it grow?
+trainsitions on all hover/focus states
 test next/image without mocking it?
 background position fixed?
 refactor to sass mixins?
@@ -16,5 +13,4 @@ make the props for Link discriminate properly
 sort out timing of theme-switch animations on header image and app colours
 grabbing cursor
 use msw
-only show clear completed if there are any complete
 stagger the list animations - fade in after layout animation? fade out before layout animation?

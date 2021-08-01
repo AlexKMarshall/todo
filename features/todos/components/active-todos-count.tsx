@@ -1,8 +1,11 @@
 import styles from '../todos.module.scss'
-import { useActiveTodosCount } from '../queries'
+import { useTodos } from '../queries'
 
 export function ActiveTodosCount() {
-  const activeTodosCountQuery = useActiveTodosCount()
+  const activeTodosCountQuery = useTodos({
+    filters: { status: 'active' },
+    select: (todos) => todos.length,
+  })
 
   if (!activeTodosCountQuery.isSuccess) return null
 

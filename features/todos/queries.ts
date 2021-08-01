@@ -32,13 +32,6 @@ export function useTodos<TData = Array<Todo>>({
   return useQuery(todoKeys.list(filters), () => getTodos(filters), { select })
 }
 
-export function useActiveTodosCount() {
-  return useTodos({
-    filters: { status: 'active' },
-    select: (todos) => todos.length,
-  })
-}
-
 type UseCreateTodoProps = {
   onSuccess?: UseMutationOptions<Todo, unknown, Todo>['onSuccess']
 }
