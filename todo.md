@@ -1,4 +1,4 @@
-drag and drop broken on scroll
+drag and drop not working on mobile
 trainsitions on all hover/focus states
 on desktop only show delete button on hover
 What happens when you only have a couple of todos, should it shrink?
