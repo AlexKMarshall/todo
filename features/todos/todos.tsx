@@ -4,9 +4,10 @@ import { ActiveTodosCount } from './components/active-todos-count'
 import { Todo, TodoFilters } from './schemas'
 import { Link } from '@components/link'
 import { useClearCompletedTodos, useTodos } from './queries'
-import { CreateTodoForm } from './components/create-todo-form'
+import { CreateTodoForm as CreateTodoFormComponent } from './components/create-todo-form'
 import { TodoList } from './components/todo-list'
 import { AnimatePresence } from 'framer-motion'
+import styled from 'styled-components'
 
 type Props = {
   onDeleteTodo?: (todo: Todo) => void
@@ -58,3 +59,7 @@ export function Todos({ onDeleteTodo = () => {}, filters = {} }: Props) {
     </div>
   )
 }
+
+const CreateTodoForm = styled(CreateTodoFormComponent)`
+  grid-area: input;
+`

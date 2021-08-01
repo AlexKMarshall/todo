@@ -3,7 +3,7 @@ import userEvent, { specialChars } from '@testing-library/user-event'
 import Image from 'next/image'
 import faker from 'faker'
 import * as client from '../../services/client'
-import { Todo } from 'types/todo'
+import { Todo } from './schemas'
 import { Todos } from './todos'
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 

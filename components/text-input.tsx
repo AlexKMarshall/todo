@@ -16,7 +16,7 @@ export function TextInput({ label, className, ...delegated }: Props) {
 }
 
 const Wrapper = styled.label`
-  flex: 1;
+  width: 100%;
   display: flex;
   position: relative;
   align-items: center;

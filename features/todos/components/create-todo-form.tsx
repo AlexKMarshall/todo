@@ -2,15 +2,16 @@ import { Todo } from '../schemas'
 import { nanoid } from 'nanoid'
 import { FormEvent, useState } from 'react'
 import { useCreateTodo } from '../queries'
-import styles from '../todos.module.scss'
 import { VisuallyHidden } from '@components/visually-hidden'
 import { TextInput } from '@components/text-input'
+import styled from 'styled-components'
 
 type Props = {
   onCreateTodo?: (todo: Todo) => void
+  className?: string
 }
 
-export function CreateTodoForm({ onCreateTodo }: Props) {
+export function CreateTodoForm({ onCreateTodo, className }: Props) {
   const [todoInputText, setTodoInputText] = useState('')
   const isInputInvalid = todoInputText.trim().length === 0
 
@@ -33,7 +34,7 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
   }
 
   return (
-    <form onSubmit={submitForm} className={styles.todoForm}>
+    <Form onSubmit={submitForm} className={className}>
       <TextInput
         value={todoInputText}
         onChange={(e) => setTodoInputText(e.target.value)}
@@ -46,6 +47,27 @@ export function CreateTodoForm({ onCreateTodo }: Props) {
           add
         </button>
       </VisuallyHidden>
-    </form>
+    </Form>
   )
 }
+
+const Form = styled.form`
+  /* grid-area: input; // move this bit */
+  align-items: center;
+  margin-bottom: var(--gutter);
+  border-radius: var(--border-radius);
+
+  box-shadow: 0 0 30px 0px var(--shadow-color);
+
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 20%;
+    bottom: 0;
+    left: 20%;
+    box-shadow: 0 0 50px 10px var(--shadow-color);
+    z-index: -1;
+  }
+`
