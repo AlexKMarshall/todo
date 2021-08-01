@@ -120,12 +120,13 @@
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   isolation: isolate;
+  overflow: hidden;
 
-  & > :first-child {
-    // TODO avoid this workaround?
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-  }
+  // & > :first-child {
+  //   // TODO avoid this workaround?
+  //   border-top-left-radius: 25px;
+  //   border-top-right-radius: var(--border-radius);
+  // }
 
   & > * {
     border-top: 1px hidden pink;
@@ -139,25 +140,6 @@
   border-top-right-radius: 4px;
   padding: var(--s0) var(--s1);
   color: var(--muted-text-color);
-}
-
-.todoItem {
-  overflow: hidden;
-  // we need this for animating in the todo so the item isn't see-through
-  background-color: var(--main-background-color);
-}
-
-.dragHandle {
-  &:focus-visible {
-    outline-offset: calc(-1 * var(--s-2));
-  }
-}
-
-.todoClipInWrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--s1);
-  padding-right: var(--s1);
 }
 
 .itemsCount {
