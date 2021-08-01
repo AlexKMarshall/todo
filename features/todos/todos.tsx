@@ -6,7 +6,7 @@ import { Todo, TodoFilters } from './schemas'
 import { Link } from '@components/link'
 import { useClearCompletedTodos, useTodos } from './queries'
 import { CreateTodoForm as CreateTodoFormComponent } from './components/create-todo-form'
-import { TodoList } from './components/todo-list'
+import { TodoList as TodoListComponent } from './components/todo-list'
 import { AnimatePresence } from 'framer-motion'
 
 type Props = {
@@ -81,4 +81,7 @@ function useShouldShowClearCompleted() {
 
 const CreateTodoForm = styled(CreateTodoFormComponent)`
   grid-area: input;
+`
+const TodoList = styled(TodoListComponent)`
+  grid-area: list;
 `

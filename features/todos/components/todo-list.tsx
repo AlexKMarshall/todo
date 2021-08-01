@@ -1,10 +1,10 @@
+import styled from 'styled-components'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   DndContext,
   closestCenter,
   KeyboardSensor,
-  PointerSensor,
   useSensor,
   useSensors,
   DragEndEvent,
@@ -21,21 +21,14 @@ import {
 import { SortableTodoItem, TodoItem } from './todo-item'
 import { Todo, TodoFilters } from '../schemas'
 import { useMoveTodoMutation, useTodos } from '../queries'
-import styles from '../todos.module.scss'
-import { Todos } from '../todos'
 
 type Props = {
   onDeleteTodo: (todo: Todo) => void
   filters?: TodoFilters
+  className?: string
 }
 
-function getEmptyListText(filters: TodoFilters) {
-  if (filters.status === 'active') return 'You have no active todos'
-  if (filters.status === 'completed') return 'You have no completed todos'
-  return 'You have no todos. Add some more?'
-}
-
-export function TodoList({ onDeleteTodo, filters = {} }: Props) {
+export function TodoList({ onDeleteTodo, filters = {}, className }: Props) {
   const todoQuery = useTodos({ filters })
   const sensors = useSensors(
     // useSensor(PointerSensor, {
@@ -74,13 +67,13 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
 
   if (isListEmpty)
     return (
-      <motion.div
+      <EmptyMessage
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={styles.emptyMessage}
+        className={className}
       >
         <p>{getEmptyListText(filters)}</p>
-      </motion.div>
+      </EmptyMessage>
     )
 
   function handleDragStart(event: DragStartEvent) {
@@ -99,7 +92,7 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
   const draggingTodo = todoQuery.data.find((t) => t.id === draggingId)
 
   return (
-    <ol role="list" className={styles.todoList}>
+    <Ol role="list" className={className}>
       <AnimatePresence>
         <DndContext
           onDragStart={handleDragStart}
@@ -127,6 +120,35 @@ export function TodoList({ onDeleteTodo, filters = {} }: Props) {
           </DragOverlay>
         </DndContext>
       </AnimatePresence>
-    </ol>
+    </Ol>
   )
 }
+
+function getEmptyListText(filters: TodoFilters) {
+  if (filters.status === 'active') return 'You have no active todos'
+  if (filters.status === 'completed') return 'You have no completed todos'
+  return 'You have no todos. Add some more?'
+}
+
+const Ol = styled.ol`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  isolation: isolate;
+  overflow: hidden;
+
+  & > * {
+    border-top: 1px hidden var(--divider-color);
+    border-bottom: 1px solid var(--divider-color);
+  }
+`
+
+const EmptyMessage = motion(styled.div`
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: var(--s0) var(--s1);
+  color: var(--muted-text-color);
+`)
