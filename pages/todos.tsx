@@ -76,24 +76,20 @@ const BackgroundWrapper = motion(styled.div`
 `)
 
 const Header = styled.header`
-  .header {
-    font-size: var(--s2);
-    --button-color: var(--very-light-grayish-blue);
-    --button-hover-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  font-size: var(--s2);
+  --button-color: var(--very-light-grayish-blue);
+  --button-hover-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 const Heading = styled.h1`
-  .heading {
-    font-size: var(--s3);
-    font-weight: 700;
-    color: var(--heading-color);
-    text-transform: uppercase;
-    letter-spacing: 0.17em;
-  }
+  font-size: var(--s3);
+  font-weight: 700;
+  color: var(--heading-color);
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
 `
 
 const Footer = styled.footer`
