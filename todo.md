@@ -1,8 +1,6 @@
 trainsitions on all hover/focus states
 test next/image without mocking it?
-background position fixed?
 animation on mode icon
-fix the moon svg
 show proper loading state
 show proper error state
 how to test components that use router
