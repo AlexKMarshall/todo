@@ -1,4 +1,4 @@
-on desktop only show delete button on hover
+Filter links not receiving keyboard focus
 trainsitions on all hover/focus states
 test next/image without mocking it?
 background position fixed?

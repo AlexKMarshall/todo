@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion'
 import { Transform } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
-import { DeleteButton } from '@components/delete-button'
-import styles from '../todos.module.scss'
+import { DeleteButton as DeleteButtonComponent } from '@components/delete-button'
 import { Todo } from '../schemas'
 import { useDeleteTodo, useToggleTodoComplete } from '../queries'
 import { Checkbox } from '@components/checkbox'
@@ -63,7 +62,7 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
   }
 
   return (
-    <Li
+    <MotionLi
       // className={styles.todoItem}
       layoutId={todo.id}
       animate={
@@ -111,7 +110,7 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
           />
         </FadeIn>
       </DragHandle>
-    </Li>
+    </MotionLi>
   )
 })
 
@@ -145,10 +144,12 @@ export function SortableTodoItem({
   )
 }
 
-const Li = motion(styled.li`
+const Li = styled.li`
   background-color: var(--main-background-color);
   overflow: hidden;
-`)
+`
+
+const MotionLi = motion(Li)
 
 const DragHandle = styled.div`
   &:focus-visible {
@@ -161,3 +162,15 @@ const FadeIn = motion(styled.div`
   gap: var(--s1);
   padding-right: var(--s1);
 `)
+
+const DeleteButton = styled(DeleteButtonComponent)`
+  @media (hover: hover) and (pointer: fine) {
+    opacity: 0;
+    transition: opacity 200ms ease-in-out;
+
+    ${Li}:hover &,
+    ${Li}:focus-within & {
+      opacity: 1;
+    }
+  }
+`
