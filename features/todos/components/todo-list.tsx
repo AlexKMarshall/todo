@@ -138,7 +138,11 @@ const Ol = styled.ol`
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   isolation: isolate;
-  overflow: hidden;
+
+  & > ::first-child {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
 
   & > * {
     border-top: 1px hidden var(--divider-color);

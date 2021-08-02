@@ -147,6 +147,7 @@ export function SortableTodoItem({
 
 const Li = motion(styled.li`
   background-color: var(--main-background-color);
+  overflow: hidden;
 `)
 
 const DragHandle = styled.div`

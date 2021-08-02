@@ -33,6 +33,7 @@ const DecorativeCircle = styled.span`
 `
 
 const Input = styled.input`
+  width: 0;
   flex: 1;
   padding-top: var(--s0);
   padding-right: var(--s1);
