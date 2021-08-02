@@ -7,6 +7,8 @@ import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
 import styles from '@styles/todo.module.scss'
 import { Todos, todoFiltersSchema } from '@features/todos'
+import styled from 'styled-components'
+import { Center, Cover, CoverInner } from '@components/layout'
 
 export default function TodosPage() {
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -26,24 +28,21 @@ export default function TodosPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.screen}>
+      <Screen>
         <AnimatePresence>
-          <motion.div
-            key={theme}
-            className={styles.background}
-            exit={{ opacity: 0 }}
-          >
+          <BackgroundWrapper key={theme} exit={{ opacity: 0 }}>
             <BackgroundImage />
-          </motion.div>
+          </BackgroundWrapper>
         </AnimatePresence>
-        <div className={styles.center}>
-          <main className={styles.cover}>
+        <Center>
+          <Cover as="main">
             <header className={styles.header}>
               <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
                 Todo
               </h1>
               <ThemeToggle />
             </header>
+
             <Todos
               onDeleteTodo={() => {
                 headingRef.current?.focus()
@@ -53,9 +52,26 @@ export default function TodosPage() {
             <footer className={styles.footer}>
               <small>Drag and drop to reorder list</small>
             </footer>
-          </main>
-        </div>
-      </div>
+          </Cover>
+        </Center>
+      </Screen>
     </>
   )
 }
+
+const Screen = styled.div`
+  min-height: 100%;
+  display: grid;
+  grid-template-areas: 'screen';
+
+  & > * {
+    grid-area: screen;
+  }
+`
+
+const BackgroundWrapper = motion(styled.div`
+  position: relative;
+  max-height: 33vh;
+  width: 100%;
+  background: var(--background-gradiant);
+`)

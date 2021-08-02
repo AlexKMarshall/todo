@@ -17,3 +17,5 @@ use msw
 stagger the list animations - fade in after layout animation? fade out before layout animation?
 better descriptions for drag and drop - don't use id if possible
 replace flex-grow with flex?
+turn Cover into compound component with header, footer and middle
+Why do typescript errors not fail yarn dev

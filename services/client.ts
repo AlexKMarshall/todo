@@ -1,5 +1,5 @@
 import { arrayMove } from '@dnd-kit/sortable'
-import { Todo, TodoFilters } from 'types/todo'
+import { Todo, TodoFilters } from '../features/todos/schemas'
 const STORAGE_KEY = 'todo-app-todos'
 
 function getAllTodos(): Promise<Array<Todo>> {
