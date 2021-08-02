@@ -21,7 +21,7 @@ export function Link(props: Props) {
 
   if ('href' in props) {
     return (
-      <NextLink href={props.href}>
+      <NextLink href={props.href} passHref>
         <Wrapper as="a" aria-current={router?.asPath === props.href}>
           {props.children}
         </Wrapper>
