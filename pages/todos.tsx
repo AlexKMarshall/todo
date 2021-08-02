@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -5,9 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useTheme } from '@context/theme'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
-import styles from '@styles/todo.module.scss'
 import { Todos, todoFiltersSchema } from '@features/todos'
-import styled from 'styled-components'
 import { Center, Cover, CoverInner } from '@components/layout'
 
 export default function TodosPage() {
@@ -36,12 +35,12 @@ export default function TodosPage() {
         </AnimatePresence>
         <Center>
           <Cover as="main">
-            <header className={styles.header}>
-              <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
+            <Header>
+              <Heading tabIndex={-1} ref={headingRef}>
                 Todo
-              </h1>
+              </Heading>
               <ThemeToggle />
-            </header>
+            </Header>
 
             <Todos
               onDeleteTodo={() => {
@@ -49,9 +48,9 @@ export default function TodosPage() {
               }}
               filters={filters}
             />
-            <footer className={styles.footer}>
+            <Footer>
               <small>Drag and drop to reorder list</small>
-            </footer>
+            </Footer>
           </Cover>
         </Center>
       </Screen>
@@ -75,3 +74,32 @@ const BackgroundWrapper = motion(styled.div`
   width: 100%;
   background: var(--background-gradiant);
 `)
+
+const Header = styled.header`
+  .header {
+    font-size: var(--s2);
+    --button-color: var(--very-light-grayish-blue);
+    --button-hover-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+`
+
+const Heading = styled.h1`
+  .heading {
+    font-size: var(--s3);
+    font-weight: 700;
+    color: var(--heading-color);
+    text-transform: uppercase;
+    letter-spacing: 0.17em;
+  }
+`
+
+const Footer = styled.footer`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--muted-text-color);
+`
