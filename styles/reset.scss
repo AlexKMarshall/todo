@@ -31,8 +31,9 @@ html:focus-within {
 }
 
 html,
-body {
-  min-height: 100%;
+body,
+#__next {
+  height: 100%;
 }
 
 /* Set core body defaults */

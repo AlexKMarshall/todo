@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -5,8 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useTheme } from '@context/theme'
 import { ThemeToggle } from '@components/theme-toggle'
 import { BackgroundImage } from '@components/background-image'
-import styles from '@styles/todo.module.scss'
 import { Todos, todoFiltersSchema } from '@features/todos'
+import { Center, Cover, CoverInner } from '@components/layout'
 
 export default function TodosPage() {
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -26,36 +27,75 @@ export default function TodosPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.screen}>
+      <Screen>
         <AnimatePresence>
-          <motion.div
-            key={theme}
-            className={styles.background}
-            exit={{ opacity: 0 }}
-          >
+          <BackgroundWrapper key={theme} exit={{ opacity: 0 }}>
             <BackgroundImage />
-          </motion.div>
+          </BackgroundWrapper>
         </AnimatePresence>
-        <div className={styles.center}>
-          <main className={styles.cover}>
-            <header className={styles.header}>
-              <h1 tabIndex={-1} ref={headingRef} className={styles.heading}>
+        <Center>
+          <Cover as="main">
+            <Header>
+              <Heading tabIndex={-1} ref={headingRef}>
                 Todo
-              </h1>
+              </Heading>
               <ThemeToggle />
-            </header>
+            </Header>
+
             <Todos
               onDeleteTodo={() => {
                 headingRef.current?.focus()
               }}
               filters={filters}
             />
-            <footer className={styles.footer}>
+            <Footer>
               <small>Drag and drop to reorder list</small>
-            </footer>
-          </main>
-        </div>
-      </div>
+            </Footer>
+          </Cover>
+        </Center>
+      </Screen>
     </>
   )
 }
+
+const Screen = styled.div`
+  min-height: 100%;
+  display: grid;
+  grid-template-areas: 'screen';
+
+  & > * {
+    grid-area: screen;
+  }
+`
+
+const BackgroundWrapper = motion(styled.div`
+  position: relative;
+  max-height: 33vh;
+  width: 100%;
+  background: var(--background-gradiant);
+`)
+
+const Header = styled.header`
+  font-size: var(--s2);
+  --button-color: var(--very-light-grayish-blue);
+  --button-hover-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Heading = styled.h1`
+  font-size: var(--s3);
+  font-weight: 700;
+  color: var(--heading-color);
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+`
+
+const Footer = styled.footer`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--muted-text-color);
+`

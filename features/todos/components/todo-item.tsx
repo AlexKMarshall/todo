@@ -3,12 +3,13 @@ import { Transform } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
 import { DeleteButton } from '@components/delete-button'
 import styles from '../todos.module.scss'
-import { Todo } from 'types/todo'
+import { Todo } from '../schemas'
 import { useDeleteTodo, useToggleTodoComplete } from '../queries'
-import { Checkbox } from '@components/checkbox/checkbox'
+import { Checkbox } from '@components/checkbox'
 import { useTheme } from '@context/theme'
 import { forwardRef } from 'react'
 import { DraggableSyntheticListeners } from '@dnd-kit/core'
+import styled from 'styled-components'
 
 type Props = {
   todo: Todo
@@ -62,8 +63,8 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
   }
 
   return (
-    <motion.li
-      className={styles.todoItem}
+    <Li
+      // className={styles.todoItem}
       layoutId={todo.id}
       animate={
         dragTransform
@@ -92,16 +93,8 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
         },
       }}
     >
-      <div
-        className={styles.dragHandle}
-        ref={ref}
-        {...dragAttributes}
-        {...dragListeners}
-      >
-        <motion.span
-          className={styles.todoClipInWrapper}
-          // initial={{ y: '120%' }}
-          // animate={{ y: 0 }}
+      <DragHandle ref={ref} {...dragAttributes} {...dragListeners}>
+        <FadeIn
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -116,9 +109,9 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
             aria-label={`delete ${todo.title}`}
             onClick={() => deleteTodoMutation.mutate()}
           />
-        </motion.span>
-      </div>
-    </motion.li>
+        </FadeIn>
+      </DragHandle>
+    </Li>
   )
 })
 
@@ -151,3 +144,20 @@ export function SortableTodoItem({
     />
   )
 }
+
+const Li = motion(styled.li`
+  background-color: var(--main-background-color);
+  overflow: hidden;
+`)
+
+const DragHandle = styled.div`
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--s-2));
+  }
+`
+const FadeIn = motion(styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  padding-right: var(--s1);
+`)
