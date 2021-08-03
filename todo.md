@@ -1,3 +1,4 @@
+use msw
 trainsitions on all hover/focus states
 test next/image without mocking it?
 animation on mode icon
@@ -9,7 +10,6 @@ make the props for Link discriminate properly
 Do the same for Button
 sort out timing of theme-switch animations on header image and app colours
 grabbing cursor
-use msw
 stagger the list animations - fade in after layout animation? fade out before layout animation?
 better descriptions for drag and drop - don't use id if possible
 replace flex-grow with flex?

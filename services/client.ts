@@ -2,6 +2,17 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { Todo, TodoFilters } from '../features/todos/schemas'
 const STORAGE_KEY = 'todo-app-todos'
 
+async function client<TResult = unknown>(endpoint: string): Promise<TResult> {
+  try {
+    const res = await fetch(endpoint)
+    const result = (await res.json()) as unknown
+    if (!res.ok) return Promise.reject(result)
+    return result as TResult
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 function getAllTodos(): Promise<Array<Todo>> {
   const serializedTodos = window.localStorage.getItem(STORAGE_KEY)
   if (!serializedTodos) return Promise.resolve([])
@@ -87,4 +98,5 @@ export {
   deleteTodo,
   clearCompletedTodos,
   moveTodo,
+  client,
 }

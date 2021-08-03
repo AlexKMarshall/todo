@@ -5,6 +5,7 @@ import {
   updateTodo,
   deleteTodo,
   moveTodo,
+  client,
 } from '@services/client'
 import { Todo, TodoFilters } from './schemas'
 import {
@@ -29,7 +30,19 @@ export function useTodos<TData = Array<Todo>>({
   filters = {},
   select,
 }: UseTodosProps<TData> = {}) {
-  return useQuery(todoKeys.list(filters), () => getTodos(filters), { select })
+  return useQuery(
+    todoKeys.list(filters),
+    async () => {
+      try {
+        const { todos } = await client<{ todos: Array<Todo> }>('/api/todos')
+        return todos
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    { select }
+  )
+  // return useQuery(todoKeys.list(filters), () => getTodos(filters), { select })
 }
 
 type UseCreateTodoProps = {
