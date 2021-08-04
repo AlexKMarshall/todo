@@ -66,25 +66,6 @@ async function getTodos(filters: TodoFilters = {}): Promise<Array<Todo>> {
   )
 }
 
-async function updateTodo(updatedTodo: Todo): Promise<Todo> {
-  const oldTodos = await getTodos()
-  const todos = oldTodos.map((todo) =>
-    todo.id === updatedTodo.id ? updatedTodo : todo
-  )
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-  return Promise.resolve(updatedTodo)
-}
-
-async function deleteTodo(deletedTodoId: Todo['id']): Promise<Todo> {
-  const oldTodos = await getTodos()
-  const deletedTodo = oldTodos.find((todo) => todo.id === deletedTodoId)
-  if (!deletedTodo) throw new Error(`No Todo found with id ${deletedTodoId}`)
-
-  const todos = oldTodos.filter((todo) => todo.id !== deletedTodoId)
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-  return Promise.resolve(deletedTodo)
-}
-
 async function clearCompletedTodos(): Promise<Array<Todo>> {
   const oldTodos = await getTodos()
   const deletedTodos = oldTodos.filter((todo) => todo.status === 'completed')
@@ -108,11 +89,4 @@ async function moveTodo({ fromId, toId }: MoveTodoProps): Promise<Array<Todo>> {
   return Promise.resolve(todos)
 }
 
-export {
-  getTodos,
-  updateTodo,
-  deleteTodo,
-  clearCompletedTodos,
-  moveTodo,
-  client,
-}
+export { getTodos, clearCompletedTodos, moveTodo, client }

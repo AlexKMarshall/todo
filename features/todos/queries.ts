@@ -1,6 +1,6 @@
-import { clearCompletedTodos, deleteTodo, moveTodo } from '@services/client'
+import { clearCompletedTodos, moveTodo } from '@services/client'
 import { Todo, TodoFilters } from './schemas'
-import { getTodos, postTodo, updateTodo } from './api'
+import { getTodos, postTodo, updateTodo, deleteTodo } from './api'
 import {
   useMutation,
   UseMutationOptions,

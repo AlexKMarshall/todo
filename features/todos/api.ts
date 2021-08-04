@@ -26,4 +26,10 @@ function updateTodo(todo: Todo): Promise<Todo> {
   }).then(({ todo }) => todo)
 }
 
-export { getTodos, postTodo, updateTodo }
+function deleteTodo(todoId: Todo['id']): Promise<Todo> {
+  return client<{ todo: Todo }>(`${BASE_URL}/${todoId}`, {
+    method: 'DELETE',
+  }).then(({ todo }) => todo)
+}
+
+export { getTodos, postTodo, updateTodo, deleteTodo }
