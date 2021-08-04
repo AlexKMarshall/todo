@@ -1,5 +1,3 @@
-use msw
-optimistic mutation response
 trainsitions on all hover/focus states
 test next/image without mocking it?
 animation on mode icon

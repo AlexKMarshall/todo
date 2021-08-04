@@ -13,6 +13,7 @@ import {
   useQuery,
   useQueryClient,
 } from 'react-query'
+import { arrayMove } from '@dnd-kit/sortable'
 
 const todoKeys = {
   all: ['todos'] as const,
@@ -178,6 +179,33 @@ export function useMoveTodoMutation() {
   return useMutation(
     ({ fromId, toId }: MoveTodoVariables) => moveTodo({ fromId, toId }),
     {
+      onMutate: async ({ fromId, toId }: MoveTodoVariables) => {
+        await queryClient.cancelQueries(todoKeys.lists())
+        const previousTodos = queryClient.getQueryData<Array<Todo>>(
+          todoKeys.list()
+        )
+
+        if (previousTodos) {
+          const fromIndex = previousTodos.findIndex((t) => t.id === fromId)
+          const toIndex = previousTodos.findIndex((t) => t.id === toId)
+          if (fromIndex === toIndex || fromIndex === -1 || toIndex === -1)
+            return { previousTodos }
+
+          const reorderedTodos = arrayMove(previousTodos, fromIndex, toIndex)
+
+          queryClient.setQueryData<Array<Todo>>(todoKeys.list(), reorderedTodos)
+        }
+
+        return { previousTodos }
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            context.previousTodos
+          )
+        }
+      },
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())
       },

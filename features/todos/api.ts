@@ -43,7 +43,6 @@ type MoveTodoProps = {
   toId: Todo['id']
 }
 function moveTodo({ fromId, toId }: MoveTodoProps): Promise<Array<Todo>> {
-  console.log('in api moveTodo', { fromId, toId })
   return client<{ todos: Array<Todo> }, MoveTodoProps>(
     `${BASE_URL}/${fromId}/move`,
     {
