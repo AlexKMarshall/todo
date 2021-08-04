@@ -32,4 +32,10 @@ function deleteTodo(todoId: Todo['id']): Promise<Todo> {
   }).then(({ todo }) => todo)
 }
 
-export { getTodos, postTodo, updateTodo, deleteTodo }
+function clearCompletedTodos(): Promise<Array<Todo>> {
+  return client<{ todos: Array<Todo> }>(`${BASE_URL}?status=completed`, {
+    method: 'DELETE',
+  }).then(({ todos }) => todos)
+}
+
+export { getTodos, postTodo, updateTodo, deleteTodo, clearCompletedTodos }

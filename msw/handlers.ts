@@ -2,7 +2,8 @@ import { Todo, TodoFilters } from '@features/todos/schemas'
 import { rest } from 'msw'
 import {
   createTodo,
-  deleteTodo,
+  deleteOneTodo,
+  deleteTodos,
   getTodos,
   updateTodo,
 } from './todo.local-storage.model'
@@ -57,8 +58,22 @@ export const handlers = [
       const { todoId } = req.params
 
       try {
-        const deletedTodo = deleteTodo(todoId)
+        const deletedTodo = deleteOneTodo(todoId)
         return res(ctx.status(200), ctx.json({ todo: deletedTodo }))
+      } catch (error) {
+        return res(ctx.status(500), ctx.json({ error }))
+      }
+    }
+  ),
+  rest.delete<undefined, TResponse<{ todos: Array<Todo> }>>(
+    '/api/todos',
+    (req, res, ctx) => {
+      const { searchParams } = req.url
+      const filters = Object.fromEntries(searchParams) as TodoFilters
+
+      try {
+        const deletedTodos = deleteTodos(filters)
+        return res(ctx.status(200), ctx.json({ todos: deletedTodos }))
       } catch (error) {
         return res(ctx.status(500), ctx.json({ error }))
       }
