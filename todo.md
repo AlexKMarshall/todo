@@ -1,5 +1,5 @@
-test the todos
 prefetch the filtered queries
+link the roles to their labels
 trainsitions on all hover/focus states
 remove the magic border colors in TodoItem
 test next/image without mocking it?
