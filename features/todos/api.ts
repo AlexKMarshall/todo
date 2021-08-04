@@ -12,4 +12,11 @@ function getTodos(filters: TodoFilters = {}): Promise<Array<Todo>> {
   )
 }
 
-export { getTodos }
+function postTodo(todo: Todo): Promise<Todo> {
+  type TodoDTO = { todo: Todo }
+  return client<TodoDTO, TodoDTO>(BASE_URL, { data: { todo } }).then(
+    ({ todo }) => todo
+  )
+}
+
+export { getTodos, postTodo }

@@ -1,10 +1,29 @@
 import { arrayMove } from '@dnd-kit/sortable'
 import { Todo, TodoFilters } from '../features/todos/schemas'
+
 const STORAGE_KEY = 'todo-app-todos'
 
-async function client<TResult = unknown>(endpoint: string): Promise<TResult> {
+type ClientOptions<TData extends Object> = {
+  data?: TData
+}
+
+async function client<TResult = unknown, TData = {}>(
+  endpoint: string,
+  { data }: ClientOptions<TData> = {}
+): Promise<TResult> {
+  const headers = new Headers()
+  if (data) {
+    headers.append('content-type', 'application/json')
+  }
+
+  const init: RequestInit = {
+    method: data ? 'POST' : 'GET',
+    body: data && JSON.stringify(data),
+    headers,
+  }
+
   try {
-    const res = await fetch(endpoint)
+    const res = await fetch(endpoint, init)
     const result = (await res.json()) as unknown
     if (!res.ok) return Promise.reject(result)
     return result as TResult

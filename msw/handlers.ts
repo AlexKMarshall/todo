@@ -26,16 +26,31 @@ function getTodos(filters: TodoFilters = {}): Array<Todo> {
   )
 }
 
+function createTodo(newTodo: Todo): Todo {
+  const oldTodos = getTodos()
+  const todos = [newTodo, ...oldTodos]
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  return newTodo
+}
+
 export const handlers = [
   rest.get('/api/todos', (req, res, ctx) => {
-    const {
-      url: { searchParams },
-    } = req
+    const { searchParams } = req.url
     const filters = Object.fromEntries(searchParams) as TodoFilters
 
     try {
       const todos = getTodos(filters)
       return res(ctx.status(200), ctx.json({ todos }))
+    } catch (error) {
+      return res(ctx.status(500), ctx.json({ error }))
+    }
+  }),
+  rest.post<{ todo: Todo }>('/api/todos', (req, res, ctx) => {
+    const { todo } = req.body
+
+    try {
+      const savedTodo = createTodo(todo)
+      return res(ctx.status(201), ctx.json({ todo: savedTodo }))
     } catch (error) {
       return res(ctx.status(500), ctx.json({ error }))
     }

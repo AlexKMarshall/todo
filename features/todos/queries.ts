@@ -1,14 +1,13 @@
 import {
   clearCompletedTodos,
   createTodo,
-  // getTodos,
   updateTodo,
   deleteTodo,
   moveTodo,
   client,
 } from '@services/client'
 import { Todo, TodoFilters } from './schemas'
-import { getTodos } from './api'
+import { getTodos, postTodo } from './api'
 import {
   useMutation,
   UseMutationOptions,
@@ -43,7 +42,7 @@ export function useCreateTodo({ onSuccess }: UseCreateTodoProps = {}) {
 
   return useMutation(
     (todo: Todo) => {
-      return createTodo(todo)
+      return postTodo(todo)
     },
     {
       onSuccess: (...args) => {
