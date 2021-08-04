@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { WithRequired } from 'utils'
+import { WithRequired } from '../utils'
 import { IconButton } from '@components/icon-button'
 import { CrossIcon } from '@icons/cross-icon'
 

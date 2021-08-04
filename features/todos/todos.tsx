@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { pluralise } from 'utils'
+import { pluralise } from '../../utils'
 import { useNotification } from '@context/notification'
 import { Todo, TodoFilters } from './schemas'
 import { Link } from '@components/link'

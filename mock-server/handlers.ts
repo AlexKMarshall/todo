@@ -1,13 +1,7 @@
 import { Todo, TodoFilters } from '@features/todos/schemas'
 import { rest } from 'msw'
-import {
-  createTodo,
-  deleteOneTodo,
-  deleteTodos,
-  getTodos,
-  moveTodo,
-  updateTodo,
-} from './todo.local-storage.model'
+import * as todoModel from './todo.model'
+// import { create, deleteOne, deleteMany, find, move, update } from './todo.model'
 
 type TError = { error: any }
 type TResponse<TData> = TData | TError
@@ -15,12 +9,12 @@ type TResponse<TData> = TData | TError
 export const handlers = [
   rest.get<undefined, TResponse<{ todos: Array<Todo> }>>(
     '/api/todos',
-    (req, res, ctx) => {
+    async (req, res, ctx) => {
       const { searchParams } = req.url
       const filters = Object.fromEntries(searchParams) as TodoFilters
 
       try {
-        const todos = getTodos(filters)
+        const todos = await todoModel.find(filters)
         return res(ctx.status(200), ctx.json({ todos }))
       } catch (error) {
         return res(ctx.status(500), ctx.json({ error }))
@@ -29,11 +23,11 @@ export const handlers = [
   ),
   rest.post<{ todo: Todo }, TResponse<{ todo: Todo }>>(
     '/api/todos',
-    (req, res, ctx) => {
+    async (req, res, ctx) => {
       const { todo } = req.body
 
       try {
-        const savedTodo = createTodo(todo)
+        const savedTodo = await todoModel.create(todo)
         return res(ctx.status(201), ctx.json({ todo: savedTodo }))
       } catch (error) {
         return res(ctx.status(500), ctx.json({ error }))
@@ -42,11 +36,11 @@ export const handlers = [
   ),
   rest.put<{ todo: Todo }, TResponse<{ todo: Todo }>, { todoId: Todo['id'] }>(
     '/api/todos/:todoId',
-    (req, res, ctx) => {
+    async (req, res, ctx) => {
       const { todo } = req.body
 
       try {
-        const updatedTodo = updateTodo(todo)
+        const updatedTodo = await todoModel.update(todo)
         return res(ctx.status(200), ctx.json({ todo: updatedTodo }))
       } catch (error) {
         return res(ctx.status(500), ctx.json({ error }))
@@ -57,12 +51,12 @@ export const handlers = [
     { toId: Todo['id'] },
     TResponse<{ todos: Array<Todo> }>,
     { todoId: Todo['id'] }
-  >('/api/todos/:todoId/move', (req, res, ctx) => {
+  >('/api/todos/:todoId/move', async (req, res, ctx) => {
     const { todoId: fromId } = req.params
     const { toId } = req.body
 
     try {
-      const todos = moveTodo({ fromId, toId })
+      const todos = await todoModel.move({ fromId, toId })
       return res(ctx.status(200), ctx.json({ todos }))
     } catch (error) {
       return res(ctx.status(500), ctx.json({ error }))
@@ -70,11 +64,11 @@ export const handlers = [
   }),
   rest.delete<undefined, TResponse<{ todo: Todo }>, { todoId: string }>(
     '/api/todos/:todoId',
-    (req, res, ctx) => {
+    async (req, res, ctx) => {
       const { todoId } = req.params
 
       try {
-        const deletedTodo = deleteOneTodo(todoId)
+        const deletedTodo = await todoModel.deleteOne(todoId)
         return res(ctx.status(200), ctx.json({ todo: deletedTodo }))
       } catch (error) {
         return res(ctx.status(500), ctx.json({ error }))
@@ -83,12 +77,12 @@ export const handlers = [
   ),
   rest.delete<undefined, TResponse<{ todos: Array<Todo> }>>(
     '/api/todos',
-    (req, res, ctx) => {
+    async (req, res, ctx) => {
       const { searchParams } = req.url
       const filters = Object.fromEntries(searchParams) as TodoFilters
 
       try {
-        const deletedTodos = deleteTodos(filters)
+        const deletedTodos = await todoModel.deleteMany(filters)
         return res(ctx.status(200), ctx.json({ todos: deletedTodos }))
       } catch (error) {
         return res(ctx.status(500), ctx.json({ error }))

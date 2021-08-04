@@ -1,4 +1,7 @@
+test the todos
+prefetch the filtered queries
 trainsitions on all hover/focus states
+remove the magic border colors in TodoItem
 test next/image without mocking it?
 animation on mode icon
 show proper loading state

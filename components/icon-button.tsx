@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { WithRequired } from 'utils'
+import { WithRequired } from '../utils'
 import { Button } from './button'
 
 type Props = WithRequired<

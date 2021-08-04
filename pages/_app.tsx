@@ -6,7 +6,7 @@ import { NotificationProvider } from 'context/notification'
 import type { AppProps } from 'next/app'
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
-  require('../msw')
+  require('../mock-server')
 }
 
 const queryClient = new QueryClient()
