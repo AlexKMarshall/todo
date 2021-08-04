@@ -194,8 +194,32 @@ export function useDeleteTodo({ todo, onSuccess }: UseDeleteTodoProps) {
   const queryClient = useQueryClient()
 
   return useMutation(() => deleteTodo(todo.id), {
+    onMutate: async () => {
+      await queryClient.cancelQueries(todoKeys.lists())
+      const previousTodos = queryClient.getQueryData<Array<Todo>>(
+        todoKeys.list()
+      )
+
+      if (previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          previousTodos.filter((t) => t.id !== todo.id)
+        )
+      }
+
+      return { previousTodos }
+    },
+
     onSuccess: (...args) => {
       onSuccess?.(...args)
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          context.previousTodos
+        )
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries(todoKeys.lists())
