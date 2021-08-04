@@ -64,6 +64,7 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
   return (
     <MotionLi
       layoutId={todo.id}
+      style={{ boxShadow: `0 0 0 0 ${outlineColor}, 0 0 0 0 ${shadowColor}` }}
       animate={
         dragTransform
           ? {
@@ -146,7 +147,6 @@ export function SortableTodoItem({
 const Li = styled.li`
   background-color: var(--main-background-color);
   overflow: hidden;
-  box-shadow: 0 0 0 0 hsla(236, 9%, 61%, 30%), 0 0 0 0 hsla(236, 9%, 61%, 30%);
 `
 
 const MotionLi = motion(Li)
