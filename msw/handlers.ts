@@ -33,26 +33,57 @@ function createTodo(newTodo: Todo): Todo {
   return newTodo
 }
 
+function updateTodo(updatedTodo: Todo): Todo {
+  const oldTodos = getTodos()
+  const todos = oldTodos.map((todo) =>
+    todo.id === updatedTodo.id ? updatedTodo : todo
+  )
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  return updatedTodo
+}
+
+type TError = { error: any }
+type TResponse<TData> = TData | TError
+
 export const handlers = [
-  rest.get('/api/todos', (req, res, ctx) => {
-    const { searchParams } = req.url
-    const filters = Object.fromEntries(searchParams) as TodoFilters
+  rest.get<undefined, TResponse<{ todos: Array<Todo> }>>(
+    '/api/todos',
+    (req, res, ctx) => {
+      const { searchParams } = req.url
+      const filters = Object.fromEntries(searchParams) as TodoFilters
 
-    try {
-      const todos = getTodos(filters)
-      return res(ctx.status(200), ctx.json({ todos }))
-    } catch (error) {
-      return res(ctx.status(500), ctx.json({ error }))
+      try {
+        const todos = getTodos(filters)
+        return res(ctx.status(200), ctx.json({ todos }))
+      } catch (error) {
+        return res(ctx.status(500), ctx.json({ error }))
+      }
     }
-  }),
-  rest.post<{ todo: Todo }>('/api/todos', (req, res, ctx) => {
-    const { todo } = req.body
+  ),
+  rest.post<{ todo: Todo }, TResponse<{ todo: Todo }>>(
+    '/api/todos',
+    (req, res, ctx) => {
+      const { todo } = req.body
 
-    try {
-      const savedTodo = createTodo(todo)
-      return res(ctx.status(201), ctx.json({ todo: savedTodo }))
-    } catch (error) {
-      return res(ctx.status(500), ctx.json({ error }))
+      try {
+        const savedTodo = createTodo(todo)
+        return res(ctx.status(201), ctx.json({ todo: savedTodo }))
+      } catch (error) {
+        return res(ctx.status(500), ctx.json({ error }))
+      }
     }
-  }),
+  ),
+  rest.put<{ todo: Todo }, TResponse<{ todo: Todo }>, { todoId: string }>(
+    '/api/todos/:todoId',
+    (req, res, ctx) => {
+      const { todo } = req.body
+
+      try {
+        const updatedTodo = updateTodo(todo)
+        return res(ctx.status(200), ctx.json({ todo: updatedTodo }))
+      } catch (error) {
+        return res(ctx.status(500), ctx.json({ error }))
+      }
+    }
+  ),
 ]

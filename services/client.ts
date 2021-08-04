@@ -3,23 +3,27 @@ import { Todo, TodoFilters } from '../features/todos/schemas'
 
 const STORAGE_KEY = 'todo-app-todos'
 
-type ClientOptions<TData extends Object> = {
+type ClientOptions<TData extends Object> = RequestInit & {
   data?: TData
 }
 
 async function client<TResult = unknown, TData = {}>(
   endpoint: string,
-  { data }: ClientOptions<TData> = {}
+  { data, headers: customHeaders, ...initOptions }: ClientOptions<TData> = {}
 ): Promise<TResult> {
-  const headers = new Headers()
+  const headers: HeadersInit = {}
   if (data) {
-    headers.append('content-type', 'application/json')
+    headers['content-type'] = 'application/json'
   }
 
   const init: RequestInit = {
     method: data ? 'POST' : 'GET',
     body: data && JSON.stringify(data),
-    headers,
+    headers: {
+      ...headers,
+      ...customHeaders,
+    },
+    ...initOptions,
   }
 
   try {
@@ -28,6 +32,7 @@ async function client<TResult = unknown, TData = {}>(
     if (!res.ok) return Promise.reject(result)
     return result as TResult
   } catch (error) {
+    console.error('in client function, ', error)
     return Promise.reject(error)
   }
 }
@@ -59,13 +64,6 @@ async function getTodos(filters: TodoFilters = {}): Promise<Array<Todo>> {
     },
     allTodos
   )
-}
-
-async function createTodo(newTodo: Todo): Promise<Todo> {
-  const oldTodos = await getTodos()
-  const todos = [newTodo, ...oldTodos]
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-  return Promise.resolve(newTodo)
 }
 
 async function updateTodo(updatedTodo: Todo): Promise<Todo> {
@@ -112,7 +110,6 @@ async function moveTodo({ fromId, toId }: MoveTodoProps): Promise<Array<Todo>> {
 
 export {
   getTodos,
-  createTodo,
   updateTodo,
   deleteTodo,
   clearCompletedTodos,
