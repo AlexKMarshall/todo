@@ -5,6 +5,7 @@ import {
   deleteOneTodo,
   deleteTodos,
   getTodos,
+  moveTodo,
   updateTodo,
 } from './todo.local-storage.model'
 
@@ -39,7 +40,7 @@ export const handlers = [
       }
     }
   ),
-  rest.put<{ todo: Todo }, TResponse<{ todo: Todo }>, { todoId: string }>(
+  rest.put<{ todo: Todo }, TResponse<{ todo: Todo }>, { todoId: Todo['id'] }>(
     '/api/todos/:todoId',
     (req, res, ctx) => {
       const { todo } = req.body
@@ -52,6 +53,21 @@ export const handlers = [
       }
     }
   ),
+  rest.put<
+    { toId: Todo['id'] },
+    TResponse<{ todos: Array<Todo> }>,
+    { todoId: Todo['id'] }
+  >('/api/todos/:todoId/move', (req, res, ctx) => {
+    const { todoId: fromId } = req.params
+    const { toId } = req.body
+
+    try {
+      const todos = moveTodo({ fromId, toId })
+      return res(ctx.status(200), ctx.json({ todos }))
+    } catch (error) {
+      return res(ctx.status(500), ctx.json({ error }))
+    }
+  }),
   rest.delete<undefined, TResponse<{ todo: Todo }>, { todoId: string }>(
     '/api/todos/:todoId',
     (req, res, ctx) => {

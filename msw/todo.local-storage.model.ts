@@ -1,3 +1,4 @@
+import { arrayMove } from '@dnd-kit/sortable'
 import { Todo, TodoFilters } from '@features/todos/schemas'
 
 const STORAGE_KEY = 'todo-app-todos'
@@ -79,4 +80,27 @@ function deleteTodos(filters: TodoFilters = {}): Array<Todo> {
   return deletedTodos
 }
 
-export { getTodos, createTodo, updateTodo, deleteOneTodo, deleteTodos }
+type MoveTodoProps = {
+  fromId: Todo['id']
+  toId: Todo['id']
+}
+
+function moveTodo({ fromId, toId }: MoveTodoProps): Array<Todo> {
+  console.log('in model')
+  const oldTodos = getTodos()
+  const fromIndex = oldTodos.findIndex((todo) => todo.id === fromId)
+  const toIndex = oldTodos.findIndex((todo) => todo.id === toId)
+
+  const todos = arrayMove(oldTodos, fromIndex, toIndex)
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  return todos
+}
+
+export {
+  getTodos,
+  createTodo,
+  updateTodo,
+  deleteOneTodo,
+  deleteTodos,
+  moveTodo,
+}
