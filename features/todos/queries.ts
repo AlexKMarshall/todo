@@ -45,7 +45,6 @@ export function useCreateTodo({ onSuccess }: UseCreateTodoProps = {}) {
     },
     {
       onMutate: async (newTodo: Todo) => {
-        console.log('onMutate')
         await queryClient.cancelQueries(todoKeys.lists())
         const previousTodos = queryClient.getQueryData<Array<Todo>>(
           todoKeys.list()
@@ -61,11 +60,9 @@ export function useCreateTodo({ onSuccess }: UseCreateTodoProps = {}) {
         return { previousTodos }
       },
       onSuccess: (...args) => {
-        console.log('onSuccess')
         onSuccess?.(...args)
       },
       onError: (_err, _variables, context) => {
-        console.log('onError')
         if (context?.previousTodos) {
           queryClient.setQueryData<Array<Todo>>(
             todoKeys.list(),
@@ -74,7 +71,6 @@ export function useCreateTodo({ onSuccess }: UseCreateTodoProps = {}) {
         }
       },
       onSettled: () => {
-        console.log('onSettled')
         queryClient.invalidateQueries(todoKeys.lists())
       },
     }
@@ -91,8 +87,31 @@ export function useClearCompletedTodos({
   const queryClient = useQueryClient()
 
   return useMutation(clearCompletedTodos, {
+    onMutate: async () => {
+      await queryClient.cancelQueries(todoKeys.lists())
+      const previousTodos = queryClient.getQueryData<Array<Todo>>(
+        todoKeys.list()
+      )
+
+      if (previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          previousTodos.filter((todo) => todo.status !== 'completed')
+        )
+      }
+
+      return { previousTodos }
+    },
     onSuccess: (...args) => {
       onSuccess?.(...args)
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          context.previousTodos
+        )
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries(todoKeys.lists())
@@ -106,19 +125,41 @@ type UseToggleTodoCompleteProps = {
 
 export function useToggleTodoComplete({ todo }: UseToggleTodoCompleteProps) {
   const queryClient = useQueryClient()
-
+  const updatedTodo = {
+    ...todo,
+    status:
+      todo.status === 'active' ? ('completed' as const) : ('active' as const),
+  }
   return useMutation(
     () => {
-      const updatedTodo = {
-        ...todo,
-        status:
-          todo.status === 'active'
-            ? ('completed' as const)
-            : ('active' as const),
-      }
       return updateTodo(updatedTodo)
     },
     {
+      onMutate: async () => {
+        await queryClient.cancelQueries(todoKeys.lists())
+        const previousTodos = queryClient.getQueryData<Array<Todo>>(
+          todoKeys.list()
+        )
+
+        if (previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            previousTodos.map((todo) =>
+              todo.id === updatedTodo.id ? updatedTodo : todo
+            )
+          )
+        }
+
+        return { previousTodos }
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            context.previousTodos
+          )
+        }
+      },
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())
       },
