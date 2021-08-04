@@ -44,10 +44,37 @@ export function useCreateTodo({ onSuccess }: UseCreateTodoProps = {}) {
       return postTodo(todo)
     },
     {
+      onMutate: async (newTodo: Todo) => {
+        console.log('onMutate')
+        await queryClient.cancelQueries(todoKeys.lists())
+        const previousTodos = queryClient.getQueryData<Array<Todo>>(
+          todoKeys.list()
+        )
+
+        if (previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(todoKeys.list(), [
+            newTodo,
+            ...previousTodos,
+          ])
+        }
+
+        return { previousTodos }
+      },
       onSuccess: (...args) => {
+        console.log('onSuccess')
         onSuccess?.(...args)
       },
+      onError: (_err, _variables, context) => {
+        console.log('onError')
+        if (context?.previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            context.previousTodos
+          )
+        }
+      },
       onSettled: () => {
+        console.log('onSettled')
         queryClient.invalidateQueries(todoKeys.lists())
       },
     }
