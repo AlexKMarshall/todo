@@ -1,18 +1,19 @@
+import { Todo, TodoFilters } from './schemas'
 import {
-  clearCompletedTodos,
-  createTodo,
   getTodos,
+  postTodo,
   updateTodo,
   deleteTodo,
+  clearCompletedTodos,
   moveTodo,
-} from '@services/client'
-import { Todo, TodoFilters } from './schemas'
+} from './api'
 import {
   useMutation,
   UseMutationOptions,
   useQuery,
   useQueryClient,
 } from 'react-query'
+import { arrayMove } from '@dnd-kit/sortable'
 
 const todoKeys = {
   all: ['todos'] as const,
@@ -41,11 +42,34 @@ export function useCreateTodo({ onSuccess }: UseCreateTodoProps = {}) {
 
   return useMutation(
     (todo: Todo) => {
-      return createTodo(todo)
+      return postTodo(todo)
     },
     {
+      onMutate: async (newTodo: Todo) => {
+        await queryClient.cancelQueries(todoKeys.lists())
+        const previousTodos = queryClient.getQueryData<Array<Todo>>(
+          todoKeys.list()
+        )
+
+        if (previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(todoKeys.list(), [
+            newTodo,
+            ...previousTodos,
+          ])
+        }
+
+        return { previousTodos }
+      },
       onSuccess: (...args) => {
         onSuccess?.(...args)
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            context.previousTodos
+          )
+        }
       },
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())
@@ -64,8 +88,31 @@ export function useClearCompletedTodos({
   const queryClient = useQueryClient()
 
   return useMutation(clearCompletedTodos, {
+    onMutate: async () => {
+      await queryClient.cancelQueries(todoKeys.lists())
+      const previousTodos = queryClient.getQueryData<Array<Todo>>(
+        todoKeys.list()
+      )
+
+      if (previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          previousTodos.filter((todo) => todo.status !== 'completed')
+        )
+      }
+
+      return { previousTodos }
+    },
     onSuccess: (...args) => {
       onSuccess?.(...args)
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          context.previousTodos
+        )
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries(todoKeys.lists())
@@ -79,19 +126,41 @@ type UseToggleTodoCompleteProps = {
 
 export function useToggleTodoComplete({ todo }: UseToggleTodoCompleteProps) {
   const queryClient = useQueryClient()
-
+  const updatedTodo = {
+    ...todo,
+    status:
+      todo.status === 'active' ? ('completed' as const) : ('active' as const),
+  }
   return useMutation(
     () => {
-      const updatedTodo = {
-        ...todo,
-        status:
-          todo.status === 'active'
-            ? ('completed' as const)
-            : ('active' as const),
-      }
       return updateTodo(updatedTodo)
     },
     {
+      onMutate: async () => {
+        await queryClient.cancelQueries(todoKeys.lists())
+        const previousTodos = queryClient.getQueryData<Array<Todo>>(
+          todoKeys.list()
+        )
+
+        if (previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            previousTodos.map((todo) =>
+              todo.id === updatedTodo.id ? updatedTodo : todo
+            )
+          )
+        }
+
+        return { previousTodos }
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            context.previousTodos
+          )
+        }
+      },
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())
       },
@@ -110,6 +179,33 @@ export function useMoveTodoMutation() {
   return useMutation(
     ({ fromId, toId }: MoveTodoVariables) => moveTodo({ fromId, toId }),
     {
+      onMutate: async ({ fromId, toId }: MoveTodoVariables) => {
+        await queryClient.cancelQueries(todoKeys.lists())
+        const previousTodos = queryClient.getQueryData<Array<Todo>>(
+          todoKeys.list()
+        )
+
+        if (previousTodos) {
+          const fromIndex = previousTodos.findIndex((t) => t.id === fromId)
+          const toIndex = previousTodos.findIndex((t) => t.id === toId)
+          if (fromIndex === toIndex || fromIndex === -1 || toIndex === -1)
+            return { previousTodos }
+
+          const reorderedTodos = arrayMove(previousTodos, fromIndex, toIndex)
+
+          queryClient.setQueryData<Array<Todo>>(todoKeys.list(), reorderedTodos)
+        }
+
+        return { previousTodos }
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousTodos) {
+          queryClient.setQueryData<Array<Todo>>(
+            todoKeys.list(),
+            context.previousTodos
+          )
+        }
+      },
       onSettled: () => {
         queryClient.invalidateQueries(todoKeys.lists())
       },
@@ -126,8 +222,32 @@ export function useDeleteTodo({ todo, onSuccess }: UseDeleteTodoProps) {
   const queryClient = useQueryClient()
 
   return useMutation(() => deleteTodo(todo.id), {
+    onMutate: async () => {
+      await queryClient.cancelQueries(todoKeys.lists())
+      const previousTodos = queryClient.getQueryData<Array<Todo>>(
+        todoKeys.list()
+      )
+
+      if (previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          previousTodos.filter((t) => t.id !== todo.id)
+        )
+      }
+
+      return { previousTodos }
+    },
+
     onSuccess: (...args) => {
       onSuccess?.(...args)
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousTodos) {
+        queryClient.setQueryData<Array<Todo>>(
+          todoKeys.list(),
+          context.previousTodos
+        )
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries(todoKeys.lists())

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
     "@dnd-kit/core": "^3.1.1",
@@ -37,7 +38,12 @@
     "faker": "^5.5.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.4",
+    "msw": "^0.33.2",
     "prettier": "^2.3.1",
-    "typescript": "4.3.4"
+    "typescript": "4.3.4",
+    "whatwg-fetch": "^3.6.2"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

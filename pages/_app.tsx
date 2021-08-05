@@ -5,6 +5,10 @@ import { ThemeProvider } from 'context/theme'
 import { NotificationProvider } from 'context/notification'
 import type { AppProps } from 'next/app'
 
+if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
+  require('../mock-server')
+}
+
 const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {

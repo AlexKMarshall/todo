@@ -7,7 +7,7 @@ module.exports = {
     '^@icons(.*)$': '<rootDir>/icons$1',
     '^@features(.*)$': '<rootDir>/features$1',
     '^@services(.*)$': '<rootDir>/services$1',
-    '^@types(.*)$': '<rootDir>/types$1',
+    '^@utils(.*)$': '<rootDir>/utils$1',
     '\\.(jpg)$': '<rootDir>/__mocks__/fileMock.js',
     '\\.(css|scss)$': '<rootDir>/__mocks__/styleMock.js',
   },

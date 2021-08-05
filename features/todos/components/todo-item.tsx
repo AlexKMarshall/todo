@@ -63,8 +63,8 @@ export const TodoItem = forwardRef<HTMLDivElement, Props>(function TodoItem(
 
   return (
     <MotionLi
-      // className={styles.todoItem}
       layoutId={todo.id}
+      style={{ boxShadow: `0 0 0 0 ${outlineColor}, 0 0 0 0 ${shadowColor}` }}
       animate={
         dragTransform
           ? {
