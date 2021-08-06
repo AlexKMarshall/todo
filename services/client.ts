@@ -27,7 +27,6 @@ export async function client<TResult = unknown, TData = {}>(
     if (!res.ok) return Promise.reject(result)
     return result as TResult
   } catch (error) {
-    console.error('in client function, ', error)
     return Promise.reject(error)
   }
 }

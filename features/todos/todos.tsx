@@ -128,18 +128,6 @@ const BackgroundShadow = styled.div`
   z-index: -1;
 
   position: relative;
-  // TODO not sure how to make this sit behind the .backgroundShadow element
-  // &::before {
-  //   content: '';
-  //   position: absolute;
-  //   border-radius: var(--border-radius);
-  //   top: 0;
-  //   right: 20%;
-  //   bottom: 0;
-  //   left: 20%;
-  //   box-shadow: 0 0 50px 10px var(--shadow-color);
-  //   z-index: -1;
-  // }
 `
 
 const ItemsCount = styled.div`

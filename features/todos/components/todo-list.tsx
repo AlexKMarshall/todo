@@ -31,12 +31,6 @@ type Props = {
 export function TodoList({ onDeleteTodo, filters = {}, className }: Props) {
   const todoQuery = useTodos({ filters })
   const sensors = useSensors(
-    // useSensor(PointerSensor, {
-    //   activationConstraint: {
-    //     delay: 100,
-    //     tolerance: 5,
-    //   },
-    // }),
     useSensor(MouseSensor, {
       activationConstraint: {
         distance: 10,

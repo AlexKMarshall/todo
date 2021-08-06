@@ -13,7 +13,6 @@ import styled from 'styled-components'
 type Props = {
   todo: Todo
   onDeleteTodo?: (todo: Todo) => void
-  // Todo, extract from useSortable
   dragAttributes?: {
     role: string
     tabIndex: number

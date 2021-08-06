@@ -1,7 +1,6 @@
 import { Todo, TodoFilters } from '@features/todos/schemas'
 import { rest } from 'msw'
 import * as todoModel from './todo.model'
-// import { create, deleteOne, deleteMany, find, move, update } from './todo.model'
 
 type TError = { error: any }
 type TResponse<TData> = TData | TError
