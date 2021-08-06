@@ -5,7 +5,7 @@ module.exports = {
       {
         source: '/',
         destination: '/todos',
-        permanent: true,
+        permanent: false,
       },
     ]
   },
